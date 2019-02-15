@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7,6 +6,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -30,7 +30,10 @@ public class Main extends Application {
 
     private int levelWidth;
 
-    private boolean dialogEvent = false, running = true;
+    private boolean running = true;
+    
+    Image tile = new Image("tile.png");
+    Image coin_image = new Image("coin.png");
 
     private void initContent() {
         Rectangle bg = new Rectangle(1280, 720);
@@ -44,12 +47,14 @@ public class Main extends Application {
                     case '0':
                         break;
                     case '1':
-                        Node platform = createEntity(j*60, i*60, 60, 60, Color.BROWN);
+                        Objects platform = new Objects(j*60, i*60, 60, 60, tile);
                         platforms.add(platform);
+                        gameRoot.getChildren().add(platform);
                         break;
                     case '2':
-                        Node coin = createEntity(j*60, i*60, 60, 60, Color.GOLD);
+                        Objects coin = new Objects(j*60, i*60, 60, 60, coin_image);
                         coins.add(coin);
+                        gameRoot.getChildren().add(coin);
                         break;
                 }
             }
@@ -90,8 +95,7 @@ public class Main extends Application {
         for (Node coin : coins) {
             if (player.getBoundsInParent().intersects(coin.getBoundsInParent())) {
                 coin.getProperties().put("alive", false);
-                dialogEvent = true;
-                running = false;
+              
             }
         }
 
@@ -137,23 +141,7 @@ public class Main extends Application {
                     update();
                 }
 
-                if (dialogEvent) {
-                    dialogEvent = false;
-                    keys.keySet().forEach(key -> keys.put(key, false));
-
-                    GameDialog dialog = new GameDialog();
-                    dialog.setOnCloseRequest(event -> {
-                        if (dialog.isCorrect()) {
-                            System.out.println("Correct");
-                        }
-                        else {
-                            System.out.println("Wrong");
-                        }
-
-                        running = true;
-                    });
-                    dialog.open();
-                }
+            
             }
         };
         timer.start();
