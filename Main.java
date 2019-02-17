@@ -56,6 +56,8 @@ public class Main extends Application {
                         coins.add(coin);
                         gameRoot.getChildren().add(coin);
                         break;
+                    case '3':
+                        break;
                 }
             }
         }
