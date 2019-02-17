@@ -34,6 +34,9 @@ public class Main extends Application {
     
     Image tile = new Image("tile.png");
     Image buttonImage = new Image("button.png");
+    Image up_spike_image = new Image("upspikes.png");
+	Image down_spike_image = new Image("downspikes.png")
+	Image left_spike_image = new Image("leftspikes.png")
 
 
     private void initContent() {
@@ -58,6 +61,19 @@ public class Main extends Application {
                         gameRoot.getChildren().add(button);
                         break;
                     case '3':
+                        Objects up_spike = new Objects(j*60, i*60, 60, 60, up_spike_image);
+                        spikes.add(up_spike);
+                        gameRoot.getChildren().add(up_spike);
+                        break;
+					case '4':
+                        Objects down_spike = new Objects(j*60, i*60, 60, 60, down_spike_image);
+                        spikes.add(down_spike);
+                        gameRoot.getChildren().add(down_spike);
+                        break;
+					case '5':
+                        Objects left_spike = new Objects(j*60, i*60, 60, 60, left_spike_image);
+                        spikes.add(left_spike);
+                        gameRoot.getChildren().add(left_spike);
                         break;
                 }
             }
