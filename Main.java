@@ -20,7 +20,7 @@ public class Main extends Application {
     private HashMap<KeyCode, Boolean> keys = new HashMap<KeyCode, Boolean>();
 
     private ArrayList<Node> platforms = new ArrayList<Node>();
-    private ArrayList<Node> coins = new ArrayList<Node>();
+    private ArrayList<Node> buttons = new ArrayList<Node>();
 
     private Pane appRoot = new Pane();
     private Pane gameRoot = new Pane();
@@ -33,7 +33,8 @@ public class Main extends Application {
     private boolean running = true;
     
     Image tile = new Image("tile.png");
-    Image coin_image = new Image("coin.png");
+    Image buttonImage = new Image("button.png");
+
 
     private void initContent() {
         Rectangle bg = new Rectangle(1280, 720);
@@ -52,9 +53,9 @@ public class Main extends Application {
                         gameRoot.getChildren().add(platform);
                         break;
                     case '2':
-                        Objects coin = new Objects(j*60, i*60, 60, 60, coin_image);
-                        coins.add(coin);
-                        gameRoot.getChildren().add(coin);
+                        Objects button = new Objects(j*60, i*60, 60, 60, buttonImage);
+                        buttons.add(button);
+                        gameRoot.getChildren().add(button);
                         break;
                     case '3':
                         break;
@@ -94,18 +95,19 @@ public class Main extends Application {
 
         player.movePlayerY((int)player.velocity.getY(),platforms);
 
-        for (Node coin : coins) {
+        for (Node button : buttons) {
             if (player.getBoundsInParent().intersects(coin.getBoundsInParent())) {
-                coin.getProperties().put("alive", false);
+                button.getProperties().put("alive", false);
               
             }
         }
 
-        for (Iterator<Node> it = coins.iterator(); it.hasNext(); ) {
-            Node coin = it.next();
-            if (!(Boolean)coin.getProperties().get("alive")) {
+        for (Iterator<Node> it = buttons.iterator(); it.hasNext(); ) {
+            Node button = it.next();
+            if (!(Boolean)button.getProperties().get("alive")) {
                 it.remove();
-                gameRoot.getChildren().remove(coin);
+                gameRoot.getChildren().remove(button);
+                System.exit(0);
             }
         }
     }
