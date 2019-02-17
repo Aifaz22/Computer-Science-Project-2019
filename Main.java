@@ -21,6 +21,7 @@ public class Main extends Application {
 
     private ArrayList<Node> platforms = new ArrayList<Node>();
     private ArrayList<Node> buttons = new ArrayList<Node>();
+    private ArrayList<Node> spikes = new ArrayList<Node>();
 
     private Pane appRoot = new Pane();
     private Pane gameRoot = new Pane();
@@ -35,8 +36,8 @@ public class Main extends Application {
     Image tile = new Image("tile.png");
     Image buttonImage = new Image("button.png");
     Image up_spike_image = new Image("upspikes.png");
-	Image down_spike_image = new Image("downspikes.png")
-	Image left_spike_image = new Image("leftspikes.png")
+    Image down_spike_image = new Image("downspikes.png");
+    Image left_spike_image = new Image("leftspikes.png");
 
 
     private void initContent() {
@@ -65,12 +66,12 @@ public class Main extends Application {
                         spikes.add(up_spike);
                         gameRoot.getChildren().add(up_spike);
                         break;
-					case '4':
+                    case '4':
                         Objects down_spike = new Objects(j*60, i*60, 60, 60, down_spike_image);
                         spikes.add(down_spike);
                         gameRoot.getChildren().add(down_spike);
                         break;
-					case '5':
+                    case '5':
                         Objects left_spike = new Objects(j*60, i*60, 60, 60, left_spike_image);
                         spikes.add(left_spike);
                         gameRoot.getChildren().add(left_spike);
@@ -112,7 +113,7 @@ public class Main extends Application {
         player.movePlayerY((int)player.velocity.getY(),platforms);
 
         for (Node button : buttons) {
-            if (player.getBoundsInParent().intersects(coin.getBoundsInParent())) {
+            if (player.getBoundsInParent().intersects(button.getBoundsInParent())) {
                 button.getProperties().put("alive", false);
               
             }
@@ -124,6 +125,24 @@ public class Main extends Application {
                 it.remove();
                 gameRoot.getChildren().remove(button);
                 System.exit(0);
+            }
+        }
+        //Spikes*****************
+        for (Node spike : spikes) {
+            if (player.getBoundsInParent().intersects(spike.getBoundsInParent())) {
+                spike.getProperties().put("alive", false);
+              
+            }
+        }
+        for (Iterator<Node> it = spikes.iterator(); it.hasNext(); ) {
+            Node spike = it.next();
+            if (!(Boolean)spike.getProperties().get("alive")) {
+                it.remove();
+                System.out.println("you died!");
+                gameRoot.getChildren().remove(player);
+                player = new Avatar(0, 600, 40, 40);
+                gameRoot.getChildren().add(player);
+                //initialize the location to default
             }
         }
     }
