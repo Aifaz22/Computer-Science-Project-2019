@@ -137,12 +137,11 @@ public class Main extends Application {
         for (Iterator<Node> it = spikes.iterator(); it.hasNext(); ) {
             Node spike = it.next();
             if (!(Boolean)spike.getProperties().get("alive")) {
-                it.remove();
                 System.out.println("you died!");
                 gameRoot.getChildren().remove(player);
                 player = new Avatar(0, 600, 40, 40);
                 gameRoot.getChildren().add(player);
-                //initialize the location to default
+				spike.getProperties().put("alive", true);
             }
         }
     }
