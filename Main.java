@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Node;
@@ -9,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -33,6 +31,8 @@ public class Main extends Application {
 
     private boolean running = true;
     
+    
+    //image files
     Image tile = new Image("tile.png");
     Image buttonImage = new Image("button.png");
     Image up_spike_image = new Image("upspikes.png");
@@ -41,10 +41,11 @@ public class Main extends Application {
 
 
     private void initContent() {
-        Rectangle bg = new Rectangle(1280, 720);
+        Rectangle bg = new Rectangle(1245, 588);
 
-        levelWidth = LevelData.LEVEL1[0].length() * 60;
-
+        levelWidth = LevelData.LEVEL1[0].length() * 30;
+        
+        //Draw level
         for (int i = 0; i < LevelData.LEVEL1.length; i++) {
             String line = LevelData.LEVEL1[i];
             for (int j = 0; j < line.length(); j++) {
@@ -52,35 +53,36 @@ public class Main extends Application {
                     case '0':
                         break;
                     case '1':
-                        Objects platform = new Objects(j*60, i*60, 60, 60, tile);
+                        Objects platform = new Objects(j*30, i*30, 30, 30, tile);
                         platforms.add(platform);
                         gameRoot.getChildren().add(platform);
                         break;
                     case '2':
-                        Objects button = new Objects(j*60, i*60, 60, 60, buttonImage);
+                        Objects button = new Objects(j*30, i*30, 30, 30, buttonImage);
                         buttons.add(button);
                         gameRoot.getChildren().add(button);
                         break;
                     case '3':
-                        Objects up_spike = new Objects(j*60, i*60, 60, 60, up_spike_image);
+                        Objects up_spike = new Objects(j*30, i*30+10, 20, 20, up_spike_image);
                         spikes.add(up_spike);
                         gameRoot.getChildren().add(up_spike);
                         break;
                     case '4':
-                        Objects down_spike = new Objects(j*60, i*60, 60, 60, down_spike_image);
+                        Objects down_spike = new Objects(j*30, i*30, 20, 20, down_spike_image);
                         spikes.add(down_spike);
                         gameRoot.getChildren().add(down_spike);
                         break;
                     case '5':
-                        Objects left_spike = new Objects(j*60, i*60, 60, 60, left_spike_image);
+                        Objects left_spike = new Objects(j*30 +10, i*30+5, 20, 20, left_spike_image);
                         spikes.add(left_spike);
                         gameRoot.getChildren().add(left_spike);
                         break;
                 }
             }
         }
-
-        player = new Avatar(0, 600, 40, 40);
+        
+        //create player
+        player = new Avatar(0, 520, 30, 30);
         gameRoot.getChildren().add(player);
         player.translateXProperty().addListener((obs, old, newValue) -> {
             int offset = newValue.intValue();
@@ -94,16 +96,17 @@ public class Main extends Application {
     }
 
     private void update() {
+    	//checks for arrow key input
         if (isPressed(KeyCode.UP) && player.getTranslateY() >= 5) {
             player.jumpPlayer();
         }
 
         if (isPressed(KeyCode.LEFT) && player.getTranslateX() >= 5) {
-            player.movePlayerX(-5,platforms);
+            player.movePlayerX(-4,platforms);
         }
 
-        if (isPressed(KeyCode.RIGHT) && player.getTranslateX() + 40 <= levelWidth - 5) {
-            player.movePlayerX(5,platforms);
+        if (isPressed(KeyCode.RIGHT) && player.getTranslateX() + 30 <= levelWidth - 5) {
+            player.movePlayerX(4,platforms);
         }
 
         if (player.velocity.getY() < 10) {
@@ -112,13 +115,14 @@ public class Main extends Application {
 
         player.movePlayerY((int)player.velocity.getY(),platforms);
 
+        //Button*****************        
         for (Node button : buttons) {
             if (player.getBoundsInParent().intersects(button.getBoundsInParent())) {
                 button.getProperties().put("alive", false);
               
             }
         }
-
+        
         for (Iterator<Node> it = buttons.iterator(); it.hasNext(); ) {
             Node button = it.next();
             if (!(Boolean)button.getProperties().get("alive")) {
@@ -139,23 +143,13 @@ public class Main extends Application {
             if (!(Boolean)spike.getProperties().get("alive")) {
                 System.out.println("you died!");
                 gameRoot.getChildren().remove(player);
-                player = new Avatar(0, 600, 40, 40);
+                player = new Avatar(0, 520, 30, 30);
                 gameRoot.getChildren().add(player);
 				spike.getProperties().put("alive", true);
             }
         }
     }
 
-    private Rectangle createEntity(int x, int y, int w, int h, Color color) {
-        Rectangle entity = new Rectangle(w, h);
-        entity.setTranslateX(x);
-        entity.setTranslateY(y);
-        entity.setFill(color);
-        entity.getProperties().put("alive", true);
-
-        gameRoot.getChildren().add(entity);
-        return entity;
-    }
 
     private boolean isPressed(KeyCode key) {
         return keys.getOrDefault(key, false);
@@ -165,12 +159,14 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         initContent();
 
+        
         Scene scene = new Scene(appRoot);
         scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
         scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));
         primaryStage.setTitle("My Nightmare");
         primaryStage.setScene(scene);
         primaryStage.show();
+        primaryStage.setResizable(false);
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
