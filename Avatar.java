@@ -42,12 +42,12 @@ public class Avatar extends Rectangle{
             for (Node platform : platforms) {
                 if (this.getBoundsInParent().intersects(platform.getBoundsInParent())) {
                     if (movingRight) {
-                        if (this.getTranslateX() + 40 == platform.getTranslateX()) {
+                        if (this.getTranslateX() + 30 == platform.getTranslateX()) {
                             return;
                         }
                     }
                     else {
-                        if (this.getTranslateX() == platform.getTranslateX() + 60) {
+                        if (this.getTranslateX() == platform.getTranslateX() + 30) {
                             return;
                         }
                     }
@@ -74,14 +74,14 @@ public class Avatar extends Rectangle{
             for (Node platform : platforms) {
                 if (this.getBoundsInParent().intersects(platform.getBoundsInParent())) {
                     if (movingDown) {
-                        if (this.getTranslateY() + 40 == platform.getTranslateY()) {
+                        if (this.getTranslateY() + 30 == platform.getTranslateY()) {
                             this.setTranslateY(this.getTranslateY() - 1);
                             canJump = true;
                             return;
                         }
                     }
                     else {
-                        if (this.getTranslateY() == platform.getTranslateY() + 60) {
+                        if (this.getTranslateY() == platform.getTranslateY() + 30) {
      
                             return;
                         }
@@ -95,7 +95,7 @@ public class Avatar extends Rectangle{
     //gravity effect
     public void jumpPlayer() {
     	   if (canJump) {
-               velocity = velocity.add(0, -30);
+               velocity = velocity.add(0, -25);
                canJump = false;
            }
     }
