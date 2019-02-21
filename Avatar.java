@@ -11,7 +11,7 @@ public class Avatar extends Rectangle{
 	//instance variables
 	private boolean canJump = true;
 	Point2D velocity = new Point2D(0, 0);
-	Image img = new Image("player.png");
+	Image img = new Image("rifat.png");
 	
 	//constructor which takes the dimensions and the location of the rectangle player.
 	 public Avatar(int x, int y, int w, int h) {
