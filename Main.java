@@ -58,7 +58,7 @@ public class Main extends Application {
                         gameRoot.getChildren().add(platform);
                         break;
                     case '2':
-                        Objects button = new Objects(j*32, i*32+16, 32, 16, buttonImage);
+                        Objects button = new Objects(j*32, i*32, 32, 32, buttonImage);
                         buttons.add(button);
                         gameRoot.getChildren().add(button);
                         break;
@@ -82,13 +82,13 @@ public class Main extends Application {
         }
         
         //create player
-        player = new Avatar(0, 17*32, 32, 32);
+        player = new Avatar(0, 520, 32, 32);
         gameRoot.getChildren().add(player);
         player.translateXProperty().addListener((obs, old, newValue) -> {
             int offset = newValue.intValue();
 
-            if (offset > 21*32 && offset < levelWidth - 21*32) {
-                gameRoot.setLayoutX(-(offset - 21*32));
+            if (offset > 640 && offset < levelWidth - 640) {
+                gameRoot.setLayoutX(-(offset - 640));
             }
         });
 
