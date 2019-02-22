@@ -63,7 +63,7 @@ public class Main extends Application {
                         gameRoot.getChildren().add(button);
                         break;
                     case '3':
-                        Objects up_spike = new Objects(j*32+5, i*32+11, 32, 32, up_spike_image);
+                        Objects up_spike = new Objects(j*32, i*32+11, 32, 32, up_spike_image);
                         spikes.add(up_spike);
                         gameRoot.getChildren().add(up_spike);
                         break;
@@ -109,7 +109,7 @@ public class Main extends Application {
             player.movePlayerX(4,platforms);
         }
 
-        if (player.velocity.getY() < 5) {
+        if (player.velocity.getY() < 6) {
             player.velocity = player.velocity.add(0, .5);
         }
 
@@ -128,6 +128,7 @@ public class Main extends Application {
             if (!(Boolean)button.getProperties().get("alive")) {
                 it.remove();
                 gameRoot.getChildren().remove(button);
+                System.out.println("Button Pressed.");
                 System.exit(0);
             }
         }
@@ -143,7 +144,7 @@ public class Main extends Application {
             if (!(Boolean)spike.getProperties().get("alive")) {
                 System.out.println("You died!");
                 gameRoot.getChildren().remove(player);
-                player = new Avatar(0, 520, 32, 32);
+                player = new Avatar(0, 17*32, 32, 32);
                 gameRoot.getChildren().add(player);
 				spike.getProperties().put("alive", true);
             }

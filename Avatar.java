@@ -95,7 +95,7 @@ public class Avatar extends Rectangle{
     //gravity effect
     public void jumpPlayer() {
     	   if (canJump) {
-               velocity = velocity.add(0, -15);
+               velocity = velocity.add(0, -16.5);
                canJump = false;
            }
     }
