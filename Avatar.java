@@ -5,15 +5,15 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.image.Image;
 
-//a class for making the object Player
+//Class Use: Create and Move Avatar Character
 public class Avatar extends Rectangle{
 	
-	//instance variables
+	//3 Instance Variables
 	private boolean canJump = true;
 	Point2D velocity = new Point2D(0, 0);
 	Image img = new Image("player.png");
 	
-	//constructor which takes the dimensions and the location of the rectangle player.
+	//Constructor: (Location X, Location Y, Width, Height)
 	 public Avatar(int x, int y, int w, int h) {
 		 
 		    super(w,h);
@@ -23,13 +23,14 @@ public class Avatar extends Rectangle{
 	        this.getProperties().put("alive", true);
 	    }
 	 
-    /*
-     * method for moving the player on the X Axis. It takes two parameters: value (the higher the value, the faster player moves.)
-	 and the array of platforms to detect the walls and the floor.
+    /**
+     * Method: Movement of Avatar along the X-Axis. 
+     * Parameter: value (The higher this value, the faster the movement.)
+     * Parameter: platforms (Detect the locations of the platforms.)
 	 */
     public void movePlayerX(int value, ArrayList<Node> platforms) {
     	
-    	//finds the direction of movement
+    	//Finds if movement is Left or Right
         boolean movingRight;
         if (value > 0) {
         	movingRight = true;
@@ -37,7 +38,7 @@ public class Avatar extends Rectangle{
         	movingRight = false;
         }
         
-        //for each step, checks if front is clear.
+        //For each step, will check if the front is clear; if so, move.
         for (int i = 0; i < Math.abs(value); i++) {
             for (Node platform : platforms) {
                 if (this.getBoundsInParent().intersects(platform.getBoundsInParent())) {
@@ -57,9 +58,10 @@ public class Avatar extends Rectangle{
         }
     }
 
-    /*
-     * method for moving the player on the Y Axis. It takes two parameters: value (the higher the value, the higher player jumps.)
-	 and the array of platforms to detect the walls and the floor.
+    /**
+     * Method: Movement of Avatar along the Y-Axis. 
+     * Parameter: value (The higher this value, the faster the jump.)
+     * Parameter: platforms (Detect the locations of the platforms.)
 	 */
     public void movePlayerY(int value,ArrayList<Node> platforms) {
     	 boolean movingDown;
@@ -69,7 +71,7 @@ public class Avatar extends Rectangle{
          	movingDown = false;
          }
          
-       //check if the player is on the floor.
+       //Checks if the avatar is on the floor.
         for (int i = 0; i < Math.abs(value); i++) {
             for (Node platform : platforms) {
                 if (this.getBoundsInParent().intersects(platform.getBoundsInParent())) {
@@ -92,7 +94,7 @@ public class Avatar extends Rectangle{
         }
     }
 
-    //gravity effect
+    //Jump Method
     public void jumpPlayer() {
     	   if (canJump) {
                velocity = velocity.add(0, -16.8);

@@ -11,8 +11,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-//we are going to use this code: https://www.youtube.com/watch?v=lQEEby394qg as our base project.
+//Base Code: https://www.youtube.com/watch?v=lQEEby394qg
 
+//Class Use: Running and Managing the Game
 public class Main extends Application {
 
     private HashMap<KeyCode, Boolean> keys = new HashMap<KeyCode, Boolean>();
@@ -26,13 +27,9 @@ public class Main extends Application {
     private Pane uiRoot = new Pane();
 
     private Avatar player;
-
     private int levelWidth;
-
     private boolean running = true;
     
-    
-    //image files
     Image tile = new Image("tile.png");
     Image buttonImage = new Image("button.png");
     Image up_spike_image = new Image("upspikes.png");
@@ -40,12 +37,15 @@ public class Main extends Application {
     Image left_spike_image = new Image("leftspikes.png");
 
 
+    /**
+     * Method: Create the Window and the Level according to LevelData.java
+     * Currently, only LEVEL1 active.
+     */
     private void initContent() {
         Rectangle bg = new Rectangle(42*32, 20*32);
 
         levelWidth = LevelData.LEVEL1[0].length() * 32;
         
-        //Draw level
         for (int i = 0; i < LevelData.LEVEL1.length; i++) {
             String line = LevelData.LEVEL1[i];
             for (int j = 0; j < line.length(); j++) {
@@ -81,20 +81,31 @@ public class Main extends Application {
             }
         }
         
-        //create player
+        //Create Avatar
         player = new Avatar(0, 520, 32, 32);
         gameRoot.getChildren().add(player);
+        
+        //Scrolling: For now, disabled.
+        /*
         player.translateXProperty().addListener((obs, old, newValue) -> {
             int offset = newValue.intValue();
 
-            if (offset > 640 && offset < levelWidth - 640) {
-                gameRoot.setLayoutX(-(offset - 640));
+            if (offset > 17*32 && offset < levelWidth - 17*32) {
+                gameRoot.setLayoutX(-(offset - 17*32));
             }
+          
         });
+        */
 
         appRoot.getChildren().addAll(bg, gameRoot, uiRoot);
     }
-
+    
+    /**
+     * Method: update: Tracks keyboard press, as well as Button and Spikes.
+     * Keyboard: Tracks Left/Right Movement, and Jump
+     * Button: Once pressed, something happens.
+     * Spikes: Once touched, re-spawn at start.
+     */
     private void update() {
     	//checks for arrow key input
         if (isPressed(KeyCode.UP) && player.getTranslateY() >= 5) {
@@ -115,7 +126,7 @@ public class Main extends Application {
 
         player.movePlayerY((int)player.velocity.getY(),platforms);
 
-        //Button*****************        
+        //Button       
         for (Node button : buttons) {
             if (player.getBoundsInParent().intersects(button.getBoundsInParent())) {
                 button.getProperties().put("alive", false);
@@ -132,7 +143,8 @@ public class Main extends Application {
                 System.exit(0);
             }
         }
-        //Spikes*****************
+        
+        //Spikes
         for (Node spike : spikes) {
             if (player.getBoundsInParent().intersects(spike.getBoundsInParent())) {
                 spike.getProperties().put("alive", false);
