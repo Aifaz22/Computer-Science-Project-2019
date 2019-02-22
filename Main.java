@@ -41,9 +41,9 @@ public class Main extends Application {
 
 
     private void initContent() {
-        Rectangle bg = new Rectangle(1245, 588);
+        Rectangle bg = new Rectangle(42*32, 20*32);
 
-        levelWidth = LevelData.LEVEL1[0].length() * 30;
+        levelWidth = LevelData.LEVEL1[0].length() * 32;
         
         //Draw level
         for (int i = 0; i < LevelData.LEVEL1.length; i++) {
@@ -53,27 +53,27 @@ public class Main extends Application {
                     case '0':
                         break;
                     case '1':
-                        Objects platform = new Objects(j*30, i*30, 30, 30, tile);
+                        Objects platform = new Objects(j*32, i*32, 32, 32, tile);
                         platforms.add(platform);
                         gameRoot.getChildren().add(platform);
                         break;
                     case '2':
-                        Objects button = new Objects(j*30, i*30, 30, 30, buttonImage);
+                        Objects button = new Objects(j*32, i*32, 32, 32, buttonImage);
                         buttons.add(button);
                         gameRoot.getChildren().add(button);
                         break;
                     case '3':
-                        Objects up_spike = new Objects(j*30, i*30+10, 20, 20, up_spike_image);
+                        Objects up_spike = new Objects(j*32+5, i*32+11, 32, 32, up_spike_image);
                         spikes.add(up_spike);
                         gameRoot.getChildren().add(up_spike);
                         break;
                     case '4':
-                        Objects down_spike = new Objects(j*30, i*30, 20, 20, down_spike_image);
+                        Objects down_spike = new Objects(j*32, i*32, 32, 26, down_spike_image);
                         spikes.add(down_spike);
                         gameRoot.getChildren().add(down_spike);
                         break;
                     case '5':
-                        Objects left_spike = new Objects(j*30 +10, i*30+5, 20, 20, left_spike_image);
+                        Objects left_spike = new Objects(j*32+10, i*32, 32, 32, left_spike_image);
                         spikes.add(left_spike);
                         gameRoot.getChildren().add(left_spike);
                         break;
@@ -82,7 +82,7 @@ public class Main extends Application {
         }
         
         //create player
-        player = new Avatar(0, 520, 30, 30);
+        player = new Avatar(0, 520, 32, 32);
         gameRoot.getChildren().add(player);
         player.translateXProperty().addListener((obs, old, newValue) -> {
             int offset = newValue.intValue();
@@ -105,12 +105,12 @@ public class Main extends Application {
             player.movePlayerX(-4,platforms);
         }
 
-        if (isPressed(KeyCode.RIGHT) && player.getTranslateX() + 30 <= levelWidth - 5) {
+        if (isPressed(KeyCode.RIGHT) && player.getTranslateX() + 32 <= levelWidth - 5) {
             player.movePlayerX(4,platforms);
         }
 
-        if (player.velocity.getY() < 10) {
-            player.velocity = player.velocity.add(0, 1);
+        if (player.velocity.getY() < 5) {
+            player.velocity = player.velocity.add(0, .5);
         }
 
         player.movePlayerY((int)player.velocity.getY(),platforms);
@@ -141,9 +141,9 @@ public class Main extends Application {
         for (Iterator<Node> it = spikes.iterator(); it.hasNext(); ) {
             Node spike = it.next();
             if (!(Boolean)spike.getProperties().get("alive")) {
-                System.out.println("you died!");
+                System.out.println("You died!");
                 gameRoot.getChildren().remove(player);
-                player = new Avatar(0, 520, 30, 30);
+                player = new Avatar(0, 520, 32, 32);
                 gameRoot.getChildren().add(player);
 				spike.getProperties().put("alive", true);
             }
@@ -163,7 +163,7 @@ public class Main extends Application {
         Scene scene = new Scene(appRoot);
         scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
         scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));
-        primaryStage.setTitle("My Nightmare");
+        primaryStage.setTitle("Test Game Demo 1");
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setResizable(false);
