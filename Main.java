@@ -57,7 +57,8 @@ public class Main extends Application {
 			System.out.println("error");
 			}
 		}
-
+		
+		
     private void initContent() {
         Rectangle bg = new Rectangle(42*32, 20*32);
 
@@ -148,6 +149,7 @@ public class Main extends Application {
                 it.remove();
                 gameRoot.getChildren().remove(button);
                 System.out.println("Button Pressed.");
+				AudioPlayer.player.interrupt();
                 System.exit(0);
             }
         }
@@ -195,6 +197,7 @@ public class Main extends Application {
                 if (running) {
                     update();
                 }
+				
 
             
             }
