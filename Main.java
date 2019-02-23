@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import sun.audio.*;
 import java.util.Iterator;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -10,6 +11,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import java.io.*;
 
 //Base Code: https://www.youtube.com/watch?v=lQEEby394qg
 
@@ -41,6 +43,23 @@ public class Main extends Application {
      * Method: Create the Window and the Level according to LevelData.java
      * Currently, only LEVEL1 active.
      */
+	
+	//plays background music and sound effects 
+	//refrence https://www.youtube.com/watch?v=3q4f6I5zi2w 
+	//Background music from http://freemusicarchive.org/music/Kevin_MacLeod/Impact/Impact_Prelude_1765
+	//sound effect from http://soundbible.com/1343-Jump.html
+	public static void music(String name){
+		InputStream playMusic;
+		try{
+		playMusic = new FileInputStream(new File(name));
+		AudioStream audio = new AudioStream(playMusic);
+		AudioPlayer.player.start(audio);
+		
+		}
+		catch(Exception e){
+			System.out.println("error");
+			}
+		}
     private void initContent() {
         Rectangle bg = new Rectangle(42*32, 20*32);
 
@@ -109,6 +128,7 @@ public class Main extends Application {
     private void update() {
     	//checks for arrow key input
         if (isPressed(KeyCode.UP) && player.getTranslateY() >= 5) {
+			music("jump.wav");
             player.jumpPlayer();
         }
 
@@ -159,6 +179,7 @@ public class Main extends Application {
                 player = new Avatar(0, 17*32, 32, 32);
                 gameRoot.getChildren().add(player);
 				spike.getProperties().put("alive", true);
+				music("music.wav");
             }
         }
     }
@@ -187,6 +208,7 @@ public class Main extends Application {
                 if (running) {
                     update();
                 }
+				
 
             
             }
@@ -195,6 +217,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+		music("music.wav");
         launch(args);
     }
 }
