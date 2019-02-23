@@ -77,7 +77,7 @@ public class Main extends Application {
                         gameRoot.getChildren().add(platform);
                         break;
                     case '2':
-                        Objects button = new Objects(j*32, i*32+16, 32, 16, buttonImage);
+                        Objects button = new Objects(j*32, i*32+24, 32, 8, buttonImage);
                         buttons.add(button);
                         gameRoot.getChildren().add(button);
                         break;
