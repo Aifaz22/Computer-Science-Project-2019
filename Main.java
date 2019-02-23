@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import sun.audio.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import java.util.Iterator;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -11,6 +12,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
 import java.io.*;
 
 //Base Code: https://www.youtube.com/watch?v=lQEEby394qg
@@ -38,31 +41,26 @@ public class Main extends Application {
     Image down_spike_image = new Image("downspikes.png");
     Image left_spike_image = new Image("leftspikes.png");
 
-
+    String bgm_name = ("music.wav");
+    Media sound = new Media(new File(bgm_name).toURI().toString());
+    MediaPlayer bgm = new MediaPlayer(sound);
+    String jump_name = ("jump.wav");
+    Media jump_sound = new Media(new File(jump_name).toURI().toString());
+    MediaPlayer jump = new MediaPlayer(jump_sound);
     /**
      * Method: Create the Window and the Level according to LevelData.java
      * Currently, only LEVEL1 active.
      */
 	
 	//plays background music and sound effects 
-	//refrence https://www.youtube.com/watch?v=3q4f6I5zi2w 
+	//refrence https://stackoverflow.com/questions/23498376/ahow-to-make-a-mp3-repeat-in-javafx
 	//Background music from http://freemusicarchive.org/music/Kevin_MacLeod/Impact/Impact_Prelude_1765
 	//sound effect from http://soundbible.com/1343-Jump.html
-	public static void music(String name){
-		InputStream playMusic;
-		try{
-		playMusic = new FileInputStream(new File(name));
-		AudioStream audio = new AudioStream(playMusic);
-		AudioPlayer.player.start(audio);
-		
-		}
-		catch(Exception e){
-			System.out.println("error");
-			}
-		}
+	
     private void initContent() {
         Rectangle bg = new Rectangle(42*32, 20*32);
-
+        
+        
         levelWidth = LevelData.LEVEL1[0].length() * 32;
         
         for (int i = 0; i < LevelData.LEVEL1.length; i++) {
@@ -99,7 +97,7 @@ public class Main extends Application {
                 }
             }
         }
-        
+    
         //Create Avatar
         player = new Avatar(0, 520, 32, 32);
         gameRoot.getChildren().add(player);
@@ -108,7 +106,6 @@ public class Main extends Application {
         /*
         player.translateXProperty().addListener((obs, old, newValue) -> {
             int offset = newValue.intValue();
-
             if (offset > 17*32 && offset < levelWidth - 17*32) {
                 gameRoot.setLayoutX(-(offset - 17*32));
             }
@@ -125,11 +122,20 @@ public class Main extends Application {
      * Button: Once pressed, something happens.
      * Spikes: Once touched, re-spawn at start.
      */
+   
+  
     private void update() {
     	//checks for arrow key input
         if (isPressed(KeyCode.UP) && player.getTranslateY() >= 5) {
-			music("jump.wav");
+        	 jump.setOnEndOfMedia(new Runnable() {
+        	        public void run() {
+        	        	jump = new MediaPlayer(jump_sound);
+        	        	
+        	        }
+        	    });
+        	    jump.play();
             player.jumpPlayer();
+            
         }
 
         if (isPressed(KeyCode.LEFT) && player.getTranslateX() >= 5) {
@@ -179,9 +185,17 @@ public class Main extends Application {
                 player = new Avatar(0, 17*32, 32, 32);
                 gameRoot.getChildren().add(player);
 				spike.getProperties().put("alive", true);
-				music("music.wav");
+				
             }
         }
+        //loop background music
+        bgm.setOnEndOfMedia(new Runnable() {
+            public void run() {
+              bgm.seek(Duration.ZERO);
+            }
+        });
+       bgm.play();
+        
     }
 
 
@@ -201,7 +215,8 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setResizable(false);
-
+       
+        bgm.play();
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -217,7 +232,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-		music("music.wav");
+    	
         launch(args);
     }
 }
