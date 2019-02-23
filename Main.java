@@ -149,7 +149,6 @@ public class Main extends Application {
                 it.remove();
                 gameRoot.getChildren().remove(button);
                 System.out.println("Button Pressed.");
-				AudioPlayer.player.interrupt();
                 System.exit(0);
             }
         }
