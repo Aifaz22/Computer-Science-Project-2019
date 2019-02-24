@@ -16,6 +16,7 @@ music.wav
 player.png
 tile.png
 upspikes.png
+background.png
 
 
 INSTALLING
