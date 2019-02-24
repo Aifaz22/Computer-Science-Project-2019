@@ -41,7 +41,7 @@ public class Main extends Application {
     Image up_spike_image = new Image("upspikes.png");
     Image down_spike_image = new Image("downspikes.png");
     Image left_spike_image = new Image("leftspikes.png");
-	Image background_image = new Image("background.png");
+    Image background_image = new Image("background.png");
 
     String bgm_name = ("music.wav");
     Media sound = new Media(new File(bgm_name).toURI().toString());
@@ -62,7 +62,7 @@ public class Main extends Application {
     private void initContent() {
 		//Create background and fill it with the image
         Rectangle bg = new Rectangle(1344, 640);
-		bg.setFill(new ImagePattern(background_image));
+	bg.setFill(new ImagePattern(background_image));
         
         
         levelWidth = LevelData.LEVEL1[0].length() * 32;
