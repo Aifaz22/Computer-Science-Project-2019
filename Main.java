@@ -236,7 +236,10 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-    	
+    	System.out.println("'up arrow' - jump");
+    	System.out.println("'right arrow' - move right");
+    	System.out.println("'left arrow' - move left");
+		System.out.println("Avoid touching the spikes");
         launch(args);
     }
 }
