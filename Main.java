@@ -61,7 +61,7 @@ public class Main extends Application {
 	
     private void initContent() {
 		//Create background and fill it with the image
-        Rectangle bg = new Rectangle(1344, 640);
+        Rectangle bg = new Rectangle(1328, 624);
 	bg.setFill(new ImagePattern(background_image));
         
         
