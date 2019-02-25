@@ -103,16 +103,7 @@ public class Main extends Application {
         player = new Avatar(0, 520, 32, 32);
         appRoot.getChildren().add(player);
         
-        //Scrolling: For now, disabled.
-        /*
-        player.translateXProperty().addListener((obs, old, newValue) -> {
-            int offset = newValue.intValue();
-            if (offset > 17*32 && offset < levelWidth - 17*32) {
-                gameRoot.setLayoutX(-(offset - 17*32));
-            }
-          
-        });
-        */
+        
 
         
     }
