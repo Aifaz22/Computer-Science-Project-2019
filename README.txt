@@ -20,4 +20,4 @@ background.png
 
 INSTALLING
 
-Download all the .java files mentioned above and then Open CMD(or terminal, etc) and go the the directory where all these files are present. then write 'javac Main.java' and press enter. then write 'java Main' and Start playing the game. Then the next time you want to play it just write 'java Main' in CMD(or terminal, etc) after going to the directory where the mentioned files are present.
+Download all the .java files mentioned above and then Open CMD(or terminal, etc) and go the the directory where all these files are present. After compiling JavaFX, write 'javac Main.java' and press enter. then write 'java Main' and Start playing the game. Then the next time you want to play it just write 'java Main' in CMD(or terminal, etc) after going to the directory where the mentioned files are present.
