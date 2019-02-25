@@ -8,7 +8,6 @@ LevelData.java
 Main.java
 Objects.java
 button.png
-coin.png
 downspikes.png
 jump.wav
 leftspikes.png
