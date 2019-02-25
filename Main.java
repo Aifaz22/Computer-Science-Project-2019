@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import java.util.Iterator;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Node;
@@ -29,8 +28,6 @@ public class Main extends Application {
     private ArrayList<Node> spikes = new ArrayList<Node>();
 
     private Pane appRoot = new Pane();
-    private Pane gameRoot = new Pane();
-    private Pane uiRoot = new Pane();
 
     private Avatar player;
     private int levelWidth;
@@ -62,8 +59,8 @@ public class Main extends Application {
     private void initContent() {
 		//Create background and fill it with the image
         Rectangle bg = new Rectangle(1328, 624);
-	bg.setFill(new ImagePattern(background_image));
-        
+	    bg.setFill(new ImagePattern(background_image));
+	    appRoot.getChildren().addAll(bg);
         
         levelWidth = LevelData.LEVEL1[0].length() * 32;
         
@@ -76,27 +73,27 @@ public class Main extends Application {
                     case '1':
                         Objects platform = new Objects(j*32, i*32, 32, 32, tile);
                         platforms.add(platform);
-                        gameRoot.getChildren().add(platform);
+                        appRoot.getChildren().add(platform);
                         break;
                     case '2':
                         Objects button = new Objects(j*32, i*32+24, 32, 8, buttonImage);
                         buttons.add(button);
-                        gameRoot.getChildren().add(button);
+                        appRoot.getChildren().add(button);
                         break;
                     case '3':
                         Objects up_spike = new Objects(j*32, i*32+11, 32, 32, up_spike_image);
                         spikes.add(up_spike);
-                        gameRoot.getChildren().add(up_spike);
+                        appRoot.getChildren().add(up_spike);
                         break;
                     case '4':
                         Objects down_spike = new Objects(j*32, i*32, 32, 26, down_spike_image);
                         spikes.add(down_spike);
-                        gameRoot.getChildren().add(down_spike);
+                        appRoot.getChildren().add(down_spike);
                         break;
                     case '5':
                         Objects left_spike = new Objects(j*32+10, i*32, 32, 32, left_spike_image);
                         spikes.add(left_spike);
-                        gameRoot.getChildren().add(left_spike);
+                        appRoot.getChildren().add(left_spike);
                         break;
                 }
             }
@@ -104,7 +101,7 @@ public class Main extends Application {
     
         //Create Avatar
         player = new Avatar(0, 520, 32, 32);
-        gameRoot.getChildren().add(player);
+        appRoot.getChildren().add(player);
         
         //Scrolling: For now, disabled.
         /*
@@ -117,7 +114,7 @@ public class Main extends Application {
         });
         */
 
-        appRoot.getChildren().addAll(bg, gameRoot, uiRoot);
+        
     }
     
     /**
@@ -159,46 +156,30 @@ public class Main extends Application {
         //Button       
         for (Node button : buttons) {
             if (player.getBoundsInParent().intersects(button.getBoundsInParent())) {
-                button.getProperties().put("alive", false);
+            	System.out.println("Button Pressed.");
+                System.exit(0);
               
             }
         }
         
-        for (Iterator<Node> it = buttons.iterator(); it.hasNext(); ) {
-            Node button = it.next();
-            if (!(Boolean)button.getProperties().get("alive")) {
-                it.remove();
-                gameRoot.getChildren().remove(button);
-                System.out.println("Button Pressed.");
-                System.exit(0);
-            }
-        }
         
         //Spikes
         for (Node spike : spikes) {
             if (player.getBoundsInParent().intersects(spike.getBoundsInParent())) {
-                spike.getProperties().put("alive", false);
-              
-            }
-        }
-        for (Iterator<Node> it = spikes.iterator(); it.hasNext(); ) {
-            Node spike = it.next();
-            if (!(Boolean)spike.getProperties().get("alive")) {
                 System.out.println("You died!");
-                gameRoot.getChildren().remove(player);
+                appRoot.getChildren().remove(player);
                 player = new Avatar(0, 17*32, 32, 32);
-                gameRoot.getChildren().add(player);
-				spike.getProperties().put("alive", true);
-				
+                appRoot.getChildren().add(player);
             }
         }
+      
         //loop background music
         bgm.setOnEndOfMedia(new Runnable() {
             public void run() {
               bgm.seek(Duration.ZERO);
             }
         });
-       bgm.play();
+      
         
     }
 
