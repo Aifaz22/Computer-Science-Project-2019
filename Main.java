@@ -24,7 +24,7 @@ public class Main extends Application {
     private HashMap<KeyCode, Boolean> keys = new HashMap<KeyCode, Boolean>();
 
     private ArrayList<Node> platforms = new ArrayList<Node>();
-    private ArrayList<Node> buttons = new ArrayList<Node>();
+    private ArrayList<Objects> buttons = new ArrayList<Objects>();
     private ArrayList<Node> spikes = new ArrayList<Node>();
     private ArrayList<Node> doors = new ArrayList<Node>();
 
@@ -44,6 +44,7 @@ public class Main extends Application {
     Image left_spike_image = new Image("leftspikes.png");
     Image background_image = new Image("background.png");
     Image door_image = new Image("door.png");
+    Image button_pushed = new Image("button_pressed.png");
     
     String bgm_name = ("music.wav");
     Media sound = new Media(new File(bgm_name).toURI().toString());
@@ -51,6 +52,10 @@ public class Main extends Application {
     String jump_name = ("jump.wav");
     Media jump_sound = new Media(new File(jump_name).toURI().toString());
     MediaPlayer jump = new MediaPlayer(jump_sound);
+    String click_name = ("Button_Push.wav");
+    Media click_sound = new Media(new File(click_name).toURI().toString());
+    MediaPlayer click;
+    
     /**
      * Method: Create the Window and the Level according to LevelData.java
      * Currently, only LEVEL1 active.
@@ -62,11 +67,13 @@ public class Main extends Application {
 	//sound effect from http://soundbible.com/1343-Jump.html
     
     private void initContent() {
+    	
 		//Create background and fill it with the image
-        
 	    bg.setFill(new ImagePattern(background_image));
 	    appRoot.getChildren().addAll(bg);
         
+	    click = new MediaPlayer(click_sound);
+	    
         levelWidth = LevelData.LEVEL1[0].length() * 32;
         
         for (int i = 0; i < LevelData.LEVEL1.length; i++) {
@@ -166,8 +173,10 @@ public class Main extends Application {
         player.movePlayerY((int)player.velocity.getY());
 
         //Button       
-        for (Node button : buttons) {
+        for (Objects button : buttons) {
             if (player.getBoundsInParent().intersects(button.getBoundsInParent())) {
+            	click.play();
+            	button.setFill(new ImagePattern(button_pushed));
             	for (Node door : doors) {
             		appRoot.getChildren().remove(door);
             		door.setVisible(false);
