@@ -26,12 +26,16 @@ public class Main extends Application {
     private ArrayList<Node> platforms = new ArrayList<Node>();
     private ArrayList<Node> buttons = new ArrayList<Node>();
     private ArrayList<Node> spikes = new ArrayList<Node>();
+    private ArrayList<Node> doors = new ArrayList<Node>();
 
     private Pane appRoot = new Pane();
 
     private Avatar player;
     private int levelWidth;
     private boolean running = true;
+    private int levelNumber = 0;
+    
+    private Rectangle bg = new Rectangle(LevelData.LEVEL1[0].length() * 32, 624);
     
     Image tile = new Image("tile.png");
     Image buttonImage = new Image("button.png");
@@ -39,7 +43,8 @@ public class Main extends Application {
     Image down_spike_image = new Image("downspikes.png");
     Image left_spike_image = new Image("leftspikes.png");
     Image background_image = new Image("background.png");
-
+    Image door_image = new Image("door.png");
+    
     String bgm_name = ("music.wav");
     Media sound = new Media(new File(bgm_name).toURI().toString());
     MediaPlayer bgm = new MediaPlayer(sound);
@@ -55,17 +60,28 @@ public class Main extends Application {
 	//refrence https://stackoverflow.com/questions/23498376/ahow-to-make-a-mp3-repeat-in-javafx
 	//Background music from http://freemusicarchive.org/music/Kevin_MacLeod/Impact/Impact_Prelude_1765
 	//sound effect from http://soundbible.com/1343-Jump.html
-	
+    
     private void initContent() {
 		//Create background and fill it with the image
-        Rectangle bg = new Rectangle(1328, 624);
+        
 	    bg.setFill(new ImagePattern(background_image));
 	    appRoot.getChildren().addAll(bg);
         
         levelWidth = LevelData.LEVEL1[0].length() * 32;
         
         for (int i = 0; i < LevelData.LEVEL1.length; i++) {
-            String line = LevelData.LEVEL1[i];
+        	String line;
+        	 switch (levelNumber) {
+        	 	case 0:
+        	 		line = LevelData.LEVEL1[i];
+        	 		break;
+        	 	case 1:	
+        	 		line = LevelData.Tunnel[i];
+        	 		break;
+        	 	default:
+        	 		line = LevelData.LEVEL1[i];
+        	 		break;
+        	 }
             for (int j = 0; j < line.length(); j++) {
                 switch (line.charAt(j)) {
                     case '0':
@@ -95,12 +111,17 @@ public class Main extends Application {
                         spikes.add(left_spike);
                         appRoot.getChildren().add(left_spike);
                         break;
+                    case '6':
+                        Objects door = new Objects(j*32+10, i*32, 32, 32, door_image);
+                        doors.add(door);
+                        appRoot.getChildren().add(door);
+                        break;
                 }
             }
         }
     
         //Create Avatar
-        player = new Avatar(0, 520, 32, 32);
+        player = new Avatar(0, 572, 32, 32, platforms, doors);
         appRoot.getChildren().add(player);
         
         
@@ -131,24 +152,26 @@ public class Main extends Application {
         }
 
         if (isPressed(KeyCode.LEFT) && player.getTranslateX() >= 5) {
-            player.movePlayerX(-4,platforms);
+            player.movePlayerX(-4);
         }
 
         if (isPressed(KeyCode.RIGHT) && player.getTranslateX() + 32 <= levelWidth - 5) {
-            player.movePlayerX(4,platforms);
+            player.movePlayerX(4);
         }
 
         if (player.velocity.getY() < 6) {
             player.velocity = player.velocity.add(0, .5);
         }
 
-        player.movePlayerY((int)player.velocity.getY(),platforms);
+        player.movePlayerY((int)player.velocity.getY());
 
         //Button       
         for (Node button : buttons) {
             if (player.getBoundsInParent().intersects(button.getBoundsInParent())) {
-            	System.out.println("Button Pressed.");
-                System.exit(0);
+            	for (Node door : doors) {
+            		appRoot.getChildren().remove(door);
+            		door.setVisible(false);
+                }
               
             }
         }
@@ -159,7 +182,7 @@ public class Main extends Application {
             if (player.getBoundsInParent().intersects(spike.getBoundsInParent())) {
                 System.out.println("You died!");
                 appRoot.getChildren().remove(player);
-                player = new Avatar(0, 17*32, 32, 32);
+                player = new Avatar(0, 572, 32, 32, platforms, doors);
                 appRoot.getChildren().add(player);
             }
         }
@@ -170,7 +193,28 @@ public class Main extends Application {
               bgm.seek(Duration.ZERO);
             }
         });
-      
+        
+      //check if the player has reached the end of the level
+        if (player.getTranslateX() > 1306  && player.getTranslateY() > 520) {
+        	appRoot.getChildren().clear();
+        	platforms.clear();
+        	doors.clear();
+        	buttons.clear();
+        	spikes.clear();
+        	switch(levelNumber) {
+        	case 0:
+        		levelNumber = 1;
+        		initContent();
+        		break;
+        	case 1:
+        		levelNumber = 0;
+        		initContent();
+        		break;
+        	}
+        	
+        	
+        }
+        
         
     }
 
@@ -184,10 +228,10 @@ public class Main extends Application {
         initContent();
 
         
-        Scene scene = new Scene(appRoot);
+        Scene scene = new Scene(appRoot,LevelData.LEVEL1[0].length() * 32 - 15, 624);
         scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
         scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));
-        primaryStage.setTitle("Test Game Demo 1");
+        primaryStage.setTitle("Test Game Demo 2");
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setResizable(false);
