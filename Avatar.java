@@ -1,6 +1,9 @@
+import java.io.File;
 import java.util.ArrayList;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.image.Image;
@@ -13,6 +16,10 @@ public class Avatar extends Rectangle{
 	private ArrayList<Node> obstacles = new ArrayList<Node>();
 	Point2D velocity = new Point2D(0, 0);
 	Image img = new Image("player.png");
+	
+    String jump_name = ("jump.wav");
+    Media jump_sound = new Media(new File(jump_name).toURI().toString());
+    MediaPlayer jump = new MediaPlayer(jump_sound);
 	
 	//Constructor: (Location X, Location Y, Width, Height)
 	 public Avatar(int x, int y, int w, int h, ArrayList<Node> platforms, ArrayList<Node> doors) {
@@ -104,7 +111,13 @@ public class Avatar extends Rectangle{
 
     //Jump Method
     public void jumpPlayer() {
-    	   if (canJump) {
+    	if (canJump) {
+    		jump.setOnEndOfMedia(new Runnable() {
+    			public void run() {
+    			jump = new MediaPlayer(jump_sound);	
+     	        }
+     	   });
+     	   jump.play();
                velocity = velocity.add(0, -16.8);
                canJump = false;
            }

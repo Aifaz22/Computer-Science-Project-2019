@@ -49,9 +49,6 @@ public class Main extends Application {
     String bgm_name = ("music.wav");
     Media sound = new Media(new File(bgm_name).toURI().toString());
     MediaPlayer bgm = new MediaPlayer(sound);
-    String jump_name = ("jump.wav");
-    Media jump_sound = new Media(new File(jump_name).toURI().toString());
-    MediaPlayer jump = new MediaPlayer(jump_sound);
     String click_name = ("Button_Push.wav");
     Media click_sound = new Media(new File(click_name).toURI().toString());
     MediaPlayer click;
@@ -147,13 +144,6 @@ public class Main extends Application {
     private void update() {
     	//checks for arrow key input
         if (isPressed(KeyCode.UP) && player.getTranslateY() >= 5) {
-        	 jump.setOnEndOfMedia(new Runnable() {
-        	        public void run() {
-        	        	jump = new MediaPlayer(jump_sound);
-        	        	
-        	        }
-        	    });
-        	    jump.play();
             player.jumpPlayer();
             
         }
