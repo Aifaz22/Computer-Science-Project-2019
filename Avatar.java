@@ -15,7 +15,7 @@ public class Avatar extends Rectangle{
 	private boolean canJump = true;
 	private ArrayList<Node> obstacles = new ArrayList<Node>();
 	Point2D velocity = new Point2D(0, 0);
-	Image img = new Image("player.png");
+	Image img = new Image("Images/player.png");
 	
     String jump_name = ("jump.wav");
     Media jump_sound = new Media(new File(jump_name).toURI().toString());

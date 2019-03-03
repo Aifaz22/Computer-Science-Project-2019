@@ -35,16 +35,16 @@ public class Main extends Application {
     private boolean running = true;
     private int levelNumber = 0;
     
-    private Rectangle bg = new Rectangle(LevelData.LEVEL1[0].length() * 32, 624);
+    private Rectangle bg = new Rectangle(672 * 2, 320*2);
     
-    Image tile = new Image("tile.png");
-    Image buttonImage = new Image("button.png");
-    Image up_spike_image = new Image("upspikes.png");
-    Image down_spike_image = new Image("downspikes.png");
-    Image left_spike_image = new Image("leftspikes.png");
-    Image background_image = new Image("background.png");
-    Image door_image = new Image("door.png");
-    Image button_pushed = new Image("button_pressed.png");
+    Image tile = new Image("Images/tile.png");
+    Image buttonImage = new Image("Images/button.png");
+    Image up_spike_image = new Image("Images/upspikes.png");
+    Image down_spike_image = new Image("Images/downspikes.png");
+    Image left_spike_image = new Image("Images/leftspikes.png");
+    Image background_image = new Image("Images/background.png");
+    Image door_image = new Image("Images/door.png");
+    Image button_pushed = new Image("Images/button_pressed.png");
     
     String bgm_name = ("music.wav");
     Media sound = new Media(new File(bgm_name).toURI().toString());
