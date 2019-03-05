@@ -11,7 +11,8 @@ import javafx.scene.image.Image;
 //Class Use: Create and Move Avatar Character
 public class Avatar extends Rectangle{
 	
-	//3 Instance Variables
+	//4 Instance Variables
+	private int deathCount=0;
 	private boolean canJump = true;
 	private ArrayList<Node> obstacles = new ArrayList<Node>();
 	Point2D velocity = new Point2D(0, 0);
@@ -122,7 +123,13 @@ public class Avatar extends Rectangle{
                canJump = false;
            }
     }
-    	     
+    
+    public int getDeathCount() {
+    	return this.deathCount;
+    }
+    public void addDeathCount() {
+    	this.deathCount+=1;
+    }
     	       
  
 }
