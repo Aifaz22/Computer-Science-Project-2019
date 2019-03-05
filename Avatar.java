@@ -130,6 +130,9 @@ public class Avatar extends Rectangle{
     public void addDeathCount() {
     	this.deathCount+=1;
     }
+    public void setDeathCount(int a) {
+    	this.deathCount=a;
+    }
     	       
  
 }
