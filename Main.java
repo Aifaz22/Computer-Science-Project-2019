@@ -20,9 +20,9 @@ import java.io.*;
 
 //Class Use: Running and Managing the Game
 public class Main extends Application {
-
+	
     private HashMap<KeyCode, Boolean> keys = new HashMap<KeyCode, Boolean>();
-
+    
     private ArrayList<Node> platforms = new ArrayList<Node>();
     private ArrayList<Objects> buttons = new ArrayList<Objects>();
     private ArrayList<Node> spikes = new ArrayList<Node>();
@@ -180,8 +180,12 @@ public class Main extends Application {
         for (Node spike : spikes) {
             if (player.getBoundsInParent().intersects(spike.getBoundsInParent())) {
                 System.out.println("You died!");
+                player.addDeathCount();
+                System.out.println(player.getDeathCount());
+                int temp=player.getDeathCount();
                 appRoot.getChildren().remove(player);
                 player = new Avatar(0, 572, 32, 32, platforms, doors);
+                player.setDeathCount(temp);
                 appRoot.getChildren().add(player);
             }
         }
@@ -227,7 +231,7 @@ public class Main extends Application {
         initContent();
 
         
-        Scene scene = new Scene(appRoot,LevelData.LEVEL1[0].length() * 32 - 15, 624);
+        Scene scene = new Scene(appRoot,LevelData.LEVEL1[0].length() * 32 - 15, 685);
         scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
         scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));
         primaryStage.setTitle("Test Game Demo 2");
