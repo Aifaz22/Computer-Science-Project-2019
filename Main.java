@@ -13,6 +13,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.layout.HBox;
+import javafx.scene.control.Label;
 
 import java.io.*;
 
@@ -34,8 +36,9 @@ public class Main extends Application {
     private int levelWidth;
     private boolean running = true;
     private int levelNumber = 0;
-    
+    private HBox hbox1 = new HBox();
     private Rectangle bg = new Rectangle(672 * 2, 320*2);
+    private Label deathCountMsg= new Label();
     
     Image tile = new Image("Images/tile.png");
     Image buttonImage = new Image("Images/button.png");
@@ -127,6 +130,7 @@ public class Main extends Application {
         //Create Avatar
         player = new Avatar(0, 572, 32, 32, platforms, doors);
         appRoot.getChildren().add(player);
+        deathCountMsg.setText("Death Count: "+player.getDeathCount());
         
         
 
@@ -161,6 +165,10 @@ public class Main extends Application {
         }
 
         player.movePlayerY((int)player.velocity.getY());
+        
+        deathCountMsg.setText("Death Count: "+player.getDeathCount());
+        
+        
 
         //Button       
         for (Objects button : buttons) {
@@ -185,8 +193,11 @@ public class Main extends Application {
                 int temp=player.getDeathCount();
                 appRoot.getChildren().remove(player);
                 player = new Avatar(0, 572, 32, 32, platforms, doors);
-                player.setDeathCount(temp);
                 appRoot.getChildren().add(player);
+                player.setDeathCount(temp);
+                
+                
+                
             }
         }
       
@@ -234,6 +245,12 @@ public class Main extends Application {
         Scene scene = new Scene(appRoot,LevelData.LEVEL1[0].length() * 32 - 15, 685);
         scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
         scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));
+        
+        
+        hbox1.relocate(20,660);
+        hbox1.getChildren().add(deathCountMsg);
+        appRoot.getChildren().add(hbox1);
+        
         primaryStage.setTitle("Test Game Demo 2");
         primaryStage.setScene(scene);
         primaryStage.show();
