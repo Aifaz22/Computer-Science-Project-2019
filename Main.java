@@ -25,7 +25,8 @@ public class Main extends Application {
 	
     private HashMap<KeyCode, Boolean> keys = new HashMap<KeyCode, Boolean>();
     
-    private ArrayList<Node> platforms = new ArrayList<Node>();
+    private ArrayList<Node> floors = new ArrayList<Node>();
+    private ArrayList<Node> walls = new ArrayList<Node>();
     private ArrayList<Objects> buttons = new ArrayList<Objects>();
     private ArrayList<Node> spikes = new ArrayList<Node>();
     private ArrayList<Node> doors = new ArrayList<Node>();
@@ -49,6 +50,9 @@ public class Main extends Application {
     Image background_image = new Image("Images/background.png");
     Image door_image = new Image("Images/door.png");
     Image button_pushed = new Image("Images/button_pressed.png");
+    Image right_wall_image = new Image("Images/rightwall.png");
+    Image left_wall_image = new Image("Images/leftwall.png");
+    Image block_image = new Image("Images/block.png");
     
     String bgm_name = ("music.wav");
     Media sound = new Media(new File(bgm_name).toURI().toString());
@@ -95,31 +99,46 @@ public class Main extends Application {
                     case '0':
                         break;
                     case '1':
-                        Objects platform = new Objects(j*32, i*32, 32, 32, tile);
-                        platforms.add(platform);
-                        appRoot.getChildren().add(platform);
+                        Objects floor = new Objects(j*32, i*32, 32, 32, tile);
+                        floors.add(floor);
+                        appRoot.getChildren().add(floor);
                         break;
                     case '2':
+                        Objects left_wall = new Objects(j*32, i*32, 32, 32, left_wall_image);
+                        walls.add(left_wall);
+                        appRoot.getChildren().add(left_wall);
+                        break;
+                    case '3':
+                        Objects right_wall = new Objects(j*32, i*32, 32, 32, right_wall_image);
+                        walls.add(right_wall);
+                        appRoot.getChildren().add(right_wall);
+                        break;   
+                    case '4':
+                        Objects block = new Objects(j*32, i*32, 32, 32, block_image);
+                        walls.add(block);
+                        appRoot.getChildren().add(block);
+                        break;      
+                    case '5':
                         Objects button = new Objects(j*32, i*32+24, 32, 8, buttonImage);
                         buttons.add(button);
                         appRoot.getChildren().add(button);
                         break;
-                    case '3':
+                    case '6':
                         Objects up_spike = new Objects(j*32, i*32+11, 32, 32, up_spike_image);
                         spikes.add(up_spike);
                         appRoot.getChildren().add(up_spike);
                         break;
-                    case '4':
+                    case '7':
                         Objects down_spike = new Objects(j*32, i*32, 32, 26, down_spike_image);
                         spikes.add(down_spike);
                         appRoot.getChildren().add(down_spike);
                         break;
-                    case '5':
+                    case '8':
                         Objects left_spike = new Objects(j*32+10, i*32, 32, 32, left_spike_image);
                         spikes.add(left_spike);
                         appRoot.getChildren().add(left_spike);
                         break;
-                    case '6':
+                    case '9':
                         Objects door = new Objects(j*32+10, i*32, 32, 32, door_image);
                         doors.add(door);
                         appRoot.getChildren().add(door);
@@ -129,7 +148,7 @@ public class Main extends Application {
         }
     
         //Create Avatar
-        player = new Avatar(0, 572, 32, 32, platforms, doors);
+        player = new Avatar(0, 572, 32, 32, floors, walls, doors);
         appRoot.getChildren().add(player);
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
         levelDetail.setText("Level "+this.levelNumber);
@@ -195,7 +214,7 @@ public class Main extends Application {
                 System.out.println(player.getDeathCount());
                 int temp=player.getDeathCount();
                 appRoot.getChildren().remove(player);
-                player = new Avatar(0, 572, 32, 32, platforms, doors);
+                player = new Avatar(0, 572, 32, 32, floors, walls, doors);
                 appRoot.getChildren().add(player);
                 player.setDeathCount(temp);
                 
@@ -214,7 +233,8 @@ public class Main extends Application {
       //check if the player has reached the end of the level
         if (player.getTranslateX() > 1306  && player.getTranslateY() > 520) {
         	appRoot.getChildren().clear();
-        	platforms.clear();
+        	floors.clear();
+        	walls.clear();
         	doors.clear();
         	buttons.clear();
         	spikes.clear();

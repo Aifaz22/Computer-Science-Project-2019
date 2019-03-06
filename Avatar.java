@@ -23,15 +23,18 @@ public class Avatar extends Rectangle{
     MediaPlayer jump = new MediaPlayer(jump_sound);
 	
 	//Constructor: (Location X, Location Y, Width, Height)
-	 public Avatar(int x, int y, int w, int h, ArrayList<Node> platforms, ArrayList<Node> doors) {
+	 public Avatar(int x, int y, int w, int h, ArrayList<Node> floors, ArrayList<Node> walls, ArrayList<Node> doors) {
 		 
 		    super(w,h);
 	        this.setTranslateX(x);
 	        this.setTranslateY(y);
 	        this.setFill(new ImagePattern(img));
 	        this.getProperties().put("alive", true);
-	        for (Node platform : platforms) {
-	        	obstacles.add(platform);
+	        for (Node floor : floors) {
+	        	obstacles.add(floor);
+	        }
+	        for (Node wall : walls) {
+	        	obstacles.add(wall);
 	        }
 	        for (Node door : doors) {
 	        	obstacles.add(door);
