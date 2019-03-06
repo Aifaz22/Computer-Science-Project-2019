@@ -11,8 +11,8 @@ import javafx.scene.image.Image;
 //Class Use: Create and Move Avatar Character
 public class Avatar extends Rectangle{
 	
-	//4 Instance Variables
-	private int deathCount=0;
+	//Instance Variables
+	private int deathCount = 0;
 	private boolean canJump = true;
 	private ArrayList<Node> obstacles = new ArrayList<Node>();
 	Point2D velocity = new Point2D(0, 0);
@@ -60,14 +60,19 @@ public class Avatar extends Rectangle{
         //For each step, will check if the front is clear; if so, move.
         for (int i = 0; i < Math.abs(value); i++) {
             for (Node obstacle : obstacles) {
-                if (this.getBoundsInParent().intersects(obstacle.getBoundsInParent()) && obstacle.isVisible() == true) {
+                if (this.intersects(
+                		this.sceneToLocal(obstacle.localToScene(
+                			obstacle.getBoundsInLocal()))) &&
+                				obstacle.isVisible() == true) {
                     if (movingRight) {
-                        if (this.getTranslateX() + 32 == obstacle.getTranslateX()) {
+                        if (this.getTranslateX() + img.getWidth() == obstacle.getTranslateX()) {
+                        	this.setTranslateX(this.getTranslateX() - 1);
                             return;
                         }
                     }
                     else {
                         if (this.getTranslateX() == obstacle.getTranslateX() + 32) {
+                        	this.setTranslateX(this.getTranslateX() + 1);
                             return;
                         }
                     }
@@ -80,7 +85,6 @@ public class Avatar extends Rectangle{
     /**
      * Method: Movement of Avatar along the Y-Axis. 
      * Parameter: value (The higher this value, the faster the jump.)
-     * Parameter: platforms (Detect the locations of the platforms.)
 	 */
     public void movePlayerY(int value) {
     	 boolean movingDown;
@@ -93,9 +97,12 @@ public class Avatar extends Rectangle{
        //Checks if the avatar is on the floor.
         for (int i = 0; i < Math.abs(value); i++) {
             for (Node obstacle : obstacles) {
-                if (this.getBoundsInParent().intersects(obstacle.getBoundsInParent()) && obstacle.isVisible() == true) {
+                if (this.intersects(
+                		this.sceneToLocal(obstacle.localToScene(
+                			obstacle.getBoundsInLocal()))) &&
+                				obstacle.isVisible() == true) {
                     if (movingDown) {
-                        if (this.getTranslateY() + 32 == obstacle.getTranslateY()) {
+                        if (this.getTranslateY() + img.getHeight() == obstacle.getTranslateY()) {
                             this.setTranslateY(this.getTranslateY() - 1);
                             canJump = true;
                             return;
@@ -103,7 +110,7 @@ public class Avatar extends Rectangle{
                     }
                     else {
                         if (this.getTranslateY() == obstacle.getTranslateY() + 32) {
-     
+                        	this.setTranslateY(this.getTranslateY() + 1);
                             return;
                         }
                     }
@@ -122,7 +129,7 @@ public class Avatar extends Rectangle{
      	        }
      	   });
      	   jump.play();
-               velocity = velocity.add(0, -16.8);
+               velocity = velocity.add(0, -16.9);
                canJump = false;
            }
     }

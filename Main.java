@@ -148,7 +148,7 @@ public class Main extends Application {
         }
     
         //Create Avatar
-        player = new Avatar(0, 572, 32, 32, floors, walls, doors);
+        player = new Avatar(0, 572, 20, 32, floors, walls, doors);
         appRoot.getChildren().add(player);
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
         levelDetail.setText("Level "+this.levelNumber);
@@ -214,7 +214,7 @@ public class Main extends Application {
                 System.out.println(player.getDeathCount());
                 int temp=player.getDeathCount();
                 appRoot.getChildren().remove(player);
-                player = new Avatar(0, 572, 32, 32, floors, walls, doors);
+                player = new Avatar(0, 572, 20, 32, floors, walls, doors);
                 appRoot.getChildren().add(player);
                 player.setDeathCount(temp);
                 
