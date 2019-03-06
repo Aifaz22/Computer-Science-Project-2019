@@ -217,20 +217,17 @@ public class Main extends Application {
                 player = new Avatar(0, 572, 20, 32, floors, walls, doors);
                 appRoot.getChildren().add(player);
                 player.setDeathCount(temp);
-                
-                
-                
             }
         }
       
-        //loop background music
+        //Loop Music
         bgm.setOnEndOfMedia(new Runnable() {
             public void run() {
               bgm.seek(Duration.ZERO);
             }
         });
         
-      //check if the player has reached the end of the level
+      //Check if the player has reached the end of the level.
         if (player.getTranslateX() > 1306  && player.getTranslateY() > 520) {
         	appRoot.getChildren().clear();
         	floors.clear();
