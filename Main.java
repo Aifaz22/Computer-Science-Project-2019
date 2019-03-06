@@ -30,7 +30,7 @@ public class Main extends Application {
     private ArrayList<Objects> buttons = new ArrayList<Objects>();
     private ArrayList<Node> spikes = new ArrayList<Node>();
     private ArrayList<Node> doors = new ArrayList<Node>();
-
+    int deaths=0;
     private Pane appRoot = new Pane();
 
     private Avatar player;
@@ -76,6 +76,7 @@ public class Main extends Application {
 		//Create background and fill it with the image
 	    bg.setFill(new ImagePattern(background_image));
 	    appRoot.getChildren().addAll(bg);
+        appRoot.getChildren().add(hbox1);
         
 	    click = new MediaPlayer(click_sound);
 	    
@@ -152,6 +153,7 @@ public class Main extends Application {
         appRoot.getChildren().add(player);
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
         levelDetail.setText("Level "+this.levelNumber);
+        player.setDeathCount(this.deaths);
         
         
 
@@ -212,11 +214,11 @@ public class Main extends Application {
                 System.out.println("You died!");
                 player.addDeathCount();
                 System.out.println(player.getDeathCount());
-                int temp=player.getDeathCount();
+                this.deaths=player.getDeathCount();
                 appRoot.getChildren().remove(player);
                 player = new Avatar(0, 572, 20, 32, floors, walls, doors);
                 appRoot.getChildren().add(player);
-                player.setDeathCount(temp);
+                player.setDeathCount(this.deaths);
             }
         }
       
@@ -271,7 +273,7 @@ public class Main extends Application {
         hbox1.setSpacing(((LevelData.LEVEL1[0].length() * 32 - 15)/2)-130);
         hbox1.getChildren().add(deathCountMsg);
         hbox1.getChildren().add(levelDetail);
-        appRoot.getChildren().add(hbox1);
+
         
         primaryStage.setTitle("Test Game Demo 2");
         primaryStage.setScene(scene);
