@@ -39,6 +39,7 @@ public class Main extends Application {
     private HBox hbox1 = new HBox();
     private Rectangle bg = new Rectangle(672 * 2, 320*2);
     private Label deathCountMsg= new Label();
+    private Label levelDetail= new Label();
     
     Image tile = new Image("Images/tile.png");
     Image buttonImage = new Image("Images/button.png");
@@ -131,6 +132,7 @@ public class Main extends Application {
         player = new Avatar(0, 572, 32, 32, platforms, doors);
         appRoot.getChildren().add(player);
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
+        levelDetail.setText("Level "+this.levelNumber);
         
         
 
@@ -167,6 +169,7 @@ public class Main extends Application {
         player.movePlayerY((int)player.velocity.getY());
         
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
+        
         
         
 
@@ -248,7 +251,9 @@ public class Main extends Application {
         
         
         hbox1.relocate(20,660);
+        hbox1.setSpacing(((LevelData.LEVEL1[0].length() * 32 - 15)/2)-130);
         hbox1.getChildren().add(deathCountMsg);
+        hbox1.getChildren().add(levelDetail);
         appRoot.getChildren().add(hbox1);
         
         primaryStage.setTitle("Test Game Demo 2");
