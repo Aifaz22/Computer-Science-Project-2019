@@ -152,11 +152,8 @@ public class Main extends Application {
         }
     
         //Create Avatar
-        if (levelNumber == 0) {
         	player = new Avatar(0, 572, 20, 32, floors, walls, doors);
-        } else {
-            player = new Avatar(350, 1, 20, 32, floors, walls, doors);
-        }
+
         appRoot.getChildren().add(player);
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
         levelDetail.setText("Level "+this.levelNumber);
@@ -239,43 +236,44 @@ public class Main extends Application {
         });
         
       //Check if the player has reached the end of the level.
-        if (player.getTranslateX() > 1306  && player.getTranslateY() > 520 && levelNumber != 0) {
+        if (player.getTranslateX() > 1306  && player.getTranslateY() > 520) {
         	appRoot.getChildren().clear();
         	floors.clear();
         	walls.clear();
         	doors.clear();
         	buttons.clear();
         	spikes.clear();
-        	levelNumber = 0;
+        	switch (levelNumber) {
+    	 	case 0:
+    	 		levelNumber = 1;
+    	 		break;
+    	 	case 1:	
+    	 		levelNumber = 0;
+    	 		break;
+        	}
         	initContent();
         	
         	
         	
         	}
-        else if (player.getTranslateY() > 600 && levelNumber == 0) {
-        	appRoot.getChildren().clear();
-        	floors.clear();
-        	walls.clear();
-        	doors.clear();
-        	buttons.clear();
-        	spikes.clear();
-        	levelNumber = 1;
-        	initContent();
-        	
-        	
-        }
-    
-        	
+        
         
        //Check if it's a wrapping point.
         if (player.getTranslateX() > 1306  && player.getTranslateY() < 100) {
-        	//player.setTranslateY(player.getTranslateY());
         	player.setTranslateX(5);	
         	
         }
         if (player.getTranslateX() < 4  && player.getTranslateY() < 100) {
-        	//player.setTranslateY(player.getTranslateY());
         	player.setTranslateX(1305);	
+        }
+        if (player.getTranslateY() > 600) {
+        	player.setTranslateX(player.getTranslateX() - 64);
+        	player.setTranslateY(2);
+        }
+        if (player.getTranslateY() < 1) {
+        	player.setTranslateY(580);
+        	player.setTranslateX(player.getTranslateX() + 64);
+        	player.jumpPlayer();
         }
         
         
