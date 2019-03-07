@@ -32,7 +32,8 @@ public class Main extends Application {
     private ArrayList<Node> doors = new ArrayList<Node>();
     int deaths=0;
     private Pane appRoot = new Pane();
-
+    private Date startTime=new Date();
+    private Date currentTime=new Date();
     private Avatar player;
     private int levelWidth;
     private boolean running = true;
@@ -195,7 +196,7 @@ public class Main extends Application {
         
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
         
-        
+        this.currentTime=new Date();
         
 
         //Button       
@@ -316,6 +317,9 @@ public class Main extends Application {
             }
         };
         timer.start();
+    }
+    public int getSec() {
+    	return (int)((this.currentTime.getTime()-this.startTime.getTime())/1000)
     }
 
     public static void main(String[] args) {
