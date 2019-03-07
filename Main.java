@@ -15,6 +15,7 @@ import javafx.util.Duration;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
+import java.util.Date;
 
 import java.io.*;
 
@@ -42,6 +43,7 @@ public class Main extends Application {
     private Rectangle bg = new Rectangle(672 * 2, 320*2);
     private Label deathCountMsg= new Label();
     private Label levelDetail= new Label();
+    private Label gameTimer= new Label();
     
     Image tile = new Image("Images/tile.png");
     Image buttonImage = new Image("Images/button.png");
@@ -158,6 +160,7 @@ public class Main extends Application {
         appRoot.getChildren().add(player);
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
         levelDetail.setText("Level "+this.levelNumber);
+        gameTimer.setText(this.getSec()+" sec");
         player.setDeathCount(this.deaths);
         
         
@@ -197,6 +200,7 @@ public class Main extends Application {
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
         
         this.currentTime=new Date();
+        gameTimer.setText(getSec()+" sec");
         
 
         //Button       
@@ -297,6 +301,7 @@ public class Main extends Application {
         hbox1.setSpacing(((LevelData.LEVEL1[0].length() * 32 - 15)/2)-130);
         hbox1.getChildren().add(deathCountMsg);
         hbox1.getChildren().add(levelDetail);
+        hbox1.getChildren().add(gameTimer);
 
         
         primaryStage.setTitle("Test Game Demo 2");
@@ -319,7 +324,7 @@ public class Main extends Application {
         timer.start();
     }
     public int getSec() {
-    	return (int)((this.currentTime.getTime()-this.startTime.getTime())/1000)
+    	return (int)((this.currentTime.getTime()-this.startTime.getTime())/1000);
     }
 
     public static void main(String[] args) {
