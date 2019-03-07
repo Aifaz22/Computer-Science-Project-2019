@@ -36,7 +36,7 @@ public class Main extends Application {
     private Avatar player;
     private int levelWidth;
     private boolean running = true;
-    private int levelNumber = 0;
+    private int levelNumber = 1;
     private HBox hbox1 = new HBox();
     private Rectangle bg = new Rectangle(672 * 2, 320*2);
     private Label deathCountMsg= new Label();
@@ -86,10 +86,10 @@ public class Main extends Application {
         	String line;
         	 switch (levelNumber) {
         	 	case 0:
-        	 		line = LevelData.LEVEL1[i];
+        	 		line = LevelData.Tunnel[i];
         	 		break;
         	 	case 1:	
-        	 		line = LevelData.Tunnel[i];
+        	 		line = LevelData.LEVEL1[i];
         	 		break;
         	 	default:
         	 		line = LevelData.LEVEL1[i];
@@ -149,7 +149,11 @@ public class Main extends Application {
         }
     
         //Create Avatar
-        player = new Avatar(0, 572, 20, 32, floors, walls, doors);
+        if (levelNumber == 0) {
+        	player = new Avatar(0, 572, 20, 32, floors, walls, doors);
+        } else {
+            player = new Avatar(350, 1, 20, 32, floors, walls, doors);
+        }
         appRoot.getChildren().add(player);
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
         levelDetail.setText("Level "+this.levelNumber);
@@ -230,26 +234,45 @@ public class Main extends Application {
         });
         
       //Check if the player has reached the end of the level.
-        if (player.getTranslateX() > 1306  && player.getTranslateY() > 520) {
+        if (player.getTranslateX() > 1306  && player.getTranslateY() > 520 && levelNumber != 0) {
         	appRoot.getChildren().clear();
         	floors.clear();
         	walls.clear();
         	doors.clear();
         	buttons.clear();
         	spikes.clear();
-        	switch(levelNumber) {
-        	case 0:
-        		levelNumber = 1;
-        		initContent();
-        		break;
-        	case 1:
-        		levelNumber = 0;
-        		initContent();
-        		break;
+        	levelNumber = 0;
+        	initContent();
+        	
+        	
+        	
         	}
+        else if (player.getTranslateY() > 600 && levelNumber == 0) {
+        	appRoot.getChildren().clear();
+        	floors.clear();
+        	walls.clear();
+        	doors.clear();
+        	buttons.clear();
+        	spikes.clear();
+        	levelNumber = 1;
+        	initContent();
         	
         	
         }
+    
+        	
+        
+       //Check if it's a wrapping point.
+        if (player.getTranslateX() > 1306  && player.getTranslateY() < 100) {
+        	//player.setTranslateY(player.getTranslateY());
+        	player.setTranslateX(5);	
+        	
+        }
+        if (player.getTranslateX() < 4  && player.getTranslateY() < 100) {
+        	//player.setTranslateY(player.getTranslateY());
+        	player.setTranslateX(1305);	
+        }
+        
         
         
     }
