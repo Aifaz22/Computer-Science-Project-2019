@@ -160,7 +160,7 @@ public class Main extends Application {
         appRoot.getChildren().add(player);
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
         levelDetail.setText("Level "+this.levelNumber);
-        gameTimer.setText(getHour()+":"+getMin()+":"+getSec());
+        gameTimer.setText(getStringHour()+":"+getStringMin()+":"+getStringSec());
         player.setDeathCount(this.deaths);
         
         
@@ -200,7 +200,7 @@ public class Main extends Application {
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
         
         this.currentTime=new Date();
-        gameTimer.setText(getHour()+":"+getMin()+":"+getSec());
+        gameTimer.setText(getStringHour()+":"+getStringMin()+":"+getStringSec());
         
 
         //Button       
@@ -330,6 +330,24 @@ public class Main extends Application {
     		this.min++;
     	}
     	return this.sec=(int)((this.currentTime.getTime()-this.startTime.getTime())/1000);
+    }
+    public String getStringSec() {
+    	if (this.sec<10) {
+    		return "0"+String.valueOf(getSec());
+    	}
+    	return String.valueOf(getSec());
+    }
+    public String getStringMin() {
+    	if (this.min<10) {
+    		return "0"+String.valueOf(getMin());
+    	}
+    	return String.valueOf(getMin());
+    }
+    public String getStringHour() {
+    	if (this.hour<10) {
+    		return "0"+String.valueOf(getHour());
+    	}
+    	return String.valueOf(getHour());
     }
     public int getMin() {
     	if (this.min%60==0 && this.min>0) {
