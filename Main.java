@@ -44,6 +44,9 @@ public class Main extends Application {
     private Label deathCountMsg= new Label();
     private Label levelDetail= new Label();
     private Label gameTimer= new Label();
+    private int sec;
+    private int min;
+    private int hour;
     
     Image tile = new Image("Images/tile.png");
     Image buttonImage = new Image("Images/button.png");
@@ -157,7 +160,7 @@ public class Main extends Application {
         appRoot.getChildren().add(player);
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
         levelDetail.setText("Level "+this.levelNumber);
-        gameTimer.setText(this.getSec()+" sec");
+        gameTimer.setText(getHour()+":"+getMin()+":"+getSec());
         player.setDeathCount(this.deaths);
         
         
@@ -197,7 +200,7 @@ public class Main extends Application {
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
         
         this.currentTime=new Date();
-        gameTimer.setText(getSec()+" sec");
+        gameTimer.setText(getHour()+":"+getMin()+":"+getSec());
         
 
         //Button       
@@ -322,9 +325,22 @@ public class Main extends Application {
         timer.start();
     }
     public int getSec() {
-    	return (int)((this.currentTime.getTime()-this.startTime.getTime())/1000);
+    	if (this.sec%60==0 && this.sec>0) {
+    		this.startTime=this.currentTime;
+    		this.min++;
+    	}
+    	return this.sec=(int)((this.currentTime.getTime()-this.startTime.getTime())/1000);
     }
-
+    public int getMin() {
+    	if (this.min%60==0 && this.min>0) {
+    		this.startTime=this.currentTime;
+    		this.hour++;
+    	}
+    	return this.min;
+    }
+    public int getHour() {
+    	return this.hour;
+    }
     public static void main(String[] args) {
     	System.out.println("'up arrow' - jump");
     	System.out.println("'right arrow' - move right");
