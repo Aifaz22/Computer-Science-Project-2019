@@ -44,6 +44,7 @@ public class Main extends Application {
     private boolean running = true;
     private int levelNumber = 1;
     private HBox hbox1 = new HBox();
+    private HBox hbox2= new HBox();
     private Rectangle bg = new Rectangle(672 * 2, 320*2);
     private Label deathCountMsg= new Label();
     private Label levelDetail= new Label();
@@ -87,7 +88,6 @@ public class Main extends Application {
 	    bg.setFill(new ImagePattern(background_image));
 	    appRoot.getChildren().addAll(bg);
         appRoot.getChildren().add(hbox1);
-        
 	    click = new MediaPlayer(click_sound);
 	    
         levelWidth = LevelData.LEVEL1[0].length() * 32;
@@ -301,8 +301,8 @@ public class Main extends Application {
         scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));
         
         
-        hbox1.relocate(20,660);
-        hbox1.setSpacing(((LevelData.LEVEL1[0].length() * 32 - 15)/2)-130);
+        hbox1.relocate(20,650);
+        hbox1.setSpacing(350);
         hbox1.getChildren().add(deathCountMsg);
         hbox1.getChildren().add(levelDetail);
         hbox1.getChildren().add(gameTimer);
@@ -322,6 +322,10 @@ public class Main extends Application {
 	btnstart.setTranslateX(622);
 	btnexit.setTranslateY(350);
 	btnexit.setTranslateX(640);
+	
+	//in the game
+	Button btnmenu= new Button("Main Menu");
+	hbox1.getChildren().add(btnmenu);
 	
 	//Enter the game if click Start Game
 	btnstart.setOnAction(new EventHandler<ActionEvent>()
@@ -347,11 +351,25 @@ public class Main extends Application {
        }
       );		
 			
+	
+	
 	menuroot.getChildren().add(btnstart);
 	menuroot.getChildren().add(btnexit);
 
 	Scene gamemenu = new Scene(menuroot, LevelData.LEVEL1[0].length() * 32 - 15, 685);
        
+	btnmenu.setOnAction(new EventHandler<ActionEvent>()
+    {
+	@Override
+	public void handle(ActionEvent event)
+	{
+	    primaryStage.setScene(gamemenu);
+	    primaryStage.show();
+	    primaryStage.setResizable(false);
+	}
+    }
+   );	
+	
 	primaryStage.setScene(gamemenu);
         primaryStage.show();
         primaryStage.setResizable(false);
