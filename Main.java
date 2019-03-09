@@ -291,9 +291,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         initContent();
-
-        
-        Scene scene = new Scene(appRoot,LevelData.LEVEL1[0].length() * 32 - 15, 685);
+		
+	Scene scene = new Scene(appRoot,LevelData.LEVEL1[0].length() * 32 - 15, 685);
         scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
         scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));
         
@@ -306,7 +305,46 @@ public class Main extends Application {
 
         
         primaryStage.setTitle("Test Game Demo 2");
-        primaryStage.setScene(scene);
+		
+		
+	VBox menuroot = new VBox();
+		Button btnstart;
+		Button btnexit;
+	btnstart = new Button("Start Game");
+	btnexit = new Button("EXIT");
+	btnstart.setTranslateY(250);
+	btnstart.setTranslateX(622);
+	btnexit.setTranslateY(350);
+	btnexit.setTranslateX(640);
+		
+	btnstart.setOnAction(new EventHandler<ActionEvent>()
+       {
+	@Override
+	public void handle(ActionEvent event)
+	{
+	    primaryStage.setScene(scene);
+	    primaryStage.show();
+	    primaryStage.setResizable(false);
+	}
+       }
+      );	
+	  
+	btnexit.setOnAction(new EventHandler<ActionEvent>()
+       {
+        @Override
+	public void handle(ActionEvent event)
+	{
+	    System.exit(0);
+	}
+       }
+      );		
+			
+	menuroot.getChildren().add(btnstart);
+	menuroot.getChildren().add(btnexit);
+
+	Scene gamemenu = new Scene(menuroot, LevelData.LEVEL1[0].length() * 32 - 15, 685);
+       
+	primaryStage.setScene(gamemenu);
         primaryStage.show();
         primaryStage.setResizable(false);
        
