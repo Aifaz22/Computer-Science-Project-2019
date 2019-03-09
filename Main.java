@@ -310,17 +310,20 @@ public class Main extends Application {
         
         primaryStage.setTitle("Test Game Demo 2");
 		
-		
+	//Creating the Mainmenu	
 	VBox menuroot = new VBox();
 		Button btnstart;
 		Button btnexit;
+	
+	//Buttons
 	btnstart = new Button("Start Game");
 	btnexit = new Button("EXIT");
 	btnstart.setTranslateY(250);
 	btnstart.setTranslateX(622);
 	btnexit.setTranslateY(350);
 	btnexit.setTranslateX(640);
-		
+	
+	//Enter the game if click Start Game
 	btnstart.setOnAction(new EventHandler<ActionEvent>()
        {
 	@Override
@@ -332,7 +335,8 @@ public class Main extends Application {
 	}
        }
       );	
-	  
+	
+	//Close the game if click Exit
 	btnexit.setOnAction(new EventHandler<ActionEvent>()
        {
         @Override
