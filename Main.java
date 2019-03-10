@@ -16,7 +16,6 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
-import java.util.Date;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -29,7 +28,7 @@ import java.io.*;
 public class Main extends Application {
 	
     private HashMap<KeyCode, Boolean> keys = new HashMap<KeyCode, Boolean>();
-    
+    private Timer stopwatch=new Timer();
     private ArrayList<Node> floors = new ArrayList<Node>();
     private ArrayList<Node> walls = new ArrayList<Node>();
     private ArrayList<Objects> buttons = new ArrayList<Objects>();
@@ -37,8 +36,6 @@ public class Main extends Application {
     private ArrayList<Node> doors = new ArrayList<Node>();
     int deaths=0;
     private Pane appRoot = new Pane();
-    private Date startTime=new Date();
-    private Date currentTime=new Date();
     private Avatar player;
     private int levelWidth;
     private boolean running = true;
@@ -49,9 +46,7 @@ public class Main extends Application {
     private Label deathCountMsg= new Label();
     private Label levelDetail= new Label();
     private Label gameTimer= new Label();
-    private int sec;
-    private int min;
-    private int hour;
+    
     
     Image tile = new Image("Images/tile.png");
     Image buttonImage = new Image("Images/button.png");
@@ -164,7 +159,7 @@ public class Main extends Application {
         appRoot.getChildren().add(player);
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
         levelDetail.setText("Level "+this.levelNumber);
-        gameTimer.setText(getStringHour()+":"+getStringMin()+":"+getStringSec());
+        gameTimer.setText(this.stopwatch.getStringHour()+":"+this.stopwatch.getStringMin()+":"+this.stopwatch.getStringSec());
         player.setDeathCount(this.deaths);
         
         
@@ -203,8 +198,8 @@ public class Main extends Application {
         
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
         
-        this.currentTime=new Date();
-        gameTimer.setText(getStringHour()+":"+getStringMin()+":"+getStringSec());
+        this.stopwatch.setCurrentTime();
+        gameTimer.setText(this.stopwatch.getStringHour()+":"+this.stopwatch.getStringMin()+":"+this.stopwatch.getStringSec());
         
 
         //Button       
@@ -388,41 +383,7 @@ public class Main extends Application {
         };
         timer.start();
     }
-    public int getSec() {
-    	if (this.sec%60==0 && this.sec>0) {
-    		this.startTime=this.currentTime;
-    		this.min++;
-    	}
-    	return this.sec=(int)((this.currentTime.getTime()-this.startTime.getTime())/1000);
-    }
-    public String getStringSec() {
-    	if (this.sec<10) {
-    		return "0"+String.valueOf(getSec());
-    	}
-    	return String.valueOf(getSec());
-    }
-    public String getStringMin() {
-    	if (this.min<10) {
-    		return "0"+String.valueOf(getMin());
-    	}
-    	return String.valueOf(getMin());
-    }
-    public String getStringHour() {
-    	if (this.hour<10) {
-    		return "0"+String.valueOf(getHour());
-    	}
-    	return String.valueOf(getHour());
-    }
-    public int getMin() {
-    	if (this.min%60==0 && this.min>0) {
-    		this.startTime=this.currentTime;
-    		this.hour++;
-    	}
-    	return this.min;
-    }
-    public int getHour() {
-    	return this.hour;
-    }
+    
     public static void main(String[] args) {
     	System.out.println("'up arrow' - jump");
     	System.out.println("'right arrow' - move right");
