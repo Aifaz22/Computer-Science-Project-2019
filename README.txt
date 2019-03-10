@@ -7,16 +7,25 @@ Avatar.java
 LevelData.java
 Main.java
 Objects.java
-button.png
-downspikes.png
+SoundEffect.java
+Timer.java
+Button_Push.wav
 jump.wav
-leftspikes.png
 music.wav
-player.png
-tile.png
-upspikes.png
-background.png
-
+Images\button_pressed.png
+Images\button.png
+Images\door.png
+Images\downspikes.png
+Images\leftspikes.png
+Images\leftwall.png
+Images\mock-up.png
+Images\player.png
+Images\rightwall.png
+Images\tile.png
+Images\upspikes.png
+Images\background.png
+Images\block.png
+Images\tileset.png
 
 INSTALLING
 
