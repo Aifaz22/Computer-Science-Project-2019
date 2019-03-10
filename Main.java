@@ -48,24 +48,16 @@ public class Main extends Application {
     private Label gameTimer= new Label();
     
     
-    Image tile = new Image("Images/tile.png");
-    Image buttonImage = new Image("Images/button.png");
-    Image up_spike_image = new Image("Images/upspikes.png");
-    Image down_spike_image = new Image("Images/downspikes.png");
-    Image left_spike_image = new Image("Images/leftspikes.png");
-    Image background_image = new Image("Images/background.png");
-    Image door_image = new Image("Images/door.png");
-    Image button_pushed = new Image("Images/button_pressed.png");
-    Image right_wall_image = new Image("Images/rightwall.png");
-    Image left_wall_image = new Image("Images/leftwall.png");
-    Image block_image = new Image("Images/block.png");
+   	Image[] blocks = {new Image("Images/tile.png"), new Image("Images/button.png"), new Image("Images/upspikes.png"), new Image("Images/downspikes.png"),
+	new Image("Images/leftspikes.png"), new Image("Images/background.png"), new Image("Images/door.png"), new Image("Images/button_pressed.png"), 
+	new Image("Images/rightwall.png"), new Image("Images/leftwall.png"), new Image("Images/block.png")};
+	
     
-    String bgm_name = ("music.wav");
-    Media sound = new Media(new File(bgm_name).toURI().toString());
-    MediaPlayer bgm = new MediaPlayer(sound);
-    String click_name = ("Button_Push.wav");
-    Media click_sound = new Media(new File(click_name).toURI().toString());
-    MediaPlayer click;
+    SoundEffect bgm_name = new SoundEffect("music.wav");
+	MediaPlayer bgm = new MediaPlayer(bgm_name.playSound());
+	
+	SoundEffect button = new SoundEffect("Button_Push.wav");
+	MediaPlayer click;
     
     /**
      * Method: Create the Window and the Level according to LevelData.java
@@ -80,10 +72,10 @@ public class Main extends Application {
     private void initContent() {
     	
 		//Create background and fill it with the image
-	    bg.setFill(new ImagePattern(background_image));
+	    bg.setFill(new ImagePattern(blocks[5]));
 	    appRoot.getChildren().addAll(bg);
         appRoot.getChildren().add(hbox1);
-	    click = new MediaPlayer(click_sound);
+	    click = new MediaPlayer(button.playSound());
 	    
         levelWidth = LevelData.LEVEL1[0].length() * 32;
         
@@ -105,53 +97,54 @@ public class Main extends Application {
                     case '0':
                         break;
                     case '1':
-                        Objects floor = new Objects(j*32, i*32, 32, 32, tile);
+                        Objects floor = new Objects(j*32, i*32, 32, 32, blocks[0]);
                         floors.add(floor);
                         appRoot.getChildren().add(floor);
                         break;
                     case '2':
-                        Objects left_wall = new Objects(j*32, i*32, 32, 32, left_wall_image);
+                        Objects left_wall = new Objects(j*32, i*32, 32, 32, blocks[9]);
                         walls.add(left_wall);
                         appRoot.getChildren().add(left_wall);
                         break;
                     case '3':
-                        Objects right_wall = new Objects(j*32, i*32, 32, 32, right_wall_image);
+                        Objects right_wall = new Objects(j*32, i*32, 32, 32, blocks[8]);
                         walls.add(right_wall);
                         appRoot.getChildren().add(right_wall);
                         break;   
                     case '4':
-                        Objects block = new Objects(j*32, i*32, 32, 32, block_image);
+                        Objects block = new Objects(j*32, i*32, 32, 32, blocks[10]);
                         walls.add(block);
                         appRoot.getChildren().add(block);
                         break;      
                     case '5':
-                        Objects button = new Objects(j*32, i*32+24, 32, 8, buttonImage);
+                        Objects button = new Objects(j*32, i*32+24, 32, 8, blocks[1]);
                         buttons.add(button);
                         appRoot.getChildren().add(button);
                         break;
                     case '6':
-                        Objects up_spike = new Objects(j*32, i*32+11, 32, 32, up_spike_image);
+                        Objects up_spike = new Objects(j*32, i*32+11, 32, 32, blocks[2]);
                         spikes.add(up_spike);
                         appRoot.getChildren().add(up_spike);
                         break;
                     case '7':
-                        Objects down_spike = new Objects(j*32, i*32, 32, 26, down_spike_image);
+                        Objects down_spike = new Objects(j*32, i*32, 32, 26, blocks[3]);
                         spikes.add(down_spike);
                         appRoot.getChildren().add(down_spike);
                         break;
                     case '8':
-                        Objects left_spike = new Objects(j*32+10, i*32, 32, 32, left_spike_image);
+                        Objects left_spike = new Objects(j*32+10, i*32, 32, 32, blocks[4]);
                         spikes.add(left_spike);
                         appRoot.getChildren().add(left_spike);
                         break;
                     case '9':
-                        Objects door = new Objects(j*32+10, i*32, 32, 32, door_image);
+                        Objects door = new Objects(j*32+10, i*32, 32, 32, blocks[6]);
                         doors.add(door);
                         appRoot.getChildren().add(door);
                         break;
                 }
             }
         }
+    
     
         //Create Avatar
         	player = new Avatar(0, 572, 20, 32, floors, walls, doors);
@@ -206,7 +199,7 @@ public class Main extends Application {
         for (Objects button : buttons) {
             if (player.getBoundsInParent().intersects(button.getBoundsInParent())) {
             	click.play();
-            	button.setFill(new ImagePattern(button_pushed));
+            	button.setFill(new ImagePattern(blocks[7]));
             	for (Node door : doors) {
             		appRoot.getChildren().remove(door);
             		door.setVisible(false);
