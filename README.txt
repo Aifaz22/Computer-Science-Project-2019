@@ -1,3 +1,6 @@
+CODE REPOSITORY
+https://github.com/SummerChu/Computer-Science-Project-2019
+
 PREREQUISITES
 
 Must have Java SE Development Kit 8 (or later) installed on machine running program.
@@ -9,6 +12,7 @@ Main.java
 Objects.java
 SoundEffect.java
 Timer.java
+PlayerAnimation.java
 Button_Push.wav
 jump.wav
 music.wav
@@ -26,6 +30,13 @@ Images\upspikes.png
 Images\background.png
 Images\block.png
 Images\tileset.png
+Images\walk1.png
+Images\run0.png
+Images\run1.png
+Images\run2.png
+Images\run3.png
+Images\run4.png
+Images\run5.png
 
 INSTALLING
 
