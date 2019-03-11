@@ -16,9 +16,11 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
+import java.util.Date;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.image.ImageView;
 
 import java.io.*;
 
@@ -36,7 +38,7 @@ public class Main extends Application {
     private ArrayList<Node> doors = new ArrayList<Node>();
     int deaths=0;
     private Pane appRoot = new Pane();
-    private Avatar player;
+  ;
     private int levelWidth;
     private boolean running = true;
     private int levelNumber = 1;
@@ -47,7 +49,10 @@ public class Main extends Application {
     private Label levelDetail= new Label();
     private Label gameTimer= new Label();
     
-    
+    private Image image = new Image("Images/player.png");
+	private ImageView imageView = new ImageView(image);
+	private Avatar player;
+	
    	Image[] blocks = {new Image("Images/tile.png"), new Image("Images/button.png"), new Image("Images/upspikes.png"), new Image("Images/downspikes.png"),
 	new Image("Images/leftspikes.png"), new Image("Images/background.png"), new Image("Images/door.png"), new Image("Images/button_pressed.png"), 
 	new Image("Images/rightwall.png"), new Image("Images/leftwall.png"), new Image("Images/block.png")};
@@ -147,7 +152,7 @@ public class Main extends Application {
     
     
         //Create Avatar
-        	player = new Avatar(0, 572, 20, 32, floors, walls, doors);
+        player = new Avatar(0, 572, 20, 32, floors, walls, doors, imageView);
 
         appRoot.getChildren().add(player);
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
@@ -180,6 +185,7 @@ public class Main extends Application {
         }
 
         if (isPressed(KeyCode.RIGHT) && player.getTranslateX() + 32 <= levelWidth - 5) {
+			player.setAnimation("Images/walk1.png");
             player.movePlayerX(4);
         }
 
@@ -217,7 +223,7 @@ public class Main extends Application {
                 System.out.println(player.getDeathCount());
                 this.deaths=player.getDeathCount();
                 appRoot.getChildren().remove(player);
-                player = new Avatar(0, 572, 20, 32, floors, walls, doors);
+                player = new Avatar(0, 572, 20, 32, floors, walls, doors, imageView);
                 appRoot.getChildren().add(player);
                 player.setDeathCount(this.deaths);
             }
