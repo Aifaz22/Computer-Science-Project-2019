@@ -313,6 +313,7 @@ public class Main extends Application {
 	
 	//in the game
 	Button btnmenu= new Button("Main Menu");
+	hbox1.setSpacing(300);   
 	hbox1.getChildren().add(btnmenu);
 	
 	//Enter the game if click Start Game
