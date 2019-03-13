@@ -19,8 +19,8 @@ import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
-
-
+import javafx.scene.text.Font;
+import javafx.scene.input.MouseEvent;
 //Base Code: https://www.youtube.com/watch?v=lQEEby394qg
 
 //Class Use: Running and Managing the Game
@@ -152,6 +152,7 @@ public class Main extends Application {
 
         appRoot.getChildren().add(player);
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
+        levelDetail.setFont(Font.font ("Cambria", 20)); 
         levelDetail.setText("Level "+this.levelNumber);
         gameTimer.setText(this.stopwatch.getStringHour()+":"+this.stopwatch.getStringMin()+":"+this.stopwatch.getStringSec());
         player.setDeathCount(this.deaths);
@@ -343,8 +344,50 @@ public class Main extends Application {
        }
       );		
 			
+	//button enlarges when mouse is placed on top
+	btnmenu.setOnMouseEntered(new EventHandler<MouseEvent>() {
+	    @Override public void handle(MouseEvent e) {
+	    	btnmenu.setScaleX(1.5);
+	    	btnmenu.setScaleY(1.5);
+	    }
+	});
+	//button back to normal size when mouse is not on top
+	btnmenu.setOnMouseExited(new EventHandler<MouseEvent>() {
+	    @Override public void handle(MouseEvent e) {
+	    	btnmenu.setScaleX(1);
+	    	btnmenu.setScaleY(1);
+	    }
+	});
 	
-	
+	//button enlarges when mouse is placed on top
+	btnstart.setOnMouseEntered(new EventHandler<MouseEvent>() {
+	    @Override public void handle(MouseEvent e) {
+	    	btnstart.setScaleX(1.5);
+	    	btnstart.setScaleY(1.5);
+	    }
+	});
+	//button back to normal size when mouse is not on top
+	btnstart.setOnMouseExited(new EventHandler<MouseEvent>() {
+	    @Override public void handle(MouseEvent e) {
+	    	btnstart.setScaleX(1);
+	    	btnstart.setScaleY(1);
+	    }
+	});
+		
+	//button enlarges when mouse is placed on top
+	btnexit.setOnMouseEntered(new EventHandler<MouseEvent>() {
+	    @Override public void handle(MouseEvent e) {
+	    	btnexit.setScaleX(1.5);
+	    	btnexit.setScaleY(1.5);
+	    }
+	});
+	//button back to normal size when mouse is not on top
+	btnexit.setOnMouseExited(new EventHandler<MouseEvent>() {
+	    @Override public void handle(MouseEvent e) {
+	    	btnexit.setScaleX(1);
+	    	btnexit.setScaleY(1);
+	    }
+	});
 	menuroot.getChildren().add(btnstart);
 	menuroot.getChildren().add(btnexit);
 
