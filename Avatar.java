@@ -1,35 +1,26 @@
-import java.io.File;
 import java.util.ArrayList;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
 import javafx.geometry.Rectangle2D;
-
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
-
-import java.awt.Graphics;
-import javafx.util.Duration;
 import javafx.util.Duration;
 
 //import java.awt.Image;
-import javax.imageio.ImageIO;
 import javafx.scene.layout.Pane;
 
-
+//String jump_name = ("jump.wav");
+//Media jump_sound = new Media(new File(jump_name).toURI().toString());
 //Class Use: Create and Move Avatar Character
 public class Avatar extends Pane{
 	
 	//Instance Variables
 	private int deathCount = 0;
 	private boolean canJump = true;
-	private ArrayList<Node> obstacles = new ArrayList<Node>();
-	Point2D velocity = new Point2D(0, 0); 
+	private ArrayList<Objects> obstacles = new ArrayList<Objects>();
+	private Point2D velocity = new Point2D(0, 0); 
 	private int x,y,w,h;
-	Image img = new Image("Images/player.png");
+	private Image img = new Image("Images/player.png");
 	public boolean movingRight;
 
 	private ImageView imageView;
@@ -40,14 +31,14 @@ public class Avatar extends Pane{
 	
 	PlayerAnimation animation;
 	
-	Image img1  = new Image("Images/tile.png");
+	private Image img1  = new Image("Images/tile.png");
 	
-    String jump_name = ("jump.wav");
-    Media jump_sound = new Media(new File(jump_name).toURI().toString());
-    MediaPlayer jump = new MediaPlayer(jump_sound);
+   
+    private SoundEffect jump_name = new SoundEffect("jump.wav");
+    private MediaPlayer jump = new MediaPlayer(jump_name.playSound());
 	
 	//Constructor: (Location X, Location Y, Width, Height)
-	 public Avatar(int x, int y, int w, int h, ArrayList<Node> floors, ArrayList<Node> walls, ArrayList<Node> doors, ImageView imageView) {
+	 public Avatar(int x, int y, int w, int h, ArrayList<Objects> floors, ArrayList<Objects> walls, ArrayList<Objects> doors, ImageView imageView) {
 		 
 		 this.imageView = imageView;
 		 this.getChildren().add(imageView);
@@ -58,18 +49,27 @@ public class Avatar extends Pane{
 			this.h =h;
 	        this.setTranslateX(x);
 	        this.setTranslateY(y);
-	   
-	        this.getProperties().put("alive", true);
-	        for (Node floor : floors) {
-	        	obstacles.add(floor);
+	        for (Objects floor : floors) {
+	        	obstacles.add(new Objects(floor));
 	        }
-	        for (Node wall : walls) {
-	        	obstacles.add(wall);
+	        for (Objects wall : walls) {
+	        	obstacles.add(new Objects(wall));
 	        }
-	        for (Node door : doors) {
-	        	obstacles.add(door);
+	        for (Objects door : doors) {
+	        	obstacles.add(new Objects(door));
 	        }
 	    }
+	 
+	 
+	 //getter method for velocity
+	 public Point2D getVelocity() {
+		 return new Point2D(velocity.getX(),velocity.getY());
+	 }
+	 
+	 //adds two given numbers (x and y) to the coordinates of velocity.
+	 public void addVelocity(double x, double y) {
+		 this.velocity = this.velocity.add(x,y);
+	 }
 	 
     /**
      * Method: Movement of Avatar along the X-Axis. 
@@ -105,11 +105,11 @@ public class Avatar extends Pane{
         //For each step, will check if the front is clear; if so, move.
         for (int i = 0; i < Math.abs(value); i++) {
 			
-            for (Node obstacle : obstacles) {
+            for (Objects obstacle : obstacles) {
                 if (this.intersects(
                 		this.sceneToLocal(obstacle.localToScene(
                 			obstacle.getBoundsInLocal()))) &&
-                				obstacle.isVisible() == true) {
+                				obstacle.getVisibility() == true) {
                     if (movingRight) {
 						
                         if (this.getTranslateX() + img.getWidth() == obstacle.getTranslateX()) {
@@ -152,11 +152,11 @@ public class Avatar extends Pane{
          }
        //Checks if the avatar is on the floor.
         for (int i = 0; i < Math.abs(value); i++) {
-            for (Node obstacle : obstacles) {
+            for (Objects obstacle : obstacles) {
                 if (this.intersects(
                 		this.sceneToLocal(obstacle.localToScene(
                 			obstacle.getBoundsInLocal()))) &&
-                				obstacle.isVisible() == true) {
+                				obstacle.getVisibility() == true) {
                     if (movingDown) {
                         if (this.getTranslateY() + img.getHeight() == obstacle.getTranslateY()) {
                             this.setTranslateY(this.getTranslateY() - 1);
@@ -191,7 +191,7 @@ public class Avatar extends Pane{
     	if (canJump) {
     		jump.setOnEndOfMedia(new Runnable() {
     			public void run() {
-    			jump = new MediaPlayer(jump_sound);	
+    			jump  = new MediaPlayer(jump_name.playSound()); ;	
      	        }
      	   });
      	   jump.play();
@@ -200,6 +200,21 @@ public class Avatar extends Pane{
            }
     }
 	
+    //updates the list of obstacles based on runtime changes of the objects in game
+    public void updateObstacleState(ArrayList<Objects> floors, ArrayList<Objects> walls, ArrayList<Objects> doors) {
+    	
+    	obstacles.clear();
+    	for (Objects floor : floors) {
+        	obstacles.add(new Objects(floor));
+        }
+        for (Objects wall : walls) {
+        	obstacles.add(new Objects(wall));
+        }
+        for (Objects door : doors) {
+        	obstacles.add(new Objects(door));
+        }
+    }
+    
     public int getDeathCount() {
     	return this.deathCount;
     }
@@ -209,4 +224,5 @@ public class Avatar extends Pane{
     public void setDeathCount(int a) {
     	this.deathCount=a;
     }
+
 }
