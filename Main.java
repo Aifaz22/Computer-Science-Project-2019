@@ -21,6 +21,7 @@ import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 //Base Code: https://www.youtube.com/watch?v=lQEEby394qg
 
 //Class Use: Running and Managing the Game
@@ -149,12 +150,17 @@ public class Main extends Application {
     
         //Create Avatar
         player = new Avatar(0, 572, 20, 32, floors, walls, doors, imageView);
-
+        
         appRoot.getChildren().add(player);
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
-        levelDetail.setFont(Font.font ("Cambria", 20)); 
+        deathCountMsg.setFont(Font.font ("Old English Text MT", 20)); 
+        deathCountMsg.setTextFill(Color.RED);
+        levelDetail.setTextFill(Color.RED);
+        levelDetail.setFont(Font.font ("Old English Text MT", 20)); 
         levelDetail.setText("Level "+this.levelNumber);
+        gameTimer.setTextFill(Color.RED);
         gameTimer.setText(this.stopwatch.getStringHour()+":"+this.stopwatch.getStringMin()+":"+this.stopwatch.getStringSec());
+        gameTimer.setFont(Font.font ("Old English Text MT", 20)); 
         player.setDeathCount(this.deaths);
         
         
@@ -288,7 +294,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         initContent();
 		
-	Scene scene = new Scene(appRoot,LevelData.LEVEL1[0].length() * 32 - 15, 685);
+	Scene scene = new Scene(appRoot,LevelData.LEVEL1[0].length() * 32 - 15, 690);
         scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
         scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));
         
@@ -343,10 +349,17 @@ public class Main extends Application {
 	}
        }
       );		
-			
+    btnmenu.setFont(Font.font ("Lucida Calligraphy", 15)); 		
+    btnstart.setFont(Font.font ("Lucida Calligraphy", 20)); 		
+    btnexit.setFont(Font.font ("Lucida Calligraphy", 20)); 
+    btnmenu.setTextFill(Color.RED);
+    btnstart.setTextFill(Color.RED);
+    btnexit.setTextFill(Color.RED);
+    
 	//button enlarges when mouse is placed on top
 	btnmenu.setOnMouseEntered(new EventHandler<MouseEvent>() {
 	    @Override public void handle(MouseEvent e) {
+	    	btnmenu.setTextFill(Color.BLUE);
 	    	btnmenu.setScaleX(1.5);
 	    	btnmenu.setScaleY(1.5);
 	    }
@@ -354,6 +367,7 @@ public class Main extends Application {
 	//button back to normal size when mouse is not on top
 	btnmenu.setOnMouseExited(new EventHandler<MouseEvent>() {
 	    @Override public void handle(MouseEvent e) {
+	    	btnmenu.setTextFill(Color.RED);
 	    	btnmenu.setScaleX(1);
 	    	btnmenu.setScaleY(1);
 	    }
@@ -362,6 +376,7 @@ public class Main extends Application {
 	//button enlarges when mouse is placed on top
 	btnstart.setOnMouseEntered(new EventHandler<MouseEvent>() {
 	    @Override public void handle(MouseEvent e) {
+	    	btnstart.setTextFill(Color.BLUE);
 	    	btnstart.setScaleX(1.5);
 	    	btnstart.setScaleY(1.5);
 	    }
@@ -369,6 +384,7 @@ public class Main extends Application {
 	//button back to normal size when mouse is not on top
 	btnstart.setOnMouseExited(new EventHandler<MouseEvent>() {
 	    @Override public void handle(MouseEvent e) {
+	    	btnstart.setTextFill(Color.RED);
 	    	btnstart.setScaleX(1);
 	    	btnstart.setScaleY(1);
 	    }
@@ -377,6 +393,7 @@ public class Main extends Application {
 	//button enlarges when mouse is placed on top
 	btnexit.setOnMouseEntered(new EventHandler<MouseEvent>() {
 	    @Override public void handle(MouseEvent e) {
+	    	btnexit.setTextFill(Color.BLUE);
 	    	btnexit.setScaleX(1.5);
 	    	btnexit.setScaleY(1.5);
 	    }
@@ -384,6 +401,7 @@ public class Main extends Application {
 	//button back to normal size when mouse is not on top
 	btnexit.setOnMouseExited(new EventHandler<MouseEvent>() {
 	    @Override public void handle(MouseEvent e) {
+	    	btnexit.setTextFill(Color.RED);
 	    	btnexit.setScaleX(1);
 	    	btnexit.setScaleY(1);
 	    }
