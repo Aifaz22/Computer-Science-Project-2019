@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -16,13 +15,11 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
-import java.util.Date;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 
-import java.io.*;
 
 //Base Code: https://www.youtube.com/watch?v=lQEEby394qg
 
@@ -31,11 +28,11 @@ public class Main extends Application {
 	
     private HashMap<KeyCode, Boolean> keys = new HashMap<KeyCode, Boolean>();
     private Timer stopwatch=new Timer();
-    private ArrayList<Node> floors = new ArrayList<Node>();
-    private ArrayList<Node> walls = new ArrayList<Node>();
+    private ArrayList<Objects> floors = new ArrayList<Objects>();
+    private ArrayList<Objects> walls = new ArrayList<Objects>();
     private ArrayList<Objects> buttons = new ArrayList<Objects>();
-    private ArrayList<Node> spikes = new ArrayList<Node>();
-    private ArrayList<Node> doors = new ArrayList<Node>();
+    private ArrayList<Objects> spikes = new ArrayList<Objects>();
+    private ArrayList<Objects> doors = new ArrayList<Objects>();
     int deaths=0;
     private Pane appRoot = new Pane();
   ;
@@ -43,7 +40,6 @@ public class Main extends Application {
     private boolean running = true;
     private int levelNumber = 1;
     private HBox hbox1 = new HBox();
-    private HBox hbox2= new HBox();
     private Rectangle bg = new Rectangle(672 * 2, 320*2);
     private Label deathCountMsg= new Label();
     private Label levelDetail= new Label();
@@ -189,11 +185,11 @@ public class Main extends Application {
             player.movePlayerX(4);
         }
 
-        if (player.velocity.getY() < 6) {
-            player.velocity = player.velocity.add(0, .5);
+        if (player.getVelocity().getY() < 6) {
+            player.addVelocity(0, .5);
         }
 
-        player.movePlayerY((int)player.velocity.getY());
+        player.movePlayerY((int)player.getVelocity().getY());
         
         deathCountMsg.setText("Death Count: "+player.getDeathCount());
         
@@ -206,10 +202,11 @@ public class Main extends Application {
             if (player.getBoundsInParent().intersects(button.getBoundsInParent())) {
             	click.play();
             	button.setFill(new ImagePattern(blocks[7]));
-            	for (Node door : doors) {
+            	for (Objects door : doors) {
             		appRoot.getChildren().remove(door);
-            		door.setVisible(false);
+            		door.setVisibility(false);
                 }
+            	player.updateObstacleState(floors, walls, doors);
               
             }
         }
@@ -268,12 +265,12 @@ public class Main extends Application {
         	player.setTranslateX(1305);	
         }
         if (player.getTranslateY() > 600) {
-        	player.setTranslateX(player.getTranslateX() - 64);
+        	player.setTranslateX(player.getTranslateX());
         	player.setTranslateY(2);
         }
         if (player.getTranslateY() < 1) {
         	player.setTranslateY(580);
-        	player.setTranslateX(player.getTranslateX() + 64);
+        	player.setTranslateX(player.getTranslateX());
         	player.jumpPlayer();
         }
         
@@ -304,7 +301,7 @@ public class Main extends Application {
         
         primaryStage.setTitle("Test Game Demo 2");
 		
-	//Creating the Mainmenu	
+	//Creating the Main menu	
 	VBox menuroot = new VBox();
 		Button btnstart;
 		Button btnexit;
