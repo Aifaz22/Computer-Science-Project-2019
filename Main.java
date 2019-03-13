@@ -49,16 +49,16 @@ public class Main extends Application {
 	private ImageView imageView = new ImageView(image);
 	private Avatar player;
 	
-   	Image[] blocks = {new Image("Images/tile.png"), new Image("Images/button.png"), new Image("Images/upspikes.png"), new Image("Images/downspikes.png"),
+   	private Image[] blocks = {new Image("Images/tile.png"), new Image("Images/button.png"), new Image("Images/upspikes.png"), new Image("Images/downspikes.png"),
 	new Image("Images/leftspikes.png"), new Image("Images/background.png"), new Image("Images/door.png"), new Image("Images/button_pressed.png"), 
 	new Image("Images/rightwall.png"), new Image("Images/leftwall.png"), new Image("Images/block.png")};
 	
     
-    SoundEffect bgm_name = new SoundEffect("music.wav");
-	MediaPlayer bgm = new MediaPlayer(bgm_name.playSound());
+    private SoundEffect bgm_name = new SoundEffect("music.wav");
+	private MediaPlayer bgm = new MediaPlayer(bgm_name.playSound());
 	
-	SoundEffect button = new SoundEffect("Button_Push.wav");
-	MediaPlayer click;
+	private SoundEffect button = new SoundEffect("Button_Push.wav");
+	private MediaPlayer click;
     
     /**
      * Method: Create the Window and the Level according to LevelData.java
