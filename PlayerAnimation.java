@@ -5,19 +5,39 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
-//refrence: https://www.youtube.com/watch?v=lJnPtR34FSg
-public class PlayerAnimation extends Transition{
+/**
+ * Class: PlayerAnimation - Child of Class: Transition
+ * Class Use: Animating the Avatar
+ * Methods:
+ * 		Constructor
+ * 		setOffsetX
+ * 		setOffsetY
+ * 		interpolate
+ * Reference: https://www.youtube.com/watch?v=lJnPtR34FSg
+ *
+ */
+public class PlayerAnimation extends Transition {
 	
+	//Instance Variables
 	private final ImageView imageView;
 	private final int COUNT;
 	private final int COLUMNS;
-	private int offsetX;
-	private int offsetY;
 	private final int WIDTH;
 	private final int HEIGHT;
+	private int offsetX;
+	private int offsetY;
 	
-	//private int lastIndex;
-	
+	/**Constructor
+	 * Parameters:
+	 * 		imageView
+	 * 		duration
+	 * 		count
+	 * 		columns
+	 * 		offsetX
+	 * 		offsetY
+	 * 		width
+	 * 		height
+	 */
 	public PlayerAnimation (ImageView imageView, Duration duration, int count, int columns, int offsetX, int offsetY, int width, int height){
 		this.imageView = imageView;
 		this.COUNT = count;
@@ -27,32 +47,37 @@ public class PlayerAnimation extends Transition{
 		this.WIDTH = width;
 		this.HEIGHT = height;
 		
-		//duration of one cycle of animation (time that it plays and the time that it ends)
+		//Length of time for one cycle of animation (in milliseconds)
 		setCycleDuration(duration);
-		//defines how much cycles are in your animation 
+		//Number of Cycles in an animation
 		setCycleCount(Animation.INDEFINITE);
-		
+		//Type of Interpolation (How the animation is read)
 		setInterpolator(Interpolator.LINEAR);
 		this.imageView.setViewport(new Rectangle2D(offsetX, offsetY,width, height));
 	}
-	protected void interpolate(double value){
-		final int index = Math.min((int)Math.floor(value*COUNT), COUNT-1);
-
-				final int x = (index%COLUMNS)*WIDTH + offsetX;
-				final int y = (index/COLUMNS) * HEIGHT + offsetY;
-				imageView.setViewport(new Rectangle2D(x,y, WIDTH, HEIGHT));
-			
-	}
 	
+	//Setters
 	public void setOffsetX(int x){
 		this.offsetX = x;
-		
 	}
 	
 	public void setOffsetY(int y){
 		this.offsetY = y;
-		
 	}
 	
-	
+	/*
+	 * Index = Frame #
+	 * Columns = Co-ordinate of Frame, where each frame increases the column by one (In Linear Interpolation)
+	 * Width = How wide each frame is
+	 * Height = How tall each frame is
+	 * OffsetX = How far in the X axis the frames should be shifted
+	 * OffsetY = How far in the Y axis the frames should be shifted
+	 * 
+	 */
+	protected void interpolate(double value){
+		final int index = Math.min((int)Math.floor(value*COUNT), COUNT-1);
+		final int x = (index%COLUMNS) * WIDTH + offsetX;
+		final int y = (index/COLUMNS) * HEIGHT + offsetY;
+		imageView.setViewport(new Rectangle2D(x,y, WIDTH, HEIGHT));	
+	}
 }

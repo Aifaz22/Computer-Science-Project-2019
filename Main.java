@@ -33,9 +33,8 @@ import javafx.scene.paint.Color;
  * 		start
  * 		main
  *
+ * Base Code: https://www.youtube.com/watch?v=lQEEby394qg
  */
-
-//Base Code: https://www.youtube.com/watch?v=lQEEby394qg
 
 public class Main extends Application {
 	//Instance Variables
