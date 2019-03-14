@@ -6,7 +6,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
-//import java.awt.Image;
 import javafx.scene.layout.Pane;
 
 
