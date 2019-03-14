@@ -157,7 +157,14 @@ public class Main extends Application {
         deathCountMsg.setTextFill(Color.RED);
         levelDetail.setTextFill(Color.RED);
         levelDetail.setFont(Font.font ("Old English Text MT", 20)); 
-        levelDetail.setText("Level "+this.levelNumber);
+        levelDetail.setWrapText(true);
+        if (this.levelNumber==0) {
+        	levelDetail.setText("Tunnel to next level");
+        	hbox1.setSpacing(267);
+        }else {
+        	levelDetail.setText("Level "+this.levelNumber);
+        	hbox1.setSpacing(300);
+        }
         gameTimer.setTextFill(Color.RED);
         gameTimer.setText(this.stopwatch.getStringHour()+":"+this.stopwatch.getStringMin()+":"+this.stopwatch.getStringSec());
         gameTimer.setFont(Font.font ("Old English Text MT", 20)); 
@@ -300,7 +307,7 @@ public class Main extends Application {
         
         
         hbox1.relocate(20,650);
-        hbox1.setSpacing(350);
+        hbox1.setSpacing(300);
         hbox1.getChildren().add(deathCountMsg);
         hbox1.getChildren().add(levelDetail);
         hbox1.getChildren().add(gameTimer);
