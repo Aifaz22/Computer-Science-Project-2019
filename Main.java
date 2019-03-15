@@ -377,42 +377,42 @@ public class Main extends Application {
 		});
 		
 		//Button Size Increase if Hovered Over
-		btnmenu.setOnMouseEntered(new EventHandler<MouseEvent>() {
+		btnstart.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				btnmenu.setTextFill(Color.BLUE);
-				btnmenu.setScaleX(1.5);
-				btnmenu.setScaleY(1.5);
+				btnstart.setTextFill(Color.BLUE);
+				btnstart.setScaleX(1.5);
+				btnstart.setScaleY(1.5);
 				}
 		});
 		
 		//Button Size Return
-		btnmenu.setOnMouseExited(new EventHandler<MouseEvent>() {
+		btnstart.setOnMouseExited(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				btnmenu.setTextFill(Color.RED);
-				btnmenu.setScaleX(1);
-				btnmenu.setScaleY(1);
+				btnstart.setTextFill(Color.RED);
+				btnstart.setScaleX(1);
+				btnstart.setScaleY(1);
 			}
 		});
 			
 		//Button Size Increase if Hovered Over
-		btnmenu.setOnMouseEntered(new EventHandler<MouseEvent>() {
+		btnexit.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				btnmenu.setTextFill(Color.BLUE);
-				btnmenu.setScaleX(1.5);
-				btnmenu.setScaleY(1.5);
+				btnexit.setTextFill(Color.BLUE);
+				btnexit.setScaleX(1.5);
+				btnexit.setScaleY(1.5);
 				}
 		});
 		
 		//Button Size Return
-		btnmenu.setOnMouseExited(new EventHandler<MouseEvent>() {
+		btnexit.setOnMouseExited(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				btnmenu.setTextFill(Color.RED);
-				btnmenu.setScaleX(1);
-				btnmenu.setScaleY(1);
+				btnexit.setTextFill(Color.RED);
+				btnexit.setScaleX(1);
+				btnexit.setScaleY(1);
 			}
 		});
 		menuroot.getChildren().add(btnstart);
