@@ -42,10 +42,10 @@ public class Avatar extends Pane{
 	//Image and Animation
 	private Image img = new Image("Images/player.png");
 	private ImageView imageView;
-	int count = 9;
-	int columns = 10;
-	int offsetX=1;
-	int offsetY=1;
+	int count = 6;
+	int colunms = 6;
+	int offsetX=0;
+	int offsetY=0;
 	PlayerAnimation animation;
 	
 	//Sound
@@ -57,8 +57,11 @@ public class Avatar extends Pane{
     //Constructor: (Location X, Location Y, Width, Height, Floors, Walls, Doors, ImageView)
     public Avatar(int x, int y, int w, int h, ArrayList<Objects> floors, ArrayList<Objects> walls, ArrayList<Objects> doors, ImageView imageView) {
 		 
-		this.imageView = imageView;
-		this.getChildren().add(imageView);
+		 imageView = new ImageView("Images/spriteSheet33.png");
+		 imageView.setViewport(new Rectangle2D(offsetX, offsetY, w, h));
+		 animation = new PlayerAnimation(imageView, Duration.millis(500),count, colunms, offsetX, offsetY,w, h);
+		 getChildren().addAll(imageView);
+		 
 		this.setTranslateX(x);
 		this.setTranslateY(y);
 		for (Objects floor : floors) {
@@ -91,14 +94,6 @@ public class Avatar extends Pane{
 	//Setter Methods
 	public void setDeathCount(int a) {
 		this.deathCount=a;
-	}
-	public void setAnimation(String name) {		
-		getChildren().remove(this.imageView);
-		this.imageView = new ImageView(new Image(name));
-		imageView.setViewport(new Rectangle2D(offsetX, offsetY, img.getWidth(), img.getHeight()));
-		animation = new PlayerAnimation(imageView, Duration.millis(1000),count, columns, offsetX, offsetY, (int)img.getWidth(), (int)img.getHeight());
-		animation.play();
-		getChildren().addAll(imageView);
 	}
 	
 	//Basic Mutators

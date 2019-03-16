@@ -17,11 +17,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
+import javafx.scene.input.KeyEvent;
+
 import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+
+import java.io.*;
+
 
 /**
  * Class: Main - Child of Class: Application
@@ -83,6 +88,12 @@ public class Main extends Application {
 	private ArrayList<Objects> spikes = new ArrayList<Objects>();
 	private ArrayList<Objects> doors = new ArrayList<Objects>();
 	private Avatar player;
+	
+	//player control 
+	private boolean up = false;
+	private boolean right = false;
+	private boolean left = false;
+	private int count = 0;
 	
 	/**
 	 * Method: Initialize all Content - Avatar, LevelData, Objects, etc.
@@ -186,6 +197,36 @@ public class Main extends Application {
 		player.setDeathCount(this.deaths);
 		click = new MediaPlayer(button.playSound());
 	}
+
+	 //animates the player moving right
+	 public void moveRight(){	
+		if  (player.getTranslateX() + 32 <= levelWidth - 5) {
+			player.animation.setOffsetY(5);
+			player.animation.setOffsetX(0);
+			player.animation.play();
+			player.movePlayerX(4);
+		}
+	}
+	
+	//animates the player moving up
+	public void moveUp(){
+		if (player.getTranslateY() >= 5) {
+			player.animation.stop();
+			player.animation.setOffsetY(45);
+			player.animation.setOffsetX(5);
+            player.jumpPlayer();   
+		}
+	}	
+	
+	//animates the player moving left
+	public void moveLeft(){
+		if( player.getTranslateX() >= 5) {
+			player.animation.setOffsetY(82);
+			player.animation.setOffsetX(5);
+			player.animation.play();	
+			player.movePlayerX(-4);			
+		}
+	}
 	
 	/**
 	 * Method: update: Checks for anything in the game (Key Presses, Timer/Counter, Avatar Position, Spike/Button Collision, Music)
@@ -201,16 +242,21 @@ public class Main extends Application {
 	 * 
 	 */
 	private void update() {
-		//Keyboard
-		if (isPressed(KeyCode.UP) && player.getTranslateY() >= 5) {
-			player.jumpPlayer();
+		
+		if(right){
+			moveRight();	
 		}
-		if (isPressed(KeyCode.LEFT) && player.getTranslateX() >= 5) {
-			player.movePlayerX(-4);
+		if(up){
+			moveUp();
 		}
-		if (isPressed(KeyCode.RIGHT) && player.getTranslateX() + 32 <= levelWidth - 5) {
-			player.setAnimation("Images/walk1.png");
-			player.movePlayerX(4);
+		if(left){
+			moveLeft();
+		}
+		if(right== false && left == false && up== false && count>0){
+			player.animation.stop();
+			player.animation.setOffsetY(45);
+			player.animation.setOffsetX(5);
+			player.animation.play();
 		}
 		if (player.getVelocity().getY() < 6) {
 			player.addVelocity(0, .5);
@@ -429,16 +475,46 @@ public class Main extends Application {
 			}
 		});	
 		
+		//key Event handler
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+					
+					
+                    case RIGHT: right= true; break;
+                    case UP: up = true; break;
+					case LEFT: left = true; break;
+					
+                }
+            }
+        });
+		
+	scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+				if(count==0){
+				count++;
+				}
+                switch (event.getCode()) {
+                    case RIGHT: right = false; break;
+                    
+                    case UP: up= false; break;
+					
+					case LEFT: left= false; break;
+                    
+                }
+            }
+        });
 		primaryStage.setScene(gamemenu);
 		primaryStage.show();
 		primaryStage.setResizable(false);
 		bgm.play();
+		
 		AnimationTimer timer = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				if (running) {
 					update();
-				}
 			}
 		};
 		timer.start();
