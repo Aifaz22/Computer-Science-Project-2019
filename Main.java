@@ -80,7 +80,7 @@ public class Main extends Application {
 	//Game
 	private boolean running = true;
 	private int levelWidth;
-	private Rectangle bg = new Rectangle(672 * 2, 320*2);
+	private Rectangle bg = new Rectangle(672 * 2, 354*2);
 	private HashMap<KeyCode, Boolean> keys = new HashMap<KeyCode, Boolean>();
 	private ArrayList<Objects> floors = new ArrayList<Objects>();
 	private ArrayList<Objects> walls = new ArrayList<Objects>();
