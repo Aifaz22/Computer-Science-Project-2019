@@ -184,8 +184,8 @@ public class Main extends Application {
 		//Create GUI
 		deathCountMsg.setText("Death Count: "+player.getDeathCount());
 		deathCountMsg.setFont(Font.font ("Old English Text MT", 20));
-		deathCountMsg.setTextFill(Color.RED);
-		levelDetail.setTextFill(Color.RED);
+		deathCountMsg.setTextFill(Color.GREY);
+		levelDetail.setTextFill(Color.GREY);
 		levelDetail.setFont(Font.font ("Old English Text MT", 20));
 		levelDetail.setWrapText(true);
 		if (this.levelNumber==0) {
@@ -195,7 +195,7 @@ public class Main extends Application {
 			levelDetail.setText("Level "+this.levelNumber);
 			hbox1.setSpacing(300);
 		}
-		gameTimer.setTextFill(Color.RED);
+		gameTimer.setTextFill(Color.GREY);
 		gameTimer.setText(this.stopwatch.getStringHour()+":"+this.stopwatch.getStringMin()+":"+this.stopwatch.getStringSec());
 		gameTimer.setFont(Font.font ("Old English Text MT", 20));
 		player.setDeathCount(this.deaths);
