@@ -42,10 +42,10 @@ public class Avatar extends Pane{
 	//Image and Animation
 	private Image img = new Image("Images/player.png");
 	private ImageView imageView;
-	int count = 6;
+	int count = 4;
 	int colunms = 6;
 	int offsetX=0;
-	int offsetY=0;
+	int offsetY=60;
 	PlayerAnimation animation;
 	
 	//Sound
