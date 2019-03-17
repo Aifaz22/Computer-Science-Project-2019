@@ -201,7 +201,7 @@ public class Main extends Application {
 	 //animates the player moving right
 	 public void moveRight(){	
 		if  (player.getTranslateX() + 32 <= levelWidth - 5) {
-			player.animation.setOffsetY(5);
+			player.animation.setOffsetY(0);
 			player.animation.setOffsetX(0);
 			player.animation.play();
 			player.movePlayerX(4);
@@ -221,8 +221,8 @@ public class Main extends Application {
 	//animates the player moving left
 	public void moveLeft(){
 		if( player.getTranslateX() >= 5) {
-			player.animation.setOffsetY(82);
-			player.animation.setOffsetX(5);
+			player.animation.setOffsetY(97);
+			player.animation.setOffsetX(0);
 			player.animation.play();	
 			player.movePlayerX(-4);			
 		}
@@ -252,12 +252,13 @@ public class Main extends Application {
 		if(left){
 			moveLeft();
 		}
-		if(right== false && left == false && up== false && count>0){
+		if(right== false && left == false && count>0){
 			player.animation.stop();
-			player.animation.setOffsetY(45);
-			player.animation.setOffsetX(5);
+			player.animation.setOffsetY(60);
+			player.animation.setOffsetX(0);
 			player.animation.play();
 		}
+		
 		if (player.getVelocity().getY() < 6) {
 			player.addVelocity(0, .5);
 		}
