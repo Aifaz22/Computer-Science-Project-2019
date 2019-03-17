@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -74,6 +75,7 @@ public class Main extends Application {
 		new Image("Images/door.png"),
 		new Image("Images/button_pressed.png"),
 		new Image("Images/background.png"),
+		new Image("Images/menubackground.png"),
 	};
 	private ImageView imageView = new ImageView(image);
 	
@@ -88,6 +90,7 @@ public class Main extends Application {
 	private ArrayList<Objects> spikes = new ArrayList<Objects>();
 	private ArrayList<Objects> doors = new ArrayList<Objects>();
 	private Avatar player;
+	private Rectangle menubg = new Rectangle(672 * 2, 354*2);
 	
 	//player control 
 	private boolean up = false;
@@ -101,6 +104,7 @@ public class Main extends Application {
 	 */
 	private void initContent() {
 		//Creates Background
+		menubg.setFill(new ImagePattern(blocks[11]));
 		bg.setFill(new ImagePattern(blocks[10]));
 		appRoot.getChildren().addAll(bg);
 		appRoot.getChildren().add(hbox1);
@@ -361,6 +365,7 @@ public class Main extends Application {
 		
 		//Creating the Main Menu
 		VBox menuroot = new VBox();
+		StackPane stackPane = new StackPane();
 		Button btnstart;
 		Button btnexit;
 	
@@ -462,8 +467,8 @@ public class Main extends Application {
 				btnexit.setScaleY(1);
 			}
 		});
-		menuroot.getChildren().add(btnstart);
-		menuroot.getChildren().add(btnexit);
+		stackPane.getChildren().addAll(menubg, btnstart, btnexit);
+		menuroot.getChildren().add(stackPane);
 		
 		//Running Game
 		Scene gamemenu = new Scene(menuroot, LevelData.LEVEL1[0].length() * 32 - 15, 685);
