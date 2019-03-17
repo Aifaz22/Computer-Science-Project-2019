@@ -195,7 +195,7 @@ public class Main extends Application {
 		levelDetail.setWrapText(true);
 		if (this.levelNumber==0) {
 			levelDetail.setText("Tunnel");
-			hbox1.setSpacing(267);
+			hbox1.setSpacing(300.2);
 		} else {
 			levelDetail.setText("Level "+this.levelNumber);
 			hbox1.setSpacing(300);
