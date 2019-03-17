@@ -19,7 +19,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.scene.input.KeyEvent;
-
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundImage;
 import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
@@ -378,7 +382,12 @@ public class Main extends Application {
 		btnexit.setTranslateX(10);
 		
 		//To Main Menu
+		BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource("/Images/menu_button.png").toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+	    Background background = new Background(backgroundImage);
+	    
+
 		Button btnmenu= new Button("Main Menu");
+		btnmenu.setBackground(background);
 		hbox1.setSpacing(300);
 		hbox1.getChildren().add(btnmenu);
 		
@@ -404,7 +413,7 @@ public class Main extends Application {
 		btnmenu.setFont(Font.font ("Lucida Calligraphy", 15));
 		btnstart.setFont(Font.font ("Lucida Calligraphy", 20));
 		btnexit.setFont(Font.font ("Lucida Calligraphy", 20));
-		btnmenu.setTextFill(Color.RED);
+		btnmenu.setTextFill(Color.GREY);
 		btnstart.setTextFill(Color.RED);
 		btnexit.setTextFill(Color.RED);
 		
@@ -412,7 +421,7 @@ public class Main extends Application {
 		btnmenu.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				btnmenu.setTextFill(Color.BLUE);
+				btnmenu.setTextFill(Color.WHITE);
 				btnmenu.setScaleX(1.5);
 				btnmenu.setScaleY(1.5);
 				}
@@ -422,7 +431,7 @@ public class Main extends Application {
 		btnmenu.setOnMouseExited(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				btnmenu.setTextFill(Color.RED);
+				btnmenu.setTextFill(Color.GREY);
 				btnmenu.setScaleX(1);
 				btnmenu.setScaleY(1);
 			}
