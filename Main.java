@@ -372,10 +372,10 @@ public class Main extends Application {
 		//Main Menu Buttons
 		btnstart = new Button("Start Game");
 		btnexit = new Button("EXIT");
-		btnstart.setTranslateY(250);
-		btnstart.setTranslateX(622);
-		btnexit.setTranslateY(350);
-		btnexit.setTranslateX(640);
+		btnstart.setTranslateY(-50);
+		btnstart.setTranslateX(12);
+		btnexit.setTranslateY(50);
+		btnexit.setTranslateX(10);
 		
 		//To Main Menu
 		Button btnmenu= new Button("Main Menu");
