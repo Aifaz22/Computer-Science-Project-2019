@@ -100,6 +100,7 @@ public class Main extends Application {
 	private boolean up = false;
 	private boolean right = false;
 	private boolean left = false;
+	private boolean turnLeft = false;
 	private int count = 0;
 	
 	/**
@@ -229,7 +230,7 @@ public class Main extends Application {
 	//animates the player moving left
 	public void moveLeft(){
 		if( player.getTranslateX() >= 5) {
-			player.animation.setOffsetY(97);
+			player.animation.setOffsetY(70);
 			player.animation.setOffsetX(0);
 			player.animation.play();	
 			player.movePlayerX(-4);			
@@ -251,20 +252,38 @@ public class Main extends Application {
 	 */
 	private void update() {
 		
+		
 		if(right){
 			moveRight();	
+			turnLeft = false;
 		}
-		if(up){
+		if(up && right){
+			player.animation.setOffsetY(100);
+			player.animation.setOffsetX(0);
+			player.animation.play();
+			player.jumpPlayer();
+			turnLeft = false;
+		}
+		else if(up){
 			moveUp();
+			turnLeft = false;
 		}
 		if(left){
 			moveLeft();
+			turnLeft= true;
 		}
-		if(right== false && left == false && count>0){
+		if(right== false && left == false && up== false && turnLeft== false){
 			player.animation.stop();
-			player.animation.setOffsetY(60);
+			player.animation.setOffsetY(32);
 			player.animation.setOffsetX(0);
 			player.animation.play();
+		}
+		
+		else if(right== false && left == false && up== false && turnLeft== true){
+			player.animation.stop();
+			player.animation.setOffsetY(134);
+			player.animation.setOffsetX(0);
+			player.animation.play();	
 		}
 		
 		if (player.getVelocity().getY() < 6) {

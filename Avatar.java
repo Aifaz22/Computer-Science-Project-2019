@@ -57,7 +57,7 @@ public class Avatar extends Pane{
     //Constructor: (Location X, Location Y, Width, Height, Floors, Walls, Doors, ImageView)
     public Avatar(int x, int y, int w, int h, ArrayList<Objects> floors, ArrayList<Objects> walls, ArrayList<Objects> doors, ImageView imageView) {
 		 
-		 imageView = new ImageView("Images/spriteSheet33.png");
+		 imageView = new ImageView("Images/spriteSheet444.png");
 		 imageView.setViewport(new Rectangle2D(offsetX, offsetY, w, h));
 		 animation = new PlayerAnimation(imageView, Duration.millis(500),count, colunms, offsetX, offsetY,w, h);
 		 getChildren().addAll(imageView);
