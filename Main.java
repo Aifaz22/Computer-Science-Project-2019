@@ -64,6 +64,8 @@ public class Main extends Application {
 	private MediaPlayer bgm = new MediaPlayer(bgm_name.playSound());
 	private SoundEffect button = new SoundEffect("Button_Push.wav");
 	private MediaPlayer click;
+	private SoundEffect death_name = new SoundEffect("death.wav");
+    private MediaPlayer death = new MediaPlayer(death_name.playSound());
 	
 	//Graphics
 	private Image image = new Image("Images/player.png");
@@ -312,6 +314,12 @@ public class Main extends Application {
 		//Spikes
 		for (Node spike : spikes) {
 			if (player.getBoundsInParent().intersects(spike.getBoundsInParent())) {
+				death.setOnEndOfMedia(new Runnable() {
+					public void run() {
+						death  = new MediaPlayer(death_name.playSound()); ;
+					}
+				});
+			death.play();
 				System.out.println("You died!");
 				player.addDeathCount();
 				System.out.println(player.getDeathCount());
@@ -384,7 +392,7 @@ public class Main extends Application {
 		hbox1.getChildren().add(levelDetail);
 		hbox1.getChildren().add(gameTimer);
 		
-		primaryStage.setTitle("Test Game Demo 3");
+		primaryStage.setTitle("Re:Curse");
 		
 		//Creating the Main Menu
 		VBox menuroot = new VBox();
