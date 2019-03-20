@@ -40,8 +40,8 @@ public class Avatar extends Pane{
 	
 	
 	//Image and Animation
-	private Image img = new Image("Images/player.png");
-	private ImageView imageView;
+	Image img = new Image("Images/player.png");
+	ImageView imageView;
 	int count = 4;
 	int colunms = 6;
 	int offsetX=0;
@@ -90,7 +90,17 @@ public class Avatar extends Pane{
 		else {
 			return false;	
 		}
+    }
+		
+	public ArrayList<Objects> getObstacles(){
+		ArrayList<Objects> temp = new ArrayList<Objects>();
+		for (Objects i: obstacles) {
+			temp.add(new Objects(i));
+		}
+		return temp;
 	}
+	
+	
 	//Setter Methods
 	public void setDeathCount(int a) {
 		this.deathCount=a;
