@@ -38,6 +38,13 @@ public class Timer {
 	public void setCurrentTime() {
 		this.currentTime = new Date();
 	}
+	//Getters
+	public Date getStartTime() {
+		return this.startTime;
+	}
+	public Date getCurrentTime() {
+		return this.currentTime;
+	}
 	
 	//Getters (String)
 	public String getStringSec() {
