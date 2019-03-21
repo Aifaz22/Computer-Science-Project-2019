@@ -439,11 +439,13 @@ public class Main extends Application {
 		
 		
 		btnmenu.setFont(Font.font ("Lucida Calligraphy", 15));
-		btnstart.setFont(Font.font ("Lucida Calligraphy", 20));
-		btnexit.setFont(Font.font ("Lucida Calligraphy", 20));
+		btnstart.setFont(Font.font ("Lucida Calligraphy", 35));
+		btnexit.setFont(Font.font ("Lucida Calligraphy", 32));
 		btnmenu.setTextFill(Color.GREY);
 		btnstart.setTextFill(Color.RED);
 		btnexit.setTextFill(Color.RED);
+		btnstart.setBackground(Background.EMPTY);
+		btnexit.setBackground(Background.EMPTY);
 		
 		//Button Size Increase if Hovered Over
 		btnmenu.setOnMouseEntered(new EventHandler<MouseEvent>() {
