@@ -442,8 +442,8 @@ public class Main extends Application {
 		btnstart.setFont(Font.font ("Lucida Calligraphy", 35));
 		btnexit.setFont(Font.font ("Lucida Calligraphy", 32));
 		btnmenu.setTextFill(Color.GREY);
-		btnstart.setTextFill(Color.RED);
-		btnexit.setTextFill(Color.RED);
+		btnstart.setTextFill(Color.WHITE);
+		btnexit.setTextFill(Color.WHITE);
 		btnstart.setBackground(Background.EMPTY);
 		btnexit.setBackground(Background.EMPTY);
 		
@@ -471,7 +471,7 @@ public class Main extends Application {
 		btnstart.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				btnstart.setTextFill(Color.BLUE);
+				btnstart.setTextFill(Color.LIGHTCYAN);
 				btnstart.setScaleX(1.5);
 				btnstart.setScaleY(1.5);
 				}
@@ -481,7 +481,7 @@ public class Main extends Application {
 		btnstart.setOnMouseExited(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				btnstart.setTextFill(Color.RED);
+				btnstart.setTextFill(Color.WHITE);
 				btnstart.setScaleX(1);
 				btnstart.setScaleY(1);
 			}
@@ -491,7 +491,7 @@ public class Main extends Application {
 		btnexit.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				btnexit.setTextFill(Color.BLUE);
+				btnexit.setTextFill(Color.LIGHTCYAN);
 				btnexit.setScaleX(1.5);
 				btnexit.setScaleY(1.5);
 				}
@@ -501,7 +501,7 @@ public class Main extends Application {
 		btnexit.setOnMouseExited(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				btnexit.setTextFill(Color.RED);
+				btnexit.setTextFill(Color.WHITE);
 				btnexit.setScaleX(1);
 				btnexit.setScaleY(1);
 			}
