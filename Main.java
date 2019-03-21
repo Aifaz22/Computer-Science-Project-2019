@@ -30,7 +30,7 @@ import javafx.scene.text.Font;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
-import java.io.*;
+
 
 
 /**
@@ -86,7 +86,6 @@ public class Main extends Application {
 	private ImageView imageView = new ImageView(image);
 	
 	//Game
-	private boolean running = true;
 	private int levelWidth;
 	private Rectangle bg = new Rectangle(672 * 2, 354*2);
 	private HashMap<KeyCode, Boolean> keys = new HashMap<KeyCode, Boolean>();
@@ -375,10 +374,6 @@ public class Main extends Application {
 		});
 	}
 	
-	private boolean isPressed(KeyCode key) {
-		return keys.getOrDefault(key, false);
-	}
-	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		initContent();
@@ -399,11 +394,17 @@ public class Main extends Application {
 		StackPane stackPane = new StackPane();
 		Button btnstart;
 		Button btnexit;
-	
+		Label title;
+		
+		//Title
+		title = new Label(">Re:Curse");
+		title.setTranslateX(10);
+		title.setTranslateY(-150);
+		
 		//Main Menu Buttons
 		btnstart = new Button("Start Game");
 		btnexit = new Button("EXIT");
-		btnstart.setTranslateY(-50);
+		btnstart.setTranslateY(-30);
 		btnstart.setTranslateX(12);
 		btnexit.setTranslateY(50);
 		btnexit.setTranslateX(10);
@@ -437,13 +438,18 @@ public class Main extends Application {
 			}
 		});
 		
-		
-		btnmenu.setFont(Font.font ("Lucida Calligraphy", 15));
-		btnstart.setFont(Font.font ("Lucida Calligraphy", 35));
-		btnexit.setFont(Font.font ("Lucida Calligraphy", 32));
+		Font fontMenu = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 20);
+		Font fontStart = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 40);
+		Font fontExit = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 30);
+		Font fontTitle = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 70);
+		btnmenu.setFont(fontMenu);
+		btnstart.setFont(fontStart);
+		btnexit.setFont(fontExit);
+		title.setFont(fontTitle);
 		btnmenu.setTextFill(Color.GREY);
 		btnstart.setTextFill(Color.WHITE);
 		btnexit.setTextFill(Color.WHITE);
+		title.setTextFill(Color.WHITE);
 		btnstart.setBackground(Background.EMPTY);
 		btnexit.setBackground(Background.EMPTY);
 		
@@ -506,7 +512,7 @@ public class Main extends Application {
 				btnexit.setScaleY(1);
 			}
 		});
-		stackPane.getChildren().addAll(menubg, btnstart, btnexit);
+		stackPane.getChildren().addAll(menubg, btnstart, btnexit, title);
 		menuroot.getChildren().add(stackPane);
 		
 		//Running Game
