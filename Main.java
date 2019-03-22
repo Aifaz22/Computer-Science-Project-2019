@@ -62,8 +62,8 @@ public class Main extends Application {
 	//Sound & Music
 	private SoundEffect bgm_name = new SoundEffect("music.wav");
 	private MediaPlayer bgm = new MediaPlayer(bgm_name.playSound());
-	private SoundEffect button = new SoundEffect("Button_Push.wav");
-	private MediaPlayer click;
+	private SoundEffect click_name = new SoundEffect("Button_Push.wav");
+    private MediaPlayer click = new MediaPlayer(click_name.playSound());
 	private SoundEffect death_name = new SoundEffect("death.wav");
     private MediaPlayer death = new MediaPlayer(death_name.playSound());
 	
@@ -96,6 +96,9 @@ public class Main extends Application {
 	private ArrayList<Objects> doors = new ArrayList<Objects>();
 	private Avatar player;
 	private Rectangle menubg = new Rectangle(672 * 2, 354*2);
+	private LevelData levels = new LevelData();
+	private int tempLevel = 0;
+	private boolean stop = false;
 	
 	//player control 
 	private boolean up = false;
@@ -126,6 +129,9 @@ public class Main extends Application {
 				case 1:
 					line = LevelData.LEVEL1[i];
 					break;
+				case 2:
+					line = LevelData.LEVEL1[i];
+					break;	
 				default:
 					line = LevelData.LEVEL1[i];
 					break;
@@ -155,9 +161,11 @@ public class Main extends Application {
 						appRoot.getChildren().add(block);
 						break;
 					case '5':
+						if (levelNumber != 2) {
 						Objects button = new Objects(j*32, i*32+24, 32, 8, blocks[4]);
 						buttons.add(button);
 						appRoot.getChildren().add(button);
+						}
 						break;
 					case '6':
 						Objects up_spike = new Objects(j*32, i*32+11, 32, 32, blocks[5]);
@@ -189,10 +197,10 @@ public class Main extends Application {
 		
 		//Create GUI
 		deathCountMsg.setText("Death Count: "+player.getDeathCount());
-		deathCountMsg.setFont(Font.font ("Old English Text MT", 20));
+		deathCountMsg.setFont(Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 20));
 		deathCountMsg.setTextFill(Color.GREY);
 		levelDetail.setTextFill(Color.GREY);
-		levelDetail.setFont(Font.font ("Old English Text MT", 20));
+		levelDetail.setFont(Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 20));
 		levelDetail.setWrapText(true);
 		if (this.levelNumber==0) {
 			levelDetail.setText("Tunnel");
@@ -203,9 +211,10 @@ public class Main extends Application {
 		}
 		gameTimer.setTextFill(Color.GREY);
 		gameTimer.setText(this.stopwatch.getStringHour()+":"+this.stopwatch.getStringMin()+":"+this.stopwatch.getStringSec());
-		gameTimer.setFont(Font.font ("Old English Text MT", 20));
+		gameTimer.setFont(Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 20));
 		player.setDeathCount(this.deaths);
-		click = new MediaPlayer(button.playSound());
+		
+		stop = false;
 	}
 
 	 //animates the player moving right
@@ -300,14 +309,14 @@ public class Main extends Application {
 		//Button
 		for (Objects button : buttons) {
 			if (player.getBoundsInParent().intersects(button.getBoundsInParent())) {
-				click.play();
+				
 				button.setFill(new ImagePattern(blocks[9]));
-				for (Objects door : doors) {
-					appRoot.getChildren().remove(door);
-					door.setVisibility(false);
-				}
-				player.updateObstacleState(floors, walls, doors);
+				openDoor();
 			}
+		}
+		if (levelNumber == 2 && levels.checkIfAllPointsPassed() && stop == false) {
+			openDoor();
+			stop = true;
 		}
 		
 		//Spikes
@@ -332,35 +341,49 @@ public class Main extends Application {
 		
 		//Avatar Position - End Level
 		if (player.getTranslateX() > 1306  && player.getTranslateY() > 520) {
+			if (levelNumber != 0)
+			tempLevel = levelNumber;
 			appRoot.getChildren().clear();
 			floors.clear();
 			walls.clear();
 			doors.clear();
 			buttons.clear();
 			spikes.clear();
-			switch (levelNumber) {
-			case 0:
-				levelNumber = 1;
-				break;
-			case 1:
+			if(levelNumber == 0)
+				levelNumber = tempLevel + 1;
+			else
 				levelNumber = 0;
-				break;
-			}
 		initContent();
 		}
 		
 		//Avatar Position - Warping
-		if (player.getTranslateX() > 1306  && player.getTranslateY() < 100) {
+		if (player.getTranslateX() > 1306  && player.getTranslateY() < 105) {
 			player.setTranslateX(5);
+			if(levelNumber == 2)
+			levels.setPassedWrappingPoint(1);
 		}
-		if (player.getTranslateX() < 4  && player.getTranslateY() < 100) {
+		if (player.getTranslateX() < 5  && player.getTranslateY() < 105) {
 			player.setTranslateX(1305);
+			if(levelNumber == 2)
+				levels.setPassedWrappingPoint(2);
 		}
 		if (player.getTranslateY() > 600) {
+			if(levelNumber == 2 && player.getTranslateX() > 700) {
+				levels.setPassedWrappingPoint(3);
+			}
+			else if (levelNumber == 2 && player.getTranslateX() < 700){
+				levels.setPassedWrappingPoint(4);
+			}
 			player.setTranslateX(player.getTranslateX());
 			player.setTranslateY(2);
 		}
 		if (player.getTranslateY() < 1) {
+			if(levelNumber == 2 && player.getTranslateX() > 700) {
+				levels.setPassedWrappingPoint(5);
+			}
+			else if (levelNumber == 2 && player.getTranslateX() < 700){
+				levels.setPassedWrappingPoint(0);
+			}
 			player.setTranslateY(580);
 			player.setTranslateX(player.getTranslateX());
 			player.jumpPlayer();
@@ -372,6 +395,20 @@ public class Main extends Application {
 				bgm.seek(Duration.ZERO);
 			}
 		});
+	}
+	
+	public void openDoor() {
+		click.setOnEndOfMedia(new Runnable() {
+			public void run() {
+				click  = new MediaPlayer(click_name.playSound()); 
+			}
+		});
+	    click.play();
+		for (Objects door : doors) {
+			appRoot.getChildren().remove(door);
+			door.setVisibility(false);
+		}
+		player.updateObstacleState(floors, walls, doors);
 	}
 	
 	@Override
