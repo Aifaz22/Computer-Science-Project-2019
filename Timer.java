@@ -46,31 +46,9 @@ public class Timer {
 		return this.currentTime;
 	}
 	
-	//Getters (String)
-	public String getStringSec() {
-		if (this.sec < 10) {
-			return "0" + String.valueOf(getSec());
-		}
-		return String.valueOf(getSec());
-	}
-	
-	public String getStringMin() {
-		if (this.min < 10) {
-			return "0" + String.valueOf(getMin());
-		}
-		return String.valueOf(getMin());
-	}
-	
-	public String getStringHour() {
-		if (this.hour < 10) {
-			return "0" + String.valueOf(getHour());
-		}
-		return String.valueOf(getHour());
-	}
-	
 	//Getters
 	public int getSec() {
-		if (this.sec%60 == 0 && this.sec > 0) {
+		if (this.sec==60 && this.sec > 0) {
 			setStartTime(this.currentTime);
 			this.min++;
 		}
