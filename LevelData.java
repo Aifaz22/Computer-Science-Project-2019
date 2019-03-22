@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 /**
  * Class: LevelData
  * Class Use: Storing All Possible Level Data
@@ -56,4 +57,47 @@ public class LevelData {
 		"111111111111111111111111111111111111111111",
 		
 	};
+	private ArrayList<Boolean> passedWrappingPoint = new ArrayList<Boolean>();
+	
+	public LevelData() {
+		
+		//initializing instance variables
+		if(passedWrappingPoint.size()<6) {
+		for (int i = 0; i < 6;i++) {
+		passedWrappingPoint.add(false);
+		}
+		}
+	}
+	
+	//getter method
+	public ArrayList<Boolean> getPassedWrappingPoint() {
+		ArrayList<Boolean> temp = new ArrayList<Boolean>();
+		for (boolean i : passedWrappingPoint) {
+			temp.add(i);
+		}
+		return temp;
+		}
+	
+	//sets the ith element of the list of wrapping points to true
+	public void setPassedWrappingPoint(int i) {
+		if (i>-1&&i<6) {
+			passedWrappingPoint.set(i, true);
+		}
+	}
+	
+	//checks if all of the wrapping points have been passed
+	public boolean checkIfAllPointsPassed() {
+		int num = 0;
+		for (boolean i : passedWrappingPoint) {
+			if (i == true) {
+				num++;
+			}
+		}
+		if (num == 6) {
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
 }
