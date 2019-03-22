@@ -54,7 +54,7 @@ public class Main extends Application {
 	private HBox hbox1 = new HBox();
 	private Label deathCountMsg = new Label();
 	private Label levelDetail = new Label();
-	private Timer stopwatch = new Timer();
+	private TimerText stopwatch = new TimerText();
 	private Label gameTimer = new Label();
 	int deaths = 0;
 	private int levelNumber = 1;
