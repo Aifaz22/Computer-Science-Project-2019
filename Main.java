@@ -210,7 +210,7 @@ public class Main extends Application {
 			hbox1.setSpacing(300);
 		}
 		gameTimer.setTextFill(Color.GREY);
-		gameTimer.setText(this.stopwatch.getStringHour()+":"+this.stopwatch.getStringMin()+":"+this.stopwatch.getStringSec());
+		gameTimer.setText(this.stopwatch.toString());
 		gameTimer.setFont(Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 20));
 		player.setDeathCount(this.deaths);
 		
@@ -303,7 +303,7 @@ public class Main extends Application {
 		
 		//Timer/Counter
 		this.stopwatch.setCurrentTime();
-		gameTimer.setText(this.stopwatch.getStringHour()+":"+this.stopwatch.getStringMin()+":"+this.stopwatch.getStringSec());
+		gameTimer.setText(this.stopwatch.toString());
 		deathCountMsg.setText("Death Count: "+player.getDeathCount());       
 		
 		//Button
