@@ -37,13 +37,12 @@ public class TimerTest{
 		try {
 			System.out.println("wait for 1 sec...");
 			Thread.sleep(1000);
+			t.setCurrentTime();
 	    } catch (Exception e)
 	    {
 	        System.out.println("Testing...");
 	    }
-		t.setCurrentTime();
-		int res=(int)((t.getCurrentTime().getTime()-t.getStartTime().getTime())/1000);
-		assertEquals("Setting current time",res,t.getSec(),0.0001);
+		assertEquals("Setting current time",1,t.getSec());
 		assertEquals(0,t.getMin());
 		assertEquals(0,t.getHour());
 	}
@@ -52,17 +51,16 @@ public class TimerTest{
 		Timer t=new Timer();
 		try {
 			System.out.println("wait for 60 sec...");
-			Thread.sleep(60000);
+			Thread.sleep(61000);
+			t.setCurrentTime();
 	    } catch (Exception e)
 	    {
 	        System.out.println("Testing...");
 	    }
-		assertEquals("Setting current time",0,t.getSec(),0.0001);
-		assertEquals(1,t.getMin());
-		assertEquals(0,t.getHour());
+		t.setCurrentTime();
+		assertEquals("Check sec",1,t.getSec());
+		assertEquals("Check min",1,t.getMin());
+		assertEquals("Check sec",0,t.getHour());
 	}
-	//test for strings and get Hour
-	
-	
-	
+		
 }
