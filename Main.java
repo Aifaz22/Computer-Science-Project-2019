@@ -308,10 +308,11 @@ public class Main extends Application {
 		
 		//Button
 		for (Objects button : buttons) {
-			if (player.getBoundsInParent().intersects(button.getBoundsInParent())) {
+			if (player.getBoundsInParent().intersects(button.getBoundsInParent())&&stop==false) {
 				
 				button.setFill(new ImagePattern(blocks[9]));
 				openDoor();
+				stop = true;
 			}
 		}
 		if (levelNumber == 2 && levels.checkIfAllPointsPassed() && stop == false) {
