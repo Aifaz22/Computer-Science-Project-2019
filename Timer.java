@@ -64,5 +64,8 @@ public class Timer {
 	}
 	public int getHour() {
 		return this.hour;
+	} 
+	public String toString() {
+		return getHour()+":"+getMin()+":"+getSec();
 	}
 }
