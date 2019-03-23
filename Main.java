@@ -82,6 +82,10 @@ public class Main extends Application {
 		new Image("Images/button_pressed.png"),
 		new Image("Images/background.png"),
 		new Image("Images/menubackground.png"),
+		new Image("Images/button2.png"),
+		new Image("Images/button_pressed2.png"),
+		new Image("Images/background2.png"),
+		new Image("Images/fire_spriteSheet.png"),
 	};
 	private ImageView imageView = new ImageView(image);
 	
@@ -100,6 +104,7 @@ public class Main extends Application {
 	private int tempLevel = 0;
 	private boolean stop = false;
 	
+	
 	//player control 
 	private boolean up = false;
 	private boolean right = false;
@@ -112,9 +117,15 @@ public class Main extends Application {
 	 * 
 	 */
 	private void initContent() {
-		//Creates Background
+		//Creates Background 
+		if(levelNumber == 3){
+			bg.setFill(new ImagePattern(blocks[14]));	
+		}
+		else{
+			bg.setFill(new ImagePattern(blocks[10]));
+		}
+		
 		menubg.setFill(new ImagePattern(blocks[11]));
-		bg.setFill(new ImagePattern(blocks[10]));
 		appRoot.getChildren().addAll(bg);
 		appRoot.getChildren().add(hbox1);
 		
@@ -131,7 +142,10 @@ public class Main extends Application {
 					break;
 				case 2:
 					line = LevelData.LEVEL1[i];
-					break;	
+					break;
+				case 3:
+					line = LevelData.LEVEL3[i];
+					break;
 				default:
 					line = LevelData.LEVEL1[i];
 					break;
@@ -161,11 +175,17 @@ public class Main extends Application {
 						appRoot.getChildren().add(block);
 						break;
 					case '5':
-						if (levelNumber != 2) {
+						if(levelNumber == 3){
+						Objects button = new Objects(j*32, i*32, 32, 8, blocks[12]);
+						buttons.add(button);
+						appRoot.getChildren().add(button);
+						}
+						else if (levelNumber != 2) {
 						Objects button = new Objects(j*32, i*32+24, 32, 8, blocks[4]);
 						buttons.add(button);
 						appRoot.getChildren().add(button);
 						}
+						
 						break;
 					case '6':
 						Objects up_spike = new Objects(j*32, i*32+11, 32, 32, blocks[5]);
@@ -192,7 +212,7 @@ public class Main extends Application {
 			}
 		
 		//Create Avatar
-		player = new Avatar(0, 572, 20, 32, floors, walls, doors, imageView);
+		player = new Avatar(0, 572, 20, 32, floors, walls, doors);
 		appRoot.getChildren().add(player);
 		
 		//Create GUI
@@ -262,10 +282,15 @@ public class Main extends Application {
 	 */
 	private void update() {
 		
-		
 		if(right){
-			moveRight();	
-			turnLeft = false;
+			if(levelNumber == 3){
+				moveLeft();
+				turnLeft = true;
+			}
+			else{
+				moveRight();	
+				turnLeft = false;
+		}
 		}
 		if(up && right){
 			player.animation.setOffsetY(100);
@@ -279,8 +304,14 @@ public class Main extends Application {
 			turnLeft = false;
 		}
 		if(left){
+			if(levelNumber == 3){
+				moveRight();
+				turnLeft = false;	
+			}
+			else{
 			moveLeft();
 			turnLeft= true;
+		}
 		}
 		if(right== false && left == false && up== false && turnLeft== false){
 			player.animation.stop();
@@ -309,8 +340,13 @@ public class Main extends Application {
 		//Button
 		for (Objects button : buttons) {
 			if (player.getBoundsInParent().intersects(button.getBoundsInParent())&&stop==false) {
-				
+				if(levelNumber == 3){
+				button.setFill(new ImagePattern(blocks[13]));
+					
+				}
+				else{
 				button.setFill(new ImagePattern(blocks[9]));
+				}
 				openDoor();
 				stop = true;
 			}
@@ -334,7 +370,7 @@ public class Main extends Application {
 				System.out.println(player.getDeathCount());
 				this.deaths=player.getDeathCount();
 				appRoot.getChildren().remove(player);
-				player = new Avatar(0, 572, 20, 32, floors, walls, doors, imageView);
+				player = new Avatar(0, 572, 20, 32, floors, walls, doors);
 				appRoot.getChildren().add(player);
 				player.setDeathCount(this.deaths);
 			}
@@ -569,12 +605,9 @@ public class Main extends Application {
             @Override
             public void handle(KeyEvent event) {
                 switch (event.getCode()) {
-					
-					
                     case RIGHT: right= true; break;
                     case UP: up = true; break;
 					case LEFT: left = true; break;
-					
                 }
             }
         });
@@ -587,11 +620,8 @@ public class Main extends Application {
 				}
                 switch (event.getCode()) {
                     case RIGHT: right = false; break;
-                    
                     case UP: up= false; break;
-					
-					case LEFT: left= false; break;
-                    
+					case LEFT: left= false; break; 
                 }
             }
         });
