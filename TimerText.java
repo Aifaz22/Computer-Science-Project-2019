@@ -24,4 +24,8 @@ public class TimerText extends Timer{
 		}
 		return String.valueOf(super.getHour());
 	}
+	@Override
+	public String toString() {
+		return getStringHour()+":"+getStringMin()+":"+getStringSec();
+	}
 }
