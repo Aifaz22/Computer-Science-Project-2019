@@ -58,8 +58,8 @@ public class TimerTest{
 	        System.out.println("Testing...");
 	    }
 		t.setCurrentTime();
-		assertEquals("Check sec",1,t.getSec());
-		assertEquals("Check min",1,t.getMin());
+		assertEquals("Check sec",61,t.getSec());
+		assertEquals("Check min",0,t.getMin());
 		assertEquals("Check sec",0,t.getHour());
 	}
 		
