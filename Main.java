@@ -84,7 +84,7 @@ public class Main extends Application {
 		new Image("Images/menubackground.png"),
 		new Image("Images/button2.png"),
 		new Image("Images/button_pressed2.png"),
-		new Image("Images/background2.png"),
+		new Image("Images/background_inverted.png"),
 		new Image("Images/fire_spriteSheet.png"),
 	};
 	private ImageView imageView = new ImageView(image);
