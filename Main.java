@@ -1,36 +1,46 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import javafx.scene.media.MediaPlayer;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.scene.Node;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.Node;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-import javafx.event.ActionEvent;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundImage;
-import javafx.event.EventHandler;
-import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 
+
+/**
+ * TO DO LIST:
+ * Avatar has Death count, but Main has Death count. CHOOSE ONE.
+ * Animation has issues. Have movements make sense, and animations make sense.
+ * Categorize methods. The current methods are HUGE. Seperate them into reasonable chunks, with a theme.
+ * Understand and create a Main Menu class. There is enough labels and buttons for it to be a class on its own. However, it interacts with Main too much, and must be taken with care.
+ * Add levels/Ending(if required)
+ * Add level title, and add it to the GUI
+ * The image Array is titled blocks. There should only be blocks in there. Make another array with backgrounds/animations as needed.
 
 
 /**
@@ -48,7 +58,6 @@ import javafx.scene.paint.Color;
 
 public class Main extends Application {
 	//Instance Variables
-	
 	//Menu
 	private Pane appRoot = new Pane();
 	private HBox hbox1 = new HBox();
@@ -85,7 +94,7 @@ public class Main extends Application {
 		new Image("Images/button2.png"),
 		new Image("Images/button_pressed2.png"),
 		new Image("Images/background_inverted.png"),
-		new Image("Images/fire_spriteSheet.png"),
+		new Image("Images/fire_spritesheet.png"),
 	};
 	private ImageView imageView = new ImageView(image);
 	
@@ -112,24 +121,42 @@ public class Main extends Application {
 	private boolean turnLeft = false;
 	private int count = 0;
 	
-	/**
-	 * Method: Initialize all Content - Avatar, LevelData, Objects, etc.
-	 * 
-	 */
-	private void initContent() {
-		//Creates Background 
-		if(levelNumber == 3){
+	
+	
+	private void btnResize(Button button) {
+		button.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				button.setTextFill(Color.LIGHTCYAN);
+				button.setScaleX(1.5);
+				button.setScaleY(1.5);
+				}
+		});
+		
+		button.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				button.setTextFill(Color.WHITE);
+				button.setScaleX(1);
+				button.setScaleY(1);
+			}
+		});
+	}
+	
+	
+	
+	private void initBackground() {
+		if(levelNumber == 3) {
 			bg.setFill(new ImagePattern(blocks[14]));	
 		}
-		else{
+		else {
 			bg.setFill(new ImagePattern(blocks[10]));
 		}
-		
 		menubg.setFill(new ImagePattern(blocks[11]));
 		appRoot.getChildren().addAll(bg);
 		appRoot.getChildren().add(hbox1);
-		
-		//Reads Level and Data
+	}
+	private void initLevelData() {
 		levelWidth = LevelData.LEVEL1[0].length() * 32;
 		for (int i = 0; i < LevelData.LEVEL1.length; i++) {
 			String line;
@@ -179,13 +206,11 @@ public class Main extends Application {
 						Objects button = new Objects(j*32, i*32, 32, 8, blocks[12]);
 						buttons.add(button);
 						appRoot.getChildren().add(button);
-						}
-						else if (levelNumber != 2) {
+						} else if (levelNumber != 2) {
 						Objects button = new Objects(j*32, i*32+24, 32, 8, blocks[4]);
 						buttons.add(button);
 						appRoot.getChildren().add(button);
 						}
-						
 						break;
 					case '6':
 						Objects up_spike = new Objects(j*32, i*32+11, 32, 32, blocks[5]);
@@ -210,12 +235,12 @@ public class Main extends Application {
 					}
 				}
 			}
-		
-		//Create Avatar
+	}
+	private void initAvatar() {
 		player = new Avatar(0, 572, 20, 32, floors, walls, doors);
 		appRoot.getChildren().add(player);
-		
-		//Create GUI
+	}
+	private void initGUI() {
 		deathCountMsg.setText("Death Count: "+player.getDeathCount());
 		deathCountMsg.setFont(Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 20));
 		deathCountMsg.setTextFill(Color.GREY);
@@ -236,33 +261,136 @@ public class Main extends Application {
 		
 		stop = false;
 	}
-
-	 //animates the player moving right
-	 public void moveRight(){	
-		if  (player.getTranslateX() + 32 <= levelWidth - 5) {
+	
+	
+	
+	private void animate(String condition) {
+		if (condition == "right") {
 			player.animation.setOffsetY(0);
 			player.animation.setOffsetX(0);
 			player.animation.play();
+		} else if (condition == "left") {
+			player.animation.setOffsetY(70);
+			player.animation.setOffsetX(0);
+			player.animation.play();
+		} else if (condition == "up") {
+			player.animation.setOffsetY(45);
+			player.animation.setOffsetX(5);
+			player.animation.play();
+		} else {
+			player.animation.stop();
+		}
+	}
+	private void updateKey() {
+		if (right) {
+			if (levelNumber == 3){
+				moveLeft();
+				turnLeft = true;
+			} else {
+				moveRight();	
+				turnLeft = false;
+			}
+		}
+		if (up && right) {
+			player.animation.setOffsetY(100);
+			player.animation.setOffsetX(0);
+			player.animation.play();
+			player.jumpPlayer();
+			turnLeft = false;
+		} else if (up) {
+			moveUp();
+			turnLeft = false;
+		}
+		if (left) {
+			if (levelNumber == 3){
+				moveRight();
+				turnLeft = false;	
+			} else {
+			moveLeft();
+			turnLeft= true;
+			}
+		}
+		if (right == false && left == false && up == false && turnLeft == false) {
+			player.animation.stop();
+			player.animation.setOffsetY(32);
+			player.animation.setOffsetX(0);
+			player.animation.play();
+		} else if (right == false && left == false && up == false && turnLeft == true) {
+			player.animation.stop();
+			player.animation.setOffsetY(134);
+			player.animation.setOffsetX(0);
+			player.animation.play();	
+		}
+	}
+	private void updateDoor() {
+		//Level 1
+		for (Objects button : buttons) {
+			if (player.getBoundsInParent().intersects(button.getBoundsInParent())&&stop==false) {
+				if(levelNumber == 3) {
+				button.setFill(new ImagePattern(blocks[13]));
+				} else {
+				button.setFill(new ImagePattern(blocks[9]));
+				}
+				openDoor();
+				stop = true;
+			}
+		}
+		//Level 2
+		if (levelNumber == 2 && levels.checkIfAllPointsPassed() && stop == false) {
+			openDoor();
+			stop = true;
+		}
+	}
+	private void updateSpike() {
+		for (Node spike : spikes) {
+			if (player.getBoundsInParent().intersects(spike.getBoundsInParent())) {
+				death.setOnEndOfMedia(new Runnable() {
+					public void run() {
+						death  = new MediaPlayer(death_name.playSound()); ;
+					}
+				});
+			death.play();
+				player.addDeathCount();
+				this.deaths=player.getDeathCount();
+				appRoot.getChildren().remove(player);
+				player = new Avatar(0, 572, 20, 32, floors, walls, doors);
+				appRoot.getChildren().add(player);
+				player.setDeathCount(this.deaths);
+			}
+		}
+	}
+	
+	/**
+	 * Method: Initialize all Content - Avatar, LevelData, Objects, etc.
+	 * 
+	 */
+	private void initContent() {
+		this.initBackground();
+		this.initLevelData();
+		this.initAvatar();
+		this.initGUI();
+	}
+
+	 //Player moving right
+	 public void moveRight(){	
+		if  (player.getTranslateX() + 32 <= levelWidth - 5) {
+			animate("right");
 			player.movePlayerX(4);
 		}
 	}
 	
-	//animates the player moving up
+	//Player moving up
 	public void moveUp(){
 		if (player.getTranslateY() >= 5) {
-			player.animation.stop();
-			player.animation.setOffsetY(45);
-			player.animation.setOffsetX(5);
+			animate("up");
             player.jumpPlayer();   
 		}
 	}	
 	
-	//animates the player moving left
+	//Player moving left
 	public void moveLeft(){
 		if( player.getTranslateX() >= 5) {
-			player.animation.setOffsetY(70);
-			player.animation.setOffsetX(0);
-			player.animation.play();	
+			animate("left");
 			player.movePlayerX(-4);			
 		}
 	}
@@ -281,52 +409,7 @@ public class Main extends Application {
 	 * 
 	 */
 	private void update() {
-		
-		if(right){
-			if(levelNumber == 3){
-				moveLeft();
-				turnLeft = true;
-			}
-			else{
-				moveRight();	
-				turnLeft = false;
-		}
-		}
-		if(up && right){
-			player.animation.setOffsetY(100);
-			player.animation.setOffsetX(0);
-			player.animation.play();
-			player.jumpPlayer();
-			turnLeft = false;
-		}
-		else if(up){
-			moveUp();
-			turnLeft = false;
-		}
-		if(left){
-			if(levelNumber == 3){
-				moveRight();
-				turnLeft = false;	
-			}
-			else{
-			moveLeft();
-			turnLeft= true;
-		}
-		}
-		if(right== false && left == false && up== false && turnLeft== false){
-			player.animation.stop();
-			player.animation.setOffsetY(32);
-			player.animation.setOffsetX(0);
-			player.animation.play();
-		}
-		
-		else if(right== false && left == false && up== false && turnLeft== true){
-			player.animation.stop();
-			player.animation.setOffsetY(134);
-			player.animation.setOffsetX(0);
-			player.animation.play();	
-		}
-		
+		updateKey();
 		if (player.getVelocity().getY() < 6) {
 			player.addVelocity(0, .5);
 		}
@@ -336,45 +419,8 @@ public class Main extends Application {
 		this.stopwatch.setCurrentTime();
 		gameTimer.setText(this.stopwatch.toString());
 		deathCountMsg.setText("Death Count: "+player.getDeathCount());       
-		
-		//Button
-		for (Objects button : buttons) {
-			if (player.getBoundsInParent().intersects(button.getBoundsInParent())&&stop==false) {
-				if(levelNumber == 3){
-				button.setFill(new ImagePattern(blocks[13]));
-					
-				}
-				else{
-				button.setFill(new ImagePattern(blocks[9]));
-				}
-				openDoor();
-				stop = true;
-			}
-		}
-		if (levelNumber == 2 && levels.checkIfAllPointsPassed() && stop == false) {
-			openDoor();
-			stop = true;
-		}
-		
-		//Spikes
-		for (Node spike : spikes) {
-			if (player.getBoundsInParent().intersects(spike.getBoundsInParent())) {
-				death.setOnEndOfMedia(new Runnable() {
-					public void run() {
-						death  = new MediaPlayer(death_name.playSound()); ;
-					}
-				});
-			death.play();
-				System.out.println("You died!");
-				player.addDeathCount();
-				System.out.println(player.getDeathCount());
-				this.deaths=player.getDeathCount();
-				appRoot.getChildren().remove(player);
-				player = new Avatar(0, 572, 20, 32, floors, walls, doors);
-				appRoot.getChildren().add(player);
-				player.setDeathCount(this.deaths);
-			}
-		}
+		updateDoor();
+		updateSpike();
 		
 		//Avatar Position - End Level
 		if (player.getTranslateX() > 1306  && player.getTranslateY() > 520) {
@@ -483,12 +529,10 @@ public class Main extends Application {
 		btnexit.setTranslateY(50);
 		btnexit.setTranslateX(10);
 		
-		//To Main Menu
+		//GUI Button
+		Button btnmenu= new Button("Main Menu");
 		BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource("/Images/menu_button.png").toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 	    Background background = new Background(backgroundImage);
-	    
-
-		Button btnmenu= new Button("Main Menu");
 		btnmenu.setBackground(background);
 		hbox1.setSpacing(300);
 		hbox1.getChildren().add(btnmenu);
@@ -520,72 +564,19 @@ public class Main extends Application {
 		btnstart.setFont(fontStart);
 		btnexit.setFont(fontExit);
 		title.setFont(fontTitle);
-		btnmenu.setTextFill(Color.GREY);
+		btnmenu.setTextFill(Color.WHITE);
 		btnstart.setTextFill(Color.WHITE);
 		btnexit.setTextFill(Color.WHITE);
 		title.setTextFill(Color.WHITE);
 		btnstart.setBackground(Background.EMPTY);
 		btnexit.setBackground(Background.EMPTY);
 		
-		//Button Size Increase if Hovered Over
-		btnmenu.setOnMouseEntered(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent e) {
-				btnmenu.setTextFill(Color.WHITE);
-				btnmenu.setScaleX(1.5);
-				btnmenu.setScaleY(1.5);
-				}
-		});
 		
-		//Button Size Return
-		btnmenu.setOnMouseExited(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent e) {
-				btnmenu.setTextFill(Color.GREY);
-				btnmenu.setScaleX(1);
-				btnmenu.setScaleY(1);
-			}
-		});
-		
-		//Button Size Increase if Hovered Over
-		btnstart.setOnMouseEntered(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent e) {
-				btnstart.setTextFill(Color.LIGHTCYAN);
-				btnstart.setScaleX(1.5);
-				btnstart.setScaleY(1.5);
-				}
-		});
-		
-		//Button Size Return
-		btnstart.setOnMouseExited(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent e) {
-				btnstart.setTextFill(Color.WHITE);
-				btnstart.setScaleX(1);
-				btnstart.setScaleY(1);
-			}
-		});
+		this.btnResize(btnmenu);
+		this.btnResize(btnstart);
+		this.btnResize(btnexit);
 			
-		//Button Size Increase if Hovered Over
-		btnexit.setOnMouseEntered(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent e) {
-				btnexit.setTextFill(Color.LIGHTCYAN);
-				btnexit.setScaleX(1.5);
-				btnexit.setScaleY(1.5);
-				}
-		});
-		
-		//Button Size Return
-		btnexit.setOnMouseExited(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent e) {
-				btnexit.setTextFill(Color.WHITE);
-				btnexit.setScaleX(1);
-				btnexit.setScaleY(1);
-			}
-		});
+
 		stackPane.getChildren().addAll(menubg, btnstart, btnexit, title);
 		menuroot.getChildren().add(stackPane);
 		
@@ -600,7 +591,7 @@ public class Main extends Application {
 			}
 		});	
 		
-		//key Event handler
+		//Key Event handler
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -612,7 +603,7 @@ public class Main extends Application {
             }
         });
 		
-	scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+		scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
 				if(count==0){
@@ -640,7 +631,6 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("'Arrow Keys' - Movement");
 		launch(args);
 	}
 }
