@@ -95,11 +95,14 @@ public class Main extends Application {
 		new Image("Images/button_pressed2.png"),
 		new Image("Images/background_inverted.png"),
 		new Image("Images/fire_spritesheet.png"),
+		new Image("Images/roof.png"),
+		new Image("Images/black.png")
 	};
 	private ImageView imageView = new ImageView(image);
 	
 	//Game
 	private int levelWidth;
+	private Button btnmenu= new Button("Main Menu");
 	private Rectangle bg = new Rectangle(672 * 2, 354*2);
 	private HashMap<KeyCode, Boolean> keys = new HashMap<KeyCode, Boolean>();
 	private ArrayList<Objects> floors = new ArrayList<Objects>();
@@ -155,6 +158,8 @@ public class Main extends Application {
 		menubg.setFill(new ImagePattern(blocks[11]));
 		appRoot.getChildren().addAll(bg);
 		appRoot.getChildren().add(hbox1);
+		appRoot.getChildren().add(btnmenu);
+		appRoot.getChildren().add(gameTimer);
 	}
 	private void initLevelData() {
 		levelWidth = LevelData.LEVEL1[0].length() * 32;
@@ -179,6 +184,16 @@ public class Main extends Application {
 			}
 			for (int j = 0; j < line.length(); j++) {
 				switch (line.charAt(j)) {
+					case 'a':
+						Objects roof = new Objects(j*32, i*32, 32, 32, blocks[16]);
+						walls.add(roof);
+						appRoot.getChildren().add(roof);
+						break;
+					case 'b':
+						Objects black = new Objects(j*32, i*32, 32, 32, blocks[17]);
+						walls.add(black);
+						appRoot.getChildren().add(black);
+						break;	
 					case '0':
 						break;
 					case '1':
@@ -249,10 +264,18 @@ public class Main extends Application {
 		levelDetail.setWrapText(true);
 		if (this.levelNumber==0) {
 			levelDetail.setText("Tunnel");
-			hbox1.setSpacing(300.2);
-		} else {
-			levelDetail.setText("Level "+this.levelNumber);
-			hbox1.setSpacing(300);
+		} else if (this.levelNumber==1){
+			levelDetail.setText("Level "+this.levelNumber+ "- Beginning");
+		}
+		else if (this.levelNumber==2){
+			levelDetail.setText("Level "+this.levelNumber+ "- Wrapping World");
+		}
+		else if (this.levelNumber==3){
+			levelDetail.setText("Level "+this.levelNumber+ "- Mirror World");
+		}
+		else if (this.levelNumber==4){
+			levelDetail.setText("Level "+this.levelNumber+ "- Die, die and die");
+	
 		}
 		gameTimer.setTextFill(Color.GREY);
 		gameTimer.setText(this.stopwatch.toString());
@@ -273,11 +296,7 @@ public class Main extends Application {
 			player.animation.setOffsetY(70);
 			player.animation.setOffsetX(0);
 			player.animation.play();
-		} else if (condition == "up") {
-			player.animation.setOffsetY(45);
-			player.animation.setOffsetX(5);
-			player.animation.play();
-		} else {
+		}  else {
 			player.animation.stop();
 		}
 	}
@@ -502,10 +521,9 @@ public class Main extends Application {
 		scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));
 		
 		hbox1.relocate(20,650);
-		hbox1.setSpacing(300);
+		hbox1.setSpacing(200);
 		hbox1.getChildren().add(deathCountMsg);
 		hbox1.getChildren().add(levelDetail);
-		hbox1.getChildren().add(gameTimer);
 		
 		primaryStage.setTitle("Re:Curse");
 		
@@ -530,12 +548,13 @@ public class Main extends Application {
 		btnexit.setTranslateX(10);
 		
 		//GUI Button
-		Button btnmenu= new Button("Main Menu");
 		BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource("/Images/menu_button.png").toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 	    Background background = new Background(backgroundImage);
 		btnmenu.setBackground(background);
-		hbox1.setSpacing(300);
-		hbox1.getChildren().add(btnmenu);
+		btnmenu.setLayoutX(1100);
+		btnmenu.setLayoutY(650);
+		gameTimer.setLayoutX(700);
+		gameTimer.setLayoutY(650);
 		
 		//Start Game
 		btnstart.setOnAction(new EventHandler<ActionEvent>() {
