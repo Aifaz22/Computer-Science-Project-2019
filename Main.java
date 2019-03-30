@@ -382,7 +382,8 @@ public class Main extends Application {
 				doors.clear();
 				buttons.clear();
 				spikes.clear();
-				levelNumber++;
+				gemlist.clear();
+				levelNumber=2;
 				initContent();
 			}
 		}
