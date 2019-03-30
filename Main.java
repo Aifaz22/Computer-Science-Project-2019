@@ -149,7 +149,7 @@ public class Main extends Application {
 	
 	
 	private void initBackground() {
-		if(levelNumber == 3) {
+		if(levelNumber == 4) {
 			bg.setFill(new ImagePattern(blocks[14]));	
 		}
 		else {
@@ -170,12 +170,15 @@ public class Main extends Application {
 					line = LevelData.Tunnel[i];
 					break;
 				case 1:
-					line = LevelData.LEVEL1[i];
+					line = LevelData.START[i];
 					break;
 				case 2:
 					line = LevelData.LEVEL1[i];
 					break;
 				case 3:
+					line = LevelData.LEVEL1[i];
+					break;
+				case 4:
 					line = LevelData.LEVEL3[i];
 					break;
 				default:
@@ -217,11 +220,11 @@ public class Main extends Application {
 						appRoot.getChildren().add(block);
 						break;
 					case '5':
-						if(levelNumber == 3){
+						if(levelNumber == 4){
 						Objects button = new Objects(j*32, i*32, 32, 8, blocks[12]);
 						buttons.add(button);
 						appRoot.getChildren().add(button);
-						} else if (levelNumber != 2) {
+						} else if (levelNumber != 3) {
 						Objects button = new Objects(j*32, i*32+24, 32, 8, blocks[4]);
 						buttons.add(button);
 						appRoot.getChildren().add(button);
@@ -264,17 +267,20 @@ public class Main extends Application {
 		levelDetail.setWrapText(true);
 		if (this.levelNumber==0) {
 			levelDetail.setText("Tunnel");
-		} else if (this.levelNumber==1){
-			levelDetail.setText("Level "+this.levelNumber+ "- Beginning");
-		}
-		else if (this.levelNumber==2){
-			levelDetail.setText("Level "+this.levelNumber+ "- Wrapping World");
+		} else if (this.levelNumber==2){
+			levelDetail.setText("Level "+(this.levelNumber-1)+ "- Beginning");
 		}
 		else if (this.levelNumber==3){
-			levelDetail.setText("Level "+this.levelNumber+ "- Mirror World");
+			levelDetail.setText("Level "+(this.levelNumber-1)+ "- Wrapping World");
 		}
 		else if (this.levelNumber==4){
-			levelDetail.setText("Level "+this.levelNumber+ "- Die, die and die");
+			levelDetail.setText("Level "+(this.levelNumber-1)+ "- Mirror World");
+		}
+		else if (this.levelNumber==5){
+			levelDetail.setText("Level "+(this.levelNumber-1)+ "- Die, die and die");
+	
+		}else if (this.levelNumber==1){
+			levelDetail.setText("Start "+(this.levelNumber-1)+ "- Touch Gem and start");
 	
 		}
 		gameTimer.setTextFill(Color.GREY);
@@ -302,7 +308,7 @@ public class Main extends Application {
 	}
 	private void updateKey() {
 		if (right) {
-			if (levelNumber == 3){
+			if (levelNumber == 4){
 				moveLeft();
 				turnLeft = true;
 			} else {
@@ -321,7 +327,7 @@ public class Main extends Application {
 			turnLeft = false;
 		}
 		if (left) {
-			if (levelNumber == 3){
+			if (levelNumber == 4){
 				moveRight();
 				turnLeft = false;	
 			} else {
@@ -345,7 +351,7 @@ public class Main extends Application {
 		//Level 1
 		for (Objects button : buttons) {
 			if (player.getBoundsInParent().intersects(button.getBoundsInParent())&&stop==false) {
-				if(levelNumber == 3) {
+				if(levelNumber == 4) {
 				button.setFill(new ImagePattern(blocks[13]));
 				} else {
 				button.setFill(new ImagePattern(blocks[9]));
@@ -355,7 +361,7 @@ public class Main extends Application {
 			}
 		}
 		//Level 2
-		if (levelNumber == 2 && levels.checkIfAllPointsPassed() && stop == false) {
+		if (levelNumber == 3 && levels.checkIfAllPointsPassed() && stop == false) {
 			openDoor();
 			stop = true;
 		}
@@ -461,29 +467,29 @@ public class Main extends Application {
 		//Avatar Position - Warping
 		if (player.getTranslateX() > 1306  && player.getTranslateY() < 105) {
 			player.setTranslateX(5);
-			if(levelNumber == 2)
+			if(levelNumber == 3)
 			levels.setPassedWrappingPoint(1);
 		}
 		if (player.getTranslateX() < 5  && player.getTranslateY() < 105) {
 			player.setTranslateX(1305);
-			if(levelNumber == 2)
+			if(levelNumber == 3)
 				levels.setPassedWrappingPoint(2);
 		}
 		if (player.getTranslateY() > 600) {
-			if(levelNumber == 2 && player.getTranslateX() > 700) {
+			if(levelNumber == 3 && player.getTranslateX() > 700) {
 				levels.setPassedWrappingPoint(3);
 			}
-			else if (levelNumber == 2 && player.getTranslateX() < 700){
+			else if (levelNumber == 3 && player.getTranslateX() < 700){
 				levels.setPassedWrappingPoint(4);
 			}
 			player.setTranslateX(player.getTranslateX());
 			player.setTranslateY(2);
 		}
 		if (player.getTranslateY() < 1) {
-			if(levelNumber == 2 && player.getTranslateX() > 700) {
+			if(levelNumber == 3 && player.getTranslateX() > 700) {
 				levels.setPassedWrappingPoint(5);
 			}
-			else if (levelNumber == 2 && player.getTranslateX() < 700){
+			else if (levelNumber == 3 && player.getTranslateX() < 700){
 				levels.setPassedWrappingPoint(0);
 			}
 			player.setTranslateY(580);
