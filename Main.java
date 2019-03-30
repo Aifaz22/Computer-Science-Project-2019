@@ -78,6 +78,7 @@ public class Main extends Application {
 	
 	//Graphics
 	private Image image = new Image("Images/player.png");
+	private Image gem = new Image("Images/gem1.png");
 	private Image[] blocks = {
 		new Image("Images/tile.png"),
 		new Image("Images/leftwall.png"),
@@ -110,6 +111,7 @@ public class Main extends Application {
 	private ArrayList<Objects> buttons = new ArrayList<Objects>();
 	private ArrayList<Objects> spikes = new ArrayList<Objects>();
 	private ArrayList<Objects> doors = new ArrayList<Objects>();
+	private ArrayList<Objects> gemlist = new ArrayList<Objects>();
 	private Avatar player;
 	private Rectangle menubg = new Rectangle(672 * 2, 354*2);
 	private LevelData levels = new LevelData();
@@ -196,6 +198,11 @@ public class Main extends Application {
 						Objects black = new Objects(j*32, i*32, 32, 32, blocks[17]);
 						walls.add(black);
 						appRoot.getChildren().add(black);
+						break;
+					case 'c':
+						Objects gems = new Objects(j*32, i*32, 126, 126, gem);
+						gemlist.add(gems);
+						appRoot.getChildren().add(gems);
 						break;	
 					case '0':
 						break;
@@ -366,21 +373,37 @@ public class Main extends Application {
 			stop = true;
 		}
 	}
+	private void updateGem() {
+		for (Node gem : gemlist) {	
+			if (player.getBoundsInParent().intersects(gem.getBoundsInParent())) {
+				appRoot.getChildren().clear();
+				floors.clear();
+				walls.clear();
+				doors.clear();
+				buttons.clear();
+				spikes.clear();
+				levelNumber++;
+				initContent();
+			}
+		}
+	}
+	
+	
 	private void updateSpike() {
 		for (Node spike : spikes) {
-			if (player.getBoundsInParent().intersects(spike.getBoundsInParent())) {
-				death.setOnEndOfMedia(new Runnable() {
-					public void run() {
-						death  = new MediaPlayer(death_name.playSound()); ;
-					}
-				});
-			death.play();
-				player.addDeathCount();
-				this.deaths=player.getDeathCount();
-				appRoot.getChildren().remove(player);
-				player = new Avatar(0, 572, 20, 32, floors, walls, doors);
-				appRoot.getChildren().add(player);
-				player.setDeathCount(this.deaths);
+				if (player.getBoundsInParent().intersects(spike.getBoundsInParent())) {
+					death.setOnEndOfMedia(new Runnable() {
+						public void run() {
+							death  = new MediaPlayer(death_name.playSound()); ;
+						}
+					});
+				death.play();
+					player.addDeathCount();
+					this.deaths=player.getDeathCount();
+					appRoot.getChildren().remove(player);
+					player = new Avatar(0, 572, 20, 32, floors, walls, doors);
+					appRoot.getChildren().add(player);
+					player.setDeathCount(this.deaths);
 			}
 		}
 	}
@@ -446,6 +469,7 @@ public class Main extends Application {
 		deathCountMsg.setText("Death Count: "+player.getDeathCount());       
 		updateDoor();
 		updateSpike();
+		updateGem();
 		
 		//Avatar Position - End Level
 		if (player.getTranslateX() > 1306  && player.getTranslateY() > 520) {
