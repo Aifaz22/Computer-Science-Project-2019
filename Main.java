@@ -392,7 +392,7 @@ public class Main extends Application {
 		}
 	}
 	private void updateGem() {
-		for (Node gem : gemlist) {	
+		for (Objects gem : gemlist) {	
 			if (player.getBoundsInParent().intersects(gem.getBoundsInParent())) {
 				appRoot.getChildren().clear();
 				floors.clear();
@@ -401,6 +401,7 @@ public class Main extends Application {
 				buttons.clear();
 				spikes.clear();
 				gemlist.clear();
+				gemlist.add(new Objects(42*32, 20*32, 0, 0, new Image("Images/player.png")));
 				levelNumber=2;
 				initContent();
 			}
@@ -576,6 +577,7 @@ public class Main extends Application {
 		}
 		player.updateObstacleState(floors, walls, doors);
 	}
+
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
