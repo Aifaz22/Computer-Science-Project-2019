@@ -28,7 +28,6 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
-import java.util.Iterator;
 import javafx.util.Duration;
 
 
@@ -111,7 +110,6 @@ public class Main extends Application {
 	private ArrayList<Objects> walls = new ArrayList<Objects>();
 	private ArrayList<Objects> buttons = new ArrayList<Objects>();
 	private ArrayList<Objects> spikes = new ArrayList<Objects>();
-	private ArrayList<Objects> tempSpikes = new ArrayList<Objects>();
 	private ArrayList<Objects> doors = new ArrayList<Objects>();
 	private ArrayList<Objects> gemlist = new ArrayList<Objects>();
 	private Avatar player;
@@ -246,19 +244,16 @@ public class Main extends Application {
 					case '6':
 						Objects up_spike = new Objects(j*32, i*32+11, 32, 32, blocks[5]);
 						spikes.add(up_spike);
-						tempSpikes.add(up_spike);
 						appRoot.getChildren().add(up_spike);
 						break;
 					case '7':
 						Objects down_spike = new Objects(j*32, i*32, 32, 26, blocks[6]);
 						spikes.add(down_spike);
-						tempSpikes.add(down_spike);
 						appRoot.getChildren().add(down_spike);
 						break;
 					case '8':
 						Objects left_spike = new Objects(j*32+10, i*32, 32, 32, blocks[7]);
 						spikes.add(left_spike);
-						tempSpikes.add(left_spike);
 						appRoot.getChildren().add(left_spike);
 						break;
 					case '9':
