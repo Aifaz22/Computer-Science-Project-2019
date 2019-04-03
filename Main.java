@@ -28,6 +28,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
+import java.util.Iterator;
 import javafx.util.Duration;
 
 
@@ -110,9 +111,11 @@ public class Main extends Application {
 	private ArrayList<Objects> walls = new ArrayList<Objects>();
 	private ArrayList<Objects> buttons = new ArrayList<Objects>();
 	private ArrayList<Objects> spikes = new ArrayList<Objects>();
+	private ArrayList<Objects> tempSpikes = new ArrayList<Objects>();
 	private ArrayList<Objects> doors = new ArrayList<Objects>();
 	private ArrayList<Objects> gemlist = new ArrayList<Objects>();
 	private Avatar player;
+	private ArrayList<Boolean> temp = new ArrayList<Boolean>();
 	private Rectangle menubg = new Rectangle(672 * 2, 354*2);
 	private LevelData levels = new LevelData();
 	private int tempLevel = 0;
@@ -183,6 +186,9 @@ public class Main extends Application {
 				case 4:
 					line = LevelData.LEVEL3[i];
 					break;
+				case 5:
+					line = LevelData.LEVEL4[i];
+					break;
 				default:
 					line = LevelData.LEVEL1[i];
 					break;
@@ -240,16 +246,19 @@ public class Main extends Application {
 					case '6':
 						Objects up_spike = new Objects(j*32, i*32+11, 32, 32, blocks[5]);
 						spikes.add(up_spike);
+						tempSpikes.add(up_spike);
 						appRoot.getChildren().add(up_spike);
 						break;
 					case '7':
 						Objects down_spike = new Objects(j*32, i*32, 32, 26, blocks[6]);
 						spikes.add(down_spike);
+						tempSpikes.add(down_spike);
 						appRoot.getChildren().add(down_spike);
 						break;
 					case '8':
 						Objects left_spike = new Objects(j*32+10, i*32, 32, 32, blocks[7]);
 						spikes.add(left_spike);
+						tempSpikes.add(left_spike);
 						appRoot.getChildren().add(left_spike);
 						break;
 					case '9':
@@ -260,6 +269,10 @@ public class Main extends Application {
 					}
 				}
 			}
+			
+			 for (int i = 0; i < spikes.size() ;i++) {
+				temp.add(false);
+		 }
 	}
 	private void initAvatar() {
 		player = new Avatar(0, 572, 20, 32, floors, walls, doors);
@@ -372,6 +385,11 @@ public class Main extends Application {
 			openDoor();
 			stop = true;
 		}
+		
+		if(levelNumber == 5 && checkSpikes() == spikes.size()){
+			openDoor();
+			stop = true; 
+		}
 	}
 	private void updateGem() {
 		for (Node gem : gemlist) {	
@@ -389,8 +407,19 @@ public class Main extends Application {
 		}
 	}
 	
+	public int checkSpikes(){
+		int val= 0;
+		for(int i = 0; i< spikes.size(); i++){
+			if(temp.get(i) == true){
+				val++;
+			}
+		}
+		return val;
+	}
 	
 	private void updateSpike() {
+	
+		int count = 0;
 		for (Node spike : spikes) {
 				if (player.getBoundsInParent().intersects(spike.getBoundsInParent())) {
 					death.setOnEndOfMedia(new Runnable() {
@@ -398,7 +427,10 @@ public class Main extends Application {
 							death  = new MediaPlayer(death_name.playSound()); ;
 						}
 					});
-				death.play();
+					if(levelNumber == 5){
+						temp.set(count, true);
+						}
+					death.play();
 					player.addDeathCount();
 					this.deaths=player.getDeathCount();
 					appRoot.getChildren().remove(player);
@@ -406,7 +438,8 @@ public class Main extends Application {
 					appRoot.getChildren().add(player);
 					player.setDeathCount(this.deaths);
 			}
-		}
+			count++;
+		}	
 	}
 	
 	/**
