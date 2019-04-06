@@ -97,7 +97,8 @@ public class Main extends Application {
 		new Image("Images/background_inverted.png"),
 		new Image("Images/fire_spritesheet.png"),
 		new Image("Images/roof.png"),
-		new Image("Images/black.png")
+		new Image("Images/black.png"),
+		new Image("Images/credits.png")
 	};
 	private ImageView imageView = new ImageView(image);
 	
@@ -115,6 +116,7 @@ public class Main extends Application {
 	private Avatar player;
 	private ArrayList<Boolean> temp = new ArrayList<Boolean>();
 	private Rectangle menubg = new Rectangle(672 * 2, 354*2);
+	private Rectangle crbg = new Rectangle(672*2, 354*2);
 	private LevelData levels = new LevelData();
 	private int tempLevel = 0;
 	private boolean stop = false;
@@ -588,11 +590,23 @@ public class Main extends Application {
 		
 		primaryStage.setTitle("Re:Curse");
 		
+		//Credits section
+		StackPane crpane = new StackPane();
+		HBox crroot = new HBox();
+		crbg.setFill(new ImagePattern(blocks[18]));
+		Button btnback = new Button("Back");
+		btnback.setTranslateX(200);
+		btnback.setTranslateY(210);
+		Scene crscene = new Scene(crroot,LevelData.LEVEL1[0].length() * 32 - 15, 690);
+
+		
 		//Creating the Main Menu
+		
 		VBox menuroot = new VBox();
 		StackPane stackPane = new StackPane();
 		Button btnstart;
 		Button btnexit;
+		Button btncredit;
 		Label title;
 		
 		//Title
@@ -603,10 +617,13 @@ public class Main extends Application {
 		//Main Menu Buttons
 		btnstart = new Button("Start Game");
 		btnexit = new Button("EXIT");
+		btncredit = new Button("Credits");
 		btnstart.setTranslateY(-30);
 		btnstart.setTranslateX(12);
-		btnexit.setTranslateY(50);
+		btnexit.setTranslateY(130);
 		btnexit.setTranslateX(10);
+		btncredit.setTranslateX(11);
+		btncredit.setTranslateY(50);
 		
 		//GUI Button
 		BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource("/Images/menu_button.png").toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
@@ -636,6 +653,16 @@ public class Main extends Application {
 			}
 		});
 		
+		//Credit
+		btncredit.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				primaryStage.setScene(crscene);
+				primaryStage.show();
+				primaryStage.setResizable(false);
+			}
+		});
+		
 		Font fontMenu = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 20);
 		Font fontStart = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 40);
 		Font fontExit = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 30);
@@ -650,19 +677,39 @@ public class Main extends Application {
 		title.setTextFill(Color.WHITE);
 		btnstart.setBackground(Background.EMPTY);
 		btnexit.setBackground(Background.EMPTY);
+		btncredit.setBackground(Background.EMPTY);
+		btncredit.setTextFill(Color.WHITE);
+		btncredit.setFont(fontExit);
+		btnback.setFont(fontExit);
+		btnback.setTextFill(Color.WHITE);
+		btnback.setBackground(Background.EMPTY);
 		
 		
 		this.btnResize(btnmenu);
 		this.btnResize(btnstart);
 		this.btnResize(btnexit);
+		this.btnResize(btncredit);
+		this.btnResize(btnback);
+		
+		crpane.getChildren().addAll(crbg, btnback);
+		crroot.getChildren().add(crpane);
 			
 
-		stackPane.getChildren().addAll(menubg, btnstart, btnexit, title);
+		stackPane.getChildren().addAll(menubg, btnstart, btnexit, title, btncredit);
 		menuroot.getChildren().add(stackPane);
 		
 		//Running Game
 		Scene gamemenu = new Scene(menuroot, LevelData.LEVEL1[0].length() * 32 - 15, 685);
 		btnmenu.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				primaryStage.setScene(gamemenu);
+				primaryStage.show();
+				primaryStage.setResizable(false);
+			}
+		});	
+		
+		btnback.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				primaryStage.setScene(gamemenu);
