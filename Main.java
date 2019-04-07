@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -63,7 +62,6 @@ public class Main extends Application {
 	private Label levelDetail = new Label();
 	private TimerText stopwatch = new TimerText();
 	private Label gameTimer = new Label();
-	int deaths = 0;
 	private int levelNumber = 1;
 	
 	//Sound & Music
@@ -75,7 +73,6 @@ public class Main extends Application {
     private MediaPlayer death = new MediaPlayer(death_name.playSound());
 	
 	//Graphics
-	private Image image = new Image("Images/player.png");
 	private Image gem = new Image("Images/gem1.png");
 	private Image[] blocks = {
 		new Image("Images/tile.png"),
@@ -98,7 +95,6 @@ public class Main extends Application {
 		new Image("Images/black.png"),
 		new Image("Images/credits.png")
 	};
-	private ImageView imageView = new ImageView(image);
 	
 	//Game
 	private int levelWidth;
@@ -118,7 +114,6 @@ public class Main extends Application {
 	private Rectangle menubg = new Rectangle(672 * 2, 354*2);
 	private Rectangle crbg = new Rectangle(672*2, 354*2);
 	private LevelData levels = new LevelData();
-	private int totalDeathCount=0;
 	private int tempLevel = 0;
 	private boolean stop = false;
 	
@@ -276,42 +271,103 @@ public class Main extends Application {
 		 }
 	}
 	private void initAvatar() {
-		player = new Avatar(0, 572, 20, 32, floors, walls, doors);
+		player = new Avatar(0, 572, 20, 32, floors, walls, doors, 0);
 		appRoot.getChildren().add(player);
 	}
-	private void initGUI() {
-		deathCountMsg.setText("Death Count: "+player.getDeathCount());
-		deathCountMsg.setFont(Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 20));
+	
+	private void initGUIDeath() {
 		deathCountMsg.setTextFill(Color.GREY);
+		deathCountMsg.setFont(Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 20));
+		deathCountMsg.setText("Death Count: "+player.getDeathCount());
+	}
+	private void initGUILevel() {
 		levelDetail.setTextFill(Color.GREY);
 		levelDetail.setFont(Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 20));
 		levelDetail.setWrapText(true);
 		if (this.levelNumber==0) {
 			levelDetail.setText("Tunnel");
+		} else if (this.levelNumber==1){
+			levelDetail.setText("Start "+(this.levelNumber-1)+ "- Touch Gem and start");
 		} else if (this.levelNumber==2){
 			levelDetail.setText("Level "+(this.levelNumber-1)+ "- Beginning");
-		}
-		else if (this.levelNumber==3){
+		} else if (this.levelNumber==3){
 			levelDetail.setText("Level "+(this.levelNumber-1)+ "- Wrapping World");
-		}
-		else if (this.levelNumber==4){
+		} else if (this.levelNumber==4){
 			levelDetail.setText("Level "+(this.levelNumber-1)+ "- Mirror World");
-		}
-		else if (this.levelNumber==5){
+		} else if (this.levelNumber==5){
 			levelDetail.setText("Level "+(this.levelNumber-1)+ "- Die, die and die");
-	
-		}else if (this.levelNumber==1){
-			levelDetail.setText("Start "+(this.levelNumber-1)+ "- Touch Gem and start");
-	
 		}
+	}
+	private void initGUITimer() {
 		gameTimer.setTextFill(Color.GREY);
 		gameTimer.setText(this.stopwatch.toString());
 		gameTimer.setFont(Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 20));
-		player.setDeathCount(this.deaths);
+	}
+	private void initGUI() {
+		hbox1.relocate(20,650);
+		hbox1.setSpacing(200);
+		hbox1.getChildren().clear();
+		initGUIDeath();
+		initGUILevel();
+		initGUITimer();
 		
+		hbox1.getChildren().add(deathCountMsg);
+		hbox1.getChildren().add(levelDetail);
 		stop = false;
 	}
 	
+	private void initEndMsg() {
+		Label message = new Label("THE END");
+		Font msgFont = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 45);
+		message.setFont(msgFont);
+		message.setTextFill(Color.GREEN);
+		message.setTranslateX(580);
+		message.setTranslateY(200);
+		appRoot.getChildren().add(message);
+	}
+	private void initEndDeath() {
+		Font fontDeath = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 30);
+		Label deathCount = new Label("Total Death Count: " + player.getDeathCount());
+		deathCount.setFont(fontDeath);
+		deathCount.setTextFill(Color.GREY);
+		deathCount.setTranslateX(535);
+		deathCount.setTranslateY(430);
+		appRoot.getChildren().add(deathCount);
+	}
+	private void initEndTimer() {
+		Label totalTime = new Label("Total Time: " + gameTimer.getText());
+		Font fontTimer = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 30);
+		totalTime.setFont(fontTimer);
+		totalTime.setTextFill(Color.GREY);
+		totalTime.setTranslateX(535);
+		totalTime.setTranslateY(470);
+		appRoot.getChildren().add(totalTime);
+	}
+	public void initEnd() {
+		initEndMsg();
+		initEndDeath();
+		initEndTimer();
+		appRoot.getChildren().removeAll(btnmenu, deathCountMsg, gameTimer, levelDetail);
+		appRoot.getChildren().addAll(restart, exit);
+		
+	}
+
+	
+	/**
+	 * Method: Initialize all Content - Avatar, LevelData, Objects, etc.
+	 * 
+	 */
+	private void initContent() {
+		initBackground();
+		initLevelData();
+		initAvatar();
+		if(levelNumber == 6){
+			initEnd();
+		} else {
+			initGUI();
+		}
+	}
+
 	
 	
 	private void animate(String condition) {
@@ -323,7 +379,11 @@ public class Main extends Application {
 			player.animation.setOffsetY(70);
 			player.animation.setOffsetX(0);
 			player.animation.play();
-		}  else {
+		} else if (condition.equals("up")) {
+			player.animation.setOffsetY(100);
+			player.animation.setOffsetX(0);
+			player.animation.play();
+		} else {
 			player.animation.stop();
 		}
 	}
@@ -337,13 +397,7 @@ public class Main extends Application {
 				turnLeft = false;
 			}
 		}
-		if (up && right) {
-			player.animation.setOffsetY(100);
-			player.animation.setOffsetX(0);
-			player.animation.play();
-			player.jumpPlayer();
-			turnLeft = false;
-		} else if (up) {
+		if (up) {
 			moveUp();
 			turnLeft = false;
 		}
@@ -355,6 +409,7 @@ public class Main extends Application {
 			moveLeft();
 			turnLeft= true;
 			}
+			
 		}
 		if (right == false && left == false && up == false && turnLeft == false) {
 			player.animation.stop();
@@ -433,62 +488,13 @@ public class Main extends Application {
 						temp.set(count, true);
 						}
 					death.play();
-					player.addDeathCount();
-					this.deaths=player.getDeathCount();
+					int deathCount = player.getDeathCount() + 1;
 					appRoot.getChildren().remove(player);
-					player = new Avatar(0, 572, 20, 32, floors, walls, doors);
-					totalDeathCount++;
+					player = new Avatar(0, 572, 20, 32, floors, walls, doors, deathCount);
 					appRoot.getChildren().add(player);
-					player.setDeathCount(this.deaths);
 			}
 			count++;
 		}	
-	}
-	public void endingScene(){
-		StackPane stackPane = new StackPane();
-		//appRoot.getChildren().addAll(bg);
-		Label message = new Label("THE END");
-		Label deathCount = new Label("Total Death Count: " + totalDeathCount);
-		Label totalTime = new Label("Total Time: " + gameTimer.getText());
-		Font font = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 30);
-		Font mssgFont = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 45);
-		
-
-		deathCount.setTranslateX(535);
-		deathCount.setTranslateY(430);
-		deathCount.setFont(font);
-		message.setFont(mssgFont);
-		message.setTranslateX(580);
-		message.setTranslateY(200);
-		deathCount.setTextFill(Color.GREY);
-		totalTime.setTranslateX(535);
-		totalTime.setTranslateY(470);
-		totalTime.setFont(font);
-		deathCountMsg.setTextFill(Color.BLACK);
-		levelDetail.setTextFill(Color.BLACK);
-		totalTime.setTextFill(Color.GREY);
-		message.setTextFill(Color.GREEN);
-		appRoot.getChildren().remove(btnmenu);
-		appRoot.getChildren().remove(deathCountMsg);
-		appRoot.getChildren().remove(gameTimer);
-		appRoot.getChildren().addAll(deathCount, totalTime,message, restart, exit);
-		
-	}
-	
-	/**
-	 * Method: Initialize all Content - Avatar, LevelData, Objects, etc.
-	 * 
-	 */
-	private void initContent() {
-		this.initBackground();
-		this.initLevelData();
-		this.initAvatar();
-		if(levelNumber == 6){
-			endingScene();
-		}
-		else{
-			this.initGUI();
-		}
 	}
 
 	 //Player moving right
@@ -531,8 +537,7 @@ public class Main extends Application {
 	private void update() {
 		if(levelNumber == 6){
 			appRoot.getChildren().remove(player);
-		}
-		else{
+		} else {
 			updateKey();
 		}
 		if (player.getVelocity().getY() < 6) {
@@ -623,7 +628,6 @@ public class Main extends Application {
 
 	public void restartGame(){
 		levelNumber = 1;
-		deaths = 0;
 		stopwatch = new TimerText();
 		levels = new LevelData();
 		temp = new ArrayList<Boolean>();
@@ -637,11 +641,6 @@ public class Main extends Application {
 		Scene scene = new Scene(appRoot,LevelData.LEVEL1[0].length() * 32 - 15, 690);
 		scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
 		scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));
-		
-		hbox1.relocate(20,650);
-		hbox1.setSpacing(200);
-		hbox1.getChildren().add(deathCountMsg);
-		hbox1.getChildren().add(levelDetail);
 		
 		primaryStage.setTitle("Re:Curse");
 		
