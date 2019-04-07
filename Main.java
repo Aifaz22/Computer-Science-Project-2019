@@ -66,7 +66,7 @@ public class Main extends Application {
 	private TimerText stopwatch = new TimerText();
 	private Label gameTimer = new Label();
 	int deaths = 0;
-	private int levelNumber = 1;
+	private int levelNumber = 5;
 	
 	//Sound & Music
 	private SoundEffect bgm_name = new SoundEffect("music.wav");
@@ -105,6 +105,8 @@ public class Main extends Application {
 	//Game
 	private int levelWidth;
 	private Button btnmenu= new Button("Main Menu");
+	private Button restart = new Button("RESTART");
+	private Button exit = new Button("EXIT");
 	private Rectangle bg = new Rectangle(672 * 2, 354*2);
 	private HashMap<KeyCode, Boolean> keys = new HashMap<KeyCode, Boolean>();
 	private ArrayList<Objects> floors = new ArrayList<Objects>();
@@ -118,6 +120,7 @@ public class Main extends Application {
 	private Rectangle menubg = new Rectangle(672 * 2, 354*2);
 	private Rectangle crbg = new Rectangle(672*2, 354*2);
 	private LevelData levels = new LevelData();
+	private int totalDeathCount=0;
 	private int tempLevel = 0;
 	private boolean stop = false;
 	
@@ -188,6 +191,9 @@ public class Main extends Application {
 					break;
 				case 5:
 					line = LevelData.LEVEL4[i];
+					break;
+				case 6:
+					line = LevelData.END[i];
 					break;
 				default:
 					line = LevelData.LEVEL1[i];
@@ -433,11 +439,42 @@ public class Main extends Application {
 					this.deaths=player.getDeathCount();
 					appRoot.getChildren().remove(player);
 					player = new Avatar(0, 572, 20, 32, floors, walls, doors);
+					totalDeathCount++;
 					appRoot.getChildren().add(player);
 					player.setDeathCount(this.deaths);
 			}
 			count++;
 		}	
+	}
+	public void endingScene(){
+		StackPane stackPane = new StackPane();
+		//appRoot.getChildren().addAll(bg);
+		Label message = new Label("THE END");
+		Label deathCount = new Label("Total Death Count: " + totalDeathCount);
+		Label totalTime = new Label("Total Time: " + gameTimer.getText());
+		Font font = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 30);
+		Font mssgFont = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 45);
+		
+
+		deathCount.setTranslateX(535);
+		deathCount.setTranslateY(430);
+		deathCount.setFont(font);
+		message.setFont(mssgFont);
+		message.setTranslateX(580);
+		message.setTranslateY(200);
+		deathCount.setTextFill(Color.GREY);
+		totalTime.setTranslateX(535);
+		totalTime.setTranslateY(470);
+		totalTime.setFont(font);
+		deathCountMsg.setTextFill(Color.BLACK);
+		levelDetail.setTextFill(Color.BLACK);
+		totalTime.setTextFill(Color.GREY);
+		message.setTextFill(Color.GREEN);
+		appRoot.getChildren().remove(btnmenu);
+		appRoot.getChildren().remove(deathCountMsg);
+		appRoot.getChildren().remove(gameTimer);
+		appRoot.getChildren().addAll(deathCount, totalTime,message, restart, exit);
+		
 	}
 	
 	/**
@@ -448,7 +485,12 @@ public class Main extends Application {
 		this.initBackground();
 		this.initLevelData();
 		this.initAvatar();
-		this.initGUI();
+		if(levelNumber == 6){
+			endingScene();
+		}
+		else{
+			this.initGUI();
+		}
 	}
 
 	 //Player moving right
@@ -489,7 +531,12 @@ public class Main extends Application {
 	 * 
 	 */
 	private void update() {
-		updateKey();
+		if(levelNumber == 6){
+			appRoot.getChildren().remove(player);
+		}
+		else{
+			updateKey();
+		}
 		if (player.getVelocity().getY() < 6) {
 			player.addVelocity(0, .5);
 		}
@@ -575,6 +622,13 @@ public class Main extends Application {
 		player.updateObstacleState(floors, walls, doors);
 	}
 
+	public void restartGame(){
+		levelNumber = 1;
+		deaths = 0;
+		stopwatch = new TimerText();
+		appRoot.getChildren().clear();
+		initContent();	
+	}
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -631,8 +685,13 @@ public class Main extends Application {
 		btnmenu.setBackground(background);
 		btnmenu.setLayoutX(1100);
 		btnmenu.setLayoutY(650);
+		restart.setLayoutX(560);
+		restart.setLayoutY(280);
+		exit.setLayoutX(603);
+		exit.setLayoutY(330);
 		gameTimer.setLayoutX(700);
 		gameTimer.setLayoutY(650);
+		
 		
 		//Start Game
 		btnstart.setOnAction(new EventHandler<ActionEvent>() {
@@ -670,14 +729,20 @@ public class Main extends Application {
 		btnmenu.setFont(fontMenu);
 		btnstart.setFont(fontStart);
 		btnexit.setFont(fontExit);
+		exit.setFont(fontExit);
+		restart.setFont(fontStart);
 		title.setFont(fontTitle);
 		btnmenu.setTextFill(Color.WHITE);
 		btnstart.setTextFill(Color.WHITE);
 		btnexit.setTextFill(Color.WHITE);
 		title.setTextFill(Color.WHITE);
+		exit.setTextFill(Color.WHITE);
+		restart.setTextFill(Color.WHITE);
 		btnstart.setBackground(Background.EMPTY);
 		btnexit.setBackground(Background.EMPTY);
 		btncredit.setBackground(Background.EMPTY);
+		restart.setBackground(Background.EMPTY);
+		exit.setBackground(Background.EMPTY);
 		btncredit.setTextFill(Color.WHITE);
 		btncredit.setFont(fontExit);
 		btnback.setFont(fontExit);
@@ -690,6 +755,8 @@ public class Main extends Application {
 		this.btnResize(btnexit);
 		this.btnResize(btncredit);
 		this.btnResize(btnback);
+		this.btnResize(restart);
+		this.btnResize(exit);
 		
 		crpane.getChildren().addAll(crbg, btnback);
 		crroot.getChildren().add(crpane);
@@ -708,6 +775,23 @@ public class Main extends Application {
 				primaryStage.setResizable(false);
 			}
 		});	
+		
+		restart.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				restartGame();
+				
+			}
+		});
+		
+		exit.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				System.exit(0);
+				
+			}
+		});
+	
 		
 		btnback.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
