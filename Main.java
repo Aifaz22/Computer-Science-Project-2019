@@ -389,7 +389,7 @@ public class Main extends Application {
 			stop = true;
 		}
 		
-		if(levelNumber == 5 && checkSpikes() == spikes.size()){
+		if(levelNumber == 5 && checkSpikes() == spikes.size() && stop == false){
 			openDoor();
 			stop = true; 
 		}
