@@ -44,7 +44,7 @@ public class Avatar extends Pane {
 	PlayerAnimation animation;
 	
 	//Sound
-	private SoundEffect jump_name = new SoundEffect("jump.wav");
+	private SoundEffect jump_name = new SoundEffect("Sound/jump.wav");
 	private MediaPlayer jump = new MediaPlayer(jump_name.playSound());
 	
 	//Constructor: (Location X, Location Y, Width, Height, Floors, Walls, Doors, Death Count)

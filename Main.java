@@ -80,11 +80,11 @@ public class Main extends Application {
 	private int levelNumber = 1;
 	
 	//Sound & Music
-	private SoundEffect bgm_name = new SoundEffect("music.wav");
+	private SoundEffect bgm_name = new SoundEffect("Sound/music.wav");
 	private MediaPlayer bgm = new MediaPlayer(bgm_name.playSound());
-	private SoundEffect click_name = new SoundEffect("Button_Push.wav");
+	private SoundEffect click_name = new SoundEffect("Sound/Button_Push.wav");
     private MediaPlayer click = new MediaPlayer(click_name.playSound());
-	private SoundEffect death_name = new SoundEffect("death.wav");
+	private SoundEffect death_name = new SoundEffect("Sound/death.wav");
     private MediaPlayer death = new MediaPlayer(death_name.playSound());
 	
 	//Graphics
