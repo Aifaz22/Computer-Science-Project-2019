@@ -30,8 +30,6 @@ import javafx.stage.Stage;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
-
-
 /**
  * TO DO LIST:
  * Avatar has Death count, but Main has Death count. CHOOSE ONE.
@@ -559,6 +557,7 @@ public class Main extends Application {
 			walls.clear();
 			doors.clear();
 			buttons.clear();
+			gemlist.clear();
 			spikes.clear();
 			if(levelNumber == 0)
 				levelNumber = tempLevel + 1;
