@@ -21,8 +21,8 @@ public class PlayerAnimation extends Transition {
 	private final ImageView imageView;
 	private final int COUNT;
 	private final int COLUMNS;
-	private final int WIDTH;
-	private final int HEIGHT;
+	private final int WIDTH = 20;
+	private final int HEIGHT = 32;
 	private int offsetX;
 	private int offsetY;
 	
@@ -37,14 +37,12 @@ public class PlayerAnimation extends Transition {
 	 * 		width
 	 * 		height
 	 */
-	public PlayerAnimation (ImageView imageView, Duration duration, int count, int columns, int offsetX, int offsetY, int width, int height){
+	public PlayerAnimation (ImageView imageView, Duration duration, int count, int columns, int offsetX, int offsetY) {
 		this.imageView = imageView;
 		this.COUNT = count;
 		this.COLUMNS = columns;
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
-		this.WIDTH = width;
-		this.HEIGHT = height;
 		
 		//Length of time for one cycle of animation (in milliseconds)
 		setCycleDuration(duration);
@@ -52,7 +50,7 @@ public class PlayerAnimation extends Transition {
 		setCycleCount(Animation.INDEFINITE);
 		//Type of Interpolation (How the animation is read)
 		setInterpolator(Interpolator.LINEAR);
-		this.imageView.setViewport(new Rectangle2D(offsetX, offsetY,width, height));
+		this.imageView.setViewport(new Rectangle2D(offsetX, offsetY, WIDTH, HEIGHT));
 	}
 	
 	//Setters

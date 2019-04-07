@@ -365,21 +365,20 @@ public class Main extends Application {
 
 	
 	
-	private void animate(String condition) {
-		if (condition == "right") {
-			player.animation.setOffsetY(0);
-			player.animation.setOffsetX(0);
-			player.animation.play();
-		} else if (condition == "left") {
-			player.animation.setOffsetY(70);
-			player.animation.setOffsetX(0);
-			player.animation.play();
-		} else if (condition.equals("up")) {
-			player.animation.setOffsetY(100);
-			player.animation.setOffsetX(0);
-			player.animation.play();
-		} else {
-			player.animation.stop();
+
+	public void moveRight() {
+		if (player.getTranslateX() + 32 <= levelWidth - 5) {
+			player.movePlayerX(4);
+		}
+	}
+	public void moveUp(){
+		if (player.getTranslateY() >= 5) {
+            player.jumpPlayer();   
+		}
+	}
+	public void moveLeft(){
+		if( player.getTranslateX() >= 5) {
+			player.movePlayerX(-4);			
 		}
 	}
 	private void updateKey() {
@@ -394,7 +393,6 @@ public class Main extends Application {
 		}
 		if (up) {
 			moveUp();
-			turnLeft = false;
 		}
 		if (left) {
 			if (levelNumber == 4){
@@ -402,21 +400,88 @@ public class Main extends Application {
 				turnLeft = false;	
 			} else {
 			moveLeft();
-			turnLeft= true;
+			turnLeft = true;
 			}
-			
 		}
-		if (right == false && left == false && up == false && turnLeft == false) {
-			player.animation.stop();
+	}
+	
+	private void animate(String condition) {
+		if (condition.equals("upleft")) {
+			player.animation.setOffsetY(192);
+			player.animation.setOffsetX(0);
+		} else if (condition.equals("downleft")) {
+			player.animation.setOffsetY(224);
+			player.animation.setOffsetX(0);
+		} else if (condition.equals("left")) {
+			player.animation.setOffsetY(160);
+			player.animation.setOffsetX(0);
+		} else if (condition.equals("stillleft")) {
+			player.animation.setOffsetY(128);
+			player.animation.setOffsetX(0);
+		} else if (condition.equals("upright")) {
+			player.animation.setOffsetY(64);
+			player.animation.setOffsetX(0);
+		} else if (condition.equals("downright")) {
+			player.animation.setOffsetY(96);
+			player.animation.setOffsetX(0);
+		} else if (condition.equals("right")) {
 			player.animation.setOffsetY(32);
 			player.animation.setOffsetX(0);
-			player.animation.play();
-		} else if (right == false && left == false && up == false && turnLeft == true) {
-			player.animation.stop();
-			player.animation.setOffsetY(134);
+		} else if (condition.equals("stillright")) {
+			player.animation.setOffsetY(0);
 			player.animation.setOffsetX(0);
-			player.animation.play();	
 		}
+		player.animation.play();
+	}
+	private void updateAnimation() {
+		double gravVelocity = player.getVelocity().getY();
+		if (turnLeft) {
+			if (gravVelocity < 6) {
+				animate("upleft");
+			} else if (gravVelocity > 6 && !player.checkFloor()) {
+				animate("downleft");
+			} else if (left) {
+				animate("left");
+			} else {
+				animate("stillleft");
+			}
+		} else {
+			if (gravVelocity < 6) {
+				animate("upright");
+			} else if (gravVelocity > 6 && !player.checkFloor()) {
+				animate("downright");
+			} else if (right) {
+				animate("right");
+			} else {
+				animate("stillright");
+			}
+		}
+	}
+	
+	private void updateGravity() {
+		if (player.getVelocity().getY() < 6) {
+			player.addVelocity(0, .5);
+		}
+		player.movePlayerY((int)player.getVelocity().getY());
+	}
+	private void updateGUI() {
+		this.stopwatch.setCurrentTime();
+		gameTimer.setText(this.stopwatch.toString());
+		deathCountMsg.setText("Death Count: " + player.getDeathCount());  
+	}
+	
+	public void openDoor() {
+		click.setOnEndOfMedia(new Runnable() {
+			public void run() {
+				click  = new MediaPlayer(click_name.playSound()); 
+			}
+		});
+	    click.play();
+		for (Objects door : doors) {
+			appRoot.getChildren().remove(door);
+			door.setVisibility(false);
+		}
+		player.updateObstacleState(floors, walls, doors);
 	}
 	private void updateDoor() {
 		//Level 1
@@ -442,33 +507,7 @@ public class Main extends Application {
 			stop = true; 
 		}
 	}
-	private void updateGem() {
-		for (Objects gem : gemlist) {	
-			if (player.getBoundsInParent().intersects(gem.getBoundsInParent())) {
-				appRoot.getChildren().clear();
-				floors.clear();
-				walls.clear();
-				doors.clear();
-				buttons.clear();
-				spikes.clear();
-				gemlist.clear();
-				gemlist.add(new Objects(42*32, 20*32, 0, 0, new Image("Images/player.png")));
-				levelNumber=2;
-				initContent();
-			}
-		}
-	}
-	
-	public int checkSpikes(){
-		int val= 0;
-		for(int i = 0; i< spikes.size(); i++){
-			if(temp.get(i) == true){
-				val++;
-			}
-		}
-		return val;
-	}
-	
+
 	private void updateSpike() {
 		int count = 0;
 		for (Node spike : spikes) {
@@ -490,58 +529,34 @@ public class Main extends Application {
 			count++;
 		}	
 	}
-	public void moveRight() {
-		if (player.getTranslateX() + 32 <= levelWidth - 5) {
-			animate("right");
-			player.movePlayerX(4);
+	public int checkSpikes(){
+		int val= 0;
+		for(int i = 0; i< spikes.size(); i++){
+			if(temp.get(i) == true){
+				val++;
+			}
 		}
+		return val;
 	}
-	public void moveUp(){
-		if (player.getTranslateY() >= 5) {
-			animate("up");
-            player.jumpPlayer();   
-		}
-	}
-	public void moveLeft(){
-		if( player.getTranslateX() >= 5) {
-			animate("left");
-			player.movePlayerX(-4);			
+	
+	private void updateGem() {
+		for (Objects gem : gemlist) {	
+			if (player.getBoundsInParent().intersects(gem.getBoundsInParent())) {
+				appRoot.getChildren().clear();
+				floors.clear();
+				walls.clear();
+				doors.clear();
+				buttons.clear();
+				spikes.clear();
+				gemlist.clear();
+				gemlist.add(new Objects(42*32, 20*32, 0, 0, new Image("Images/player.png")));
+				levelNumber = 2;
+				initContent();
+			}
 		}
 	}
 	
-	/**
-	 * Method: update: Checks for anything in the game (Key Presses, Timer/Counter, Avatar Position, Spike/Button Collision, Music)
-	 * Keyboard: Tracks Left/Right Movement, and Jump
-	 * Timer/Counter: Updates GUI
-	 * Button: Once pressed, something happens.
-	 * Spikes: Once touched, re-spawn at start.
-	 * Avatar Position: Warping, and Level End
-	 * Music: Once it ends, it will loop.
-	 * 		Reference: https://stackoverflow.com/questions/23498376/ahow-to-make-a-mp3-repeat-in-javafx
-	 * 		Music Source: http://freemusicarchive.org/music/Kevin_MacLeod/Impact/Impact_Prelude_1765
-	 * Sound Source: http://soundbible.com/1343-Jump.html  
-	 * 
-	 */
-	private void update() {
-		if (levelNumber == 6) {
-			appRoot.getChildren().remove(player);
-		} else {
-			updateKey();
-		}
-		if (player.getVelocity().getY() < 6) {
-			player.addVelocity(0, .5);
-		}
-		player.movePlayerY((int)player.getVelocity().getY());
-		
-		//Timer/Counter
-		this.stopwatch.setCurrentTime();
-		gameTimer.setText(this.stopwatch.toString());
-		deathCountMsg.setText("Death Count: " + player.getDeathCount());       
-		updateDoor();
-		updateSpike();
-		updateGem();
-		
-		//Avatar Position - End Level
+	private void updateAvatarEnd() {
 		if (player.getTranslateX() > 1306  && player.getTranslateY() > 520) {
 			if (levelNumber != 0) {
 				tempLevel = levelNumber;
@@ -560,8 +575,8 @@ public class Main extends Application {
 			}
 		initContent();
 		}
-		
-		//Avatar Position - Warping
+	}
+	private void updateAvatarWarp() {
 		if (player.getTranslateX() > 1306  && player.getTranslateY() < 105) {
 			player.setTranslateX(5);
 			if (levelNumber == 3) {
@@ -593,8 +608,13 @@ public class Main extends Application {
 			player.setTranslateX(player.getTranslateX());
 			player.jumpPlayer();
 		}
-		
-		//Loop Music
+	}
+	private void updateAvatar() {
+		updateAvatarEnd();
+		updateAvatarWarp();
+	}
+	
+	private void updateLoop() {
 		bgm.setOnEndOfMedia(new Runnable() {
 			public void run() {
 				bgm.seek(Duration.ZERO);
@@ -602,19 +622,35 @@ public class Main extends Application {
 		});
 	}
 	
-	public void openDoor() {
-		click.setOnEndOfMedia(new Runnable() {
-			public void run() {
-				click  = new MediaPlayer(click_name.playSound()); 
-			}
-		});
-	    click.play();
-		for (Objects door : doors) {
-			appRoot.getChildren().remove(door);
-			door.setVisibility(false);
+	/**
+	 * Method: update: Checks for anything in the game (Key Presses, Timer/Counter, Avatar Position, Spike/Button Collision, Music)
+	 * Keyboard: Tracks Left/Right Movement, and Jump
+	 * Timer/Counter: Updates GUI
+	 * Button: Once pressed, something happens.
+	 * Spikes: Once touched, re-spawn at start.
+	 * Avatar Position: Warping, and Level End
+	 * Music: Once it ends, it will loop.
+	 * 		Reference: https://stackoverflow.com/questions/23498376/ahow-to-make-a-mp3-repeat-in-javafx
+	 * 		Music Source: http://freemusicarchive.org/music/Kevin_MacLeod/Impact/Impact_Prelude_1765
+	 * Sound Source: http://soundbible.com/1343-Jump.html  
+	 * 
+	 */
+	private void update() {
+		if (levelNumber == 6) {
+			appRoot.getChildren().remove(player);
+		} else {
+			updateKey();
 		}
-		player.updateObstacleState(floors, walls, doors);
+		updateGravity();
+		updateAnimation();
+		updateGUI();
+		updateDoor();
+		updateSpike();
+		updateGem();
+		updateAvatar();
+		updateLoop();
 	}
+	
 
 	public void restartGame(){
 		levelNumber = 1;

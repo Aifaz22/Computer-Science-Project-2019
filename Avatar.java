@@ -18,7 +18,6 @@ import javafx.scene.layout.Pane;
  * 		getDeathCount
  * 		checkMovement
  * 		setDeathCount
- * 		setAnimation
  * 		addVelocity
  * 		addDeathCount
  * 		updateObstacleState
@@ -40,9 +39,9 @@ public class Avatar extends Pane {
 	Image img = new Image("Images/player.png");
 	ImageView imageView;
 	int count = 4;
-	int colunms = 6;
-	int offsetX=0;
-	int offsetY=60;
+	int columns = 6;
+	int offsetX = 0;
+	int offsetY = 60;
 	PlayerAnimation animation;
 	
 	//Sound
@@ -51,9 +50,9 @@ public class Avatar extends Pane {
 	
 	//Constructor: (Location X, Location Y, Width, Height, Floors, Walls, Doors, ImageView)
 	public Avatar(int x, int y, int w, int h, ArrayList<Objects> floors, ArrayList<Objects> walls, ArrayList<Objects> doors, int death) {
-		imageView = new ImageView("Images/spriteSheet444.png");
+		imageView = new ImageView("Images/playerSheet.png");
 		imageView.setViewport(new Rectangle2D(offsetX, offsetY, w, h));
-		animation = new PlayerAnimation(imageView, Duration.millis(500),count, colunms, offsetX, offsetY,w, h);
+		animation = new PlayerAnimation(imageView, Duration.millis(500), count, columns, offsetX, offsetY);
 		getChildren().addAll(imageView);
 		
 		this.setTranslateX(x);
@@ -91,6 +90,7 @@ public class Avatar extends Pane {
 		return temp;
 	}
 	
+	
 	//Setter Methods
 	public void setDeathCount(int a) {
 		this.deathCount=a;
@@ -120,6 +120,7 @@ public class Avatar extends Pane {
 			obstacles.add(new Objects(door));
 		}
 	}
+	
 	/**
 	* Method: Movement of Avatar along the X-Axis. 
 	* Parameter: value (The higher this value, the faster the movement.)
@@ -157,6 +158,15 @@ public class Avatar extends Pane {
 		}
 	}
 	
+	
+	public boolean checkFloor() {
+		for (Objects obstacle : obstacles) {
+			if (this.getTranslateY() + img.getHeight() + 1 == obstacle.getTranslateY()) {
+				return true;
+			}
+		}
+		return false;
+	}
 	/**
 	* Method: Movement of Avatar along the Y-Axis.
 	* Parameter: value (The higher this value, the faster the jump.)
