@@ -1,5 +1,5 @@
-import javafx.scene.media.Media;
 import java.io.*;
+import javafx.scene.media.Media;
 
 /**
  * Class: SoundEffect
@@ -10,7 +10,6 @@ import java.io.*;
  *
  */
 public class SoundEffect {
-	
 	//Instance Variable
 	String name;
 	public SoundEffect(String name) {

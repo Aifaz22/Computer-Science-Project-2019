@@ -15,7 +15,6 @@ import java.util.Date;
  *
  */
 public class Timer {
-	
 	//Instance Variables
 	private int sec;
 	private int min;
@@ -38,7 +37,7 @@ public class Timer {
 	public void setCurrentTime() {
 		this.currentTime = new Date();
 	}
-	//Getters
+	//Getters - Time
 	public Date getStartTime() {
 		return this.startTime;
 	}
@@ -46,17 +45,17 @@ public class Timer {
 		return this.currentTime;
 	}
 	
-	//Getters
+	//Getters - Secs, Mins, Hours
 	public int getSec() {
-		if (this.sec==60 && this.sec > 0) {
+		if (this.sec == 60 && this.sec > 0) {
 			setStartTime(this.currentTime);
 			this.min++;
 		}
-		this.sec=(int)((this.currentTime.getTime()-this.startTime.getTime()) / 1000);
+		this.sec = (int)((this.currentTime.getTime() - this.startTime.getTime()) / 1000);
 		return this.sec;
 	}
 	public int getMin() {
-		if (this.min%60==0 && this.min>0) {
+		if (this.min%60 == 0 && this.min > 0) {
 			this.startTime=this.currentTime;
 			this.hour++;
 		}

@@ -1,10 +1,9 @@
-public class TimerText extends Timer{
+public class TimerText extends Timer {
 	public TimerText() {
 		super();
 	}
 	//Getters (String)
 	public String getStringSec() {
-		
 		if (super.getSec() < 10) {
 			return "0" + String.valueOf(super.getSec());
 		}
@@ -26,6 +25,6 @@ public class TimerText extends Timer{
 	}
 	@Override
 	public String toString() {
-		return getStringHour()+":"+getStringMin()+":"+getStringSec();
+		return getStringHour()+":" + getStringMin() + ":" + getStringSec();
 	}
 }

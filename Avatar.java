@@ -27,17 +27,14 @@ import javafx.scene.layout.Pane;
  * 		jumpPlayer
  * 		
  */
-public class Avatar extends Pane{
-	
+public class Avatar extends Pane {
 	//Instance Variables
-	
 	//General
 	private int deathCount = 0;
 	private boolean canJump = true;
 	private ArrayList<Objects> obstacles = new ArrayList<Objects>();
 	private Point2D velocity = new Point2D(0, 0); 
 	public boolean movingRight;
-	
 	
 	//Image and Animation
 	Image img = new Image("Images/player.png");
@@ -49,20 +46,16 @@ public class Avatar extends Pane{
 	PlayerAnimation animation;
 	
 	//Sound
-    private SoundEffect jump_name = new SoundEffect("jump.wav");
-    private MediaPlayer jump = new MediaPlayer(jump_name.playSound());
+	private SoundEffect jump_name = new SoundEffect("jump.wav");
+	private MediaPlayer jump = new MediaPlayer(jump_name.playSound());
 	
-    
-    
-    //Constructor: (Location X, Location Y, Width, Height, Floors, Walls, Doors, ImageView)
-    public Avatar(int x, int y, int w, int h, ArrayList<Objects> floors, ArrayList<Objects> walls, ArrayList<Objects> doors, int death) {
-    	
-		 
-		 imageView = new ImageView("Images/spriteSheet444.png");
-		 imageView.setViewport(new Rectangle2D(offsetX, offsetY, w, h));
-		 animation = new PlayerAnimation(imageView, Duration.millis(500),count, colunms, offsetX, offsetY,w, h);
-		 getChildren().addAll(imageView);
-		 
+	//Constructor: (Location X, Location Y, Width, Height, Floors, Walls, Doors, ImageView)
+	public Avatar(int x, int y, int w, int h, ArrayList<Objects> floors, ArrayList<Objects> walls, ArrayList<Objects> doors, int death) {
+		imageView = new ImageView("Images/spriteSheet444.png");
+		imageView.setViewport(new Rectangle2D(offsetX, offsetY, w, h));
+		animation = new PlayerAnimation(imageView, Duration.millis(500),count, colunms, offsetX, offsetY,w, h);
+		getChildren().addAll(imageView);
+		
 		this.setTranslateX(x);
 		this.setTranslateY(y);
 		for (Objects floor : floors) {
@@ -76,32 +69,27 @@ public class Avatar extends Pane{
 		}
 		this.deathCount = death;
 	}
-    
-    //Getter Methods
-    public Point2D getVelocity() {
-    	return new Point2D(velocity.getX(),velocity.getY());
-    }
-    
-    public int getDeathCount() {
-    	return this.deathCount;
-    }
-    
-    public boolean checkMovement(){
-		if(movingRight == true)
-			return true;
-		else {
-			return false;	
-		}
+	
+	//Getter Methods
+	public Point2D getVelocity() {
+		return new Point2D(velocity.getX(),velocity.getY());
+	}
+	
+	public int getDeathCount() {
+		return this.deathCount;
+	}
+	
+	public boolean checkMovement() {
+		return (movingRight);
     }
 		
-	public ArrayList<Objects> getObstacles(){
+	public ArrayList<Objects> getObstacles() {
 		ArrayList<Objects> temp = new ArrayList<Objects>();
 		for (Objects i: obstacles) {
 			temp.add(new Objects(i));
 		}
 		return temp;
 	}
-	
 	
 	//Setter Methods
 	public void setDeathCount(int a) {
@@ -137,7 +125,6 @@ public class Avatar extends Pane{
 	* Parameter: value (The higher this value, the faster the movement.)
 	*/
 	public void movePlayerX(int value) {
-		
 		//Finds if movement is Left or Right
 		boolean movingRight;
 			if (value > 0) {

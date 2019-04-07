@@ -17,7 +17,6 @@ import javafx.util.Duration;
  *
  */
 public class PlayerAnimation extends Transition {
-	
 	//Instance Variables
 	private final ImageView imageView;
 	private final int COUNT;
@@ -57,11 +56,11 @@ public class PlayerAnimation extends Transition {
 	}
 	
 	//Setters
-	public void setOffsetX(int x){
+	public void setOffsetX(int x) {
 		this.offsetX = x;
 	}
 	
-	public void setOffsetY(int y){
+	public void setOffsetY(int y) {
 		this.offsetY = y;
 	}
 	
@@ -74,7 +73,7 @@ public class PlayerAnimation extends Transition {
 	 * OffsetY = How far in the Y axis the frames should be shifted
 	 * 
 	 */
-	protected void interpolate(double value){
+	protected void interpolate(double value) {
 		final int index = Math.min((int)Math.floor(value*COUNT), COUNT-1);
 		final int x = (index%COLUMNS) * WIDTH + offsetX;
 		final int y = (index/COLUMNS) * HEIGHT + offsetY;
