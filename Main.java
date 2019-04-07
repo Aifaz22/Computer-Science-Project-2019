@@ -32,7 +32,6 @@ import javafx.util.Duration;
 /**
  * TO DO LIST:
  * Animation has issues. Have movements make sense, and animations make sense.
- * Categorize methods. The current methods are HUGE. Seperate them into reasonable chunks, with a theme.
  * Understand and create a Main Menu class. There is enough labels and buttons for it to be a class on its own. However, it interacts with Main too much, and must be taken with care.
 
 
@@ -471,45 +470,38 @@ public class Main extends Application {
 	}
 	
 	private void updateSpike() {
-	
 		int count = 0;
 		for (Node spike : spikes) {
-				if (player.getBoundsInParent().intersects(spike.getBoundsInParent())) {
-					death.setOnEndOfMedia(new Runnable() {
-						public void run() {
-							death  = new MediaPlayer(death_name.playSound()); ;
-						}
-					});
-					if(levelNumber == 5){
-						temp.set(count, true);
-						}
-					death.play();
-					int deathCount = player.getDeathCount() + 1;
-					appRoot.getChildren().remove(player);
-					player = new Avatar(0, 572, 20, 32, floors, walls, doors, deathCount);
-					appRoot.getChildren().add(player);
+			if (player.getBoundsInParent().intersects(spike.getBoundsInParent())) {
+				death.setOnEndOfMedia(new Runnable() {
+					public void run() {
+						death  = new MediaPlayer(death_name.playSound()); ;
+					}
+				});
+				if(levelNumber == 5){
+					temp.set(count, true);
+				}
+				death.play();
+				int deathCount = player.getDeathCount() + 1;
+				appRoot.getChildren().remove(player);
+				player = new Avatar(0, 572, 20, 32, floors, walls, doors, deathCount);
+				appRoot.getChildren().add(player);
 			}
 			count++;
 		}	
 	}
-
-	 //Player moving right
-	 public void moveRight(){	
-		if  (player.getTranslateX() + 32 <= levelWidth - 5) {
+	public void moveRight() {
+		if (player.getTranslateX() + 32 <= levelWidth - 5) {
 			animate("right");
 			player.movePlayerX(4);
 		}
 	}
-	
-	//Player moving up
 	public void moveUp(){
 		if (player.getTranslateY() >= 5) {
 			animate("up");
             player.jumpPlayer();   
 		}
-	}	
-	
-	//Player moving left
+	}
 	public void moveLeft(){
 		if( player.getTranslateX() >= 5) {
 			animate("left");
@@ -531,7 +523,7 @@ public class Main extends Application {
 	 * 
 	 */
 	private void update() {
-		if(levelNumber == 6){
+		if (levelNumber == 6) {
 			appRoot.getChildren().remove(player);
 		} else {
 			updateKey();
@@ -544,55 +536,57 @@ public class Main extends Application {
 		//Timer/Counter
 		this.stopwatch.setCurrentTime();
 		gameTimer.setText(this.stopwatch.toString());
-		deathCountMsg.setText("Death Count: "+player.getDeathCount());       
+		deathCountMsg.setText("Death Count: " + player.getDeathCount());       
 		updateDoor();
 		updateSpike();
 		updateGem();
 		
 		//Avatar Position - End Level
 		if (player.getTranslateX() > 1306  && player.getTranslateY() > 520) {
-			if (levelNumber != 0)
-			tempLevel = levelNumber;
-			appRoot.getChildren().clear();
-			floors.clear();
-			walls.clear();
-			doors.clear();
-			buttons.clear();
-			gemlist.clear();
-			spikes.clear();
-			if(levelNumber == 0)
+			if (levelNumber != 0) {
+				tempLevel = levelNumber;
+				appRoot.getChildren().clear();
+				floors.clear();
+				walls.clear();
+				doors.clear();
+				buttons.clear();
+				gemlist.clear();
+				spikes.clear();
+			}
+			if (levelNumber == 0) {
 				levelNumber = tempLevel + 1;
-			else
-				levelNumber = 0;
+			} else {
+				levelNumber = 0; 
+			}
 		initContent();
 		}
 		
 		//Avatar Position - Warping
 		if (player.getTranslateX() > 1306  && player.getTranslateY() < 105) {
 			player.setTranslateX(5);
-			if(levelNumber == 3)
-			levels.setPassedWrappingPoint(1);
+			if (levelNumber == 3) {
+				levels.setPassedWrappingPoint(1);
+			}
 		}
 		if (player.getTranslateX() < 5  && player.getTranslateY() < 105) {
 			player.setTranslateX(1305);
-			if(levelNumber == 3)
+			if (levelNumber == 3) {
 				levels.setPassedWrappingPoint(2);
+			}
 		}
 		if (player.getTranslateY() > 600) {
 			if(levelNumber == 3 && player.getTranslateX() > 700) {
 				levels.setPassedWrappingPoint(3);
-			}
-			else if (levelNumber == 3 && player.getTranslateX() < 700){
+			} else if (levelNumber == 3 && player.getTranslateX() < 700) {
 				levels.setPassedWrappingPoint(4);
 			}
 			player.setTranslateX(player.getTranslateX());
 			player.setTranslateY(2);
 		}
 		if (player.getTranslateY() < 1) {
-			if(levelNumber == 3 && player.getTranslateX() > 700) {
+			if (levelNumber == 3 && player.getTranslateX() > 700) {
 				levels.setPassedWrappingPoint(5);
-			}
-			else if (levelNumber == 3 && player.getTranslateX() < 700){
+			} else if (levelNumber == 3 && player.getTranslateX() < 700) {
 				levels.setPassedWrappingPoint(0);
 			}
 			player.setTranslateY(580);
@@ -821,7 +815,7 @@ public class Main extends Application {
 		AnimationTimer timer = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-					update();
+				update();
 			}
 		};
 		timer.start();
