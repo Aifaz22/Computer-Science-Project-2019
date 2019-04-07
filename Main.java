@@ -625,6 +625,8 @@ public class Main extends Application {
 		levelNumber = 1;
 		deaths = 0;
 		stopwatch = new TimerText();
+		levels = new LevelData();
+		temp = new ArrayList<Boolean>();
 		appRoot.getChildren().clear();
 		initContent();	
 	}
