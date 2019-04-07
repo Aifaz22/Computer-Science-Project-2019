@@ -66,7 +66,7 @@ public class Main extends Application {
 	private TimerText stopwatch = new TimerText();
 	private Label gameTimer = new Label();
 	int deaths = 0;
-	private int levelNumber = 5;
+	private int levelNumber = 1;
 	
 	//Sound & Music
 	private SoundEffect bgm_name = new SoundEffect("music.wav");
