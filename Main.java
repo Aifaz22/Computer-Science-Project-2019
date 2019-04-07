@@ -31,13 +31,9 @@ import javafx.util.Duration;
 
 /**
  * TO DO LIST:
- * Avatar has Death count, but Main has Death count. CHOOSE ONE.
  * Animation has issues. Have movements make sense, and animations make sense.
  * Categorize methods. The current methods are HUGE. Seperate them into reasonable chunks, with a theme.
  * Understand and create a Main Menu class. There is enough labels and buttons for it to be a class on its own. However, it interacts with Main too much, and must be taken with care.
- * Add levels/Ending(if required)
- * Add level title, and add it to the GUI
- * The image Array is titled blocks. There should only be blocks in there. Make another array with backgrounds/animations as needed.
 
 
 /**
@@ -85,14 +81,15 @@ public class Main extends Application {
 		new Image("Images/leftspikes.png"),
 		new Image("Images/door.png"),
 		new Image("Images/button_pressed.png"),
-		new Image("Images/background.png"),
-		new Image("Images/menubackground.png"),
 		new Image("Images/button2.png"),
 		new Image("Images/button_pressed2.png"),
-		new Image("Images/background_inverted.png"),
-		new Image("Images/fire_spritesheet.png"),
 		new Image("Images/roof.png"),
 		new Image("Images/black.png"),
+	};
+	private Image[] bgs = {
+		new Image("Images/background.png"),
+		new Image("Images/menubackground.png"),
+		new Image("Images/background_inverted.png"),
 		new Image("Images/credits.png")
 	};
 	
@@ -147,16 +144,14 @@ public class Main extends Application {
 		});
 	}
 	
-	
-	
 	private void initBackground() {
 		if(levelNumber == 4) {
-			bg.setFill(new ImagePattern(blocks[14]));	
+			bg.setFill(new ImagePattern(bgs[2]));	
 		}
 		else {
-			bg.setFill(new ImagePattern(blocks[10]));
+			bg.setFill(new ImagePattern(bgs[0]));
 		}
-		menubg.setFill(new ImagePattern(blocks[11]));
+		menubg.setFill(new ImagePattern(bgs[1]));
 		appRoot.getChildren().addAll(bg);
 		appRoot.getChildren().add(hbox1);
 		appRoot.getChildren().add(btnmenu);
@@ -195,12 +190,12 @@ public class Main extends Application {
 			for (int j = 0; j < line.length(); j++) {
 				switch (line.charAt(j)) {
 					case 'a':
-						Objects roof = new Objects(j*32, i*32, 32, 32, blocks[16]);
+						Objects roof = new Objects(j*32, i*32, 32, 32, blocks[12]);
 						walls.add(roof);
 						appRoot.getChildren().add(roof);
 						break;
 					case 'b':
-						Objects black = new Objects(j*32, i*32, 32, 32, blocks[17]);
+						Objects black = new Objects(j*32, i*32, 32, 32, blocks[13]);
 						walls.add(black);
 						appRoot.getChildren().add(black);
 						break;
@@ -233,7 +228,7 @@ public class Main extends Application {
 						break;
 					case '5':
 						if(levelNumber == 4){
-						Objects button = new Objects(j*32, i*32, 32, 8, blocks[12]);
+						Objects button = new Objects(j*32, i*32, 32, 8, blocks[10]);
 						buttons.add(button);
 						appRoot.getChildren().add(button);
 						} else if (levelNumber != 3) {
@@ -287,18 +282,20 @@ public class Main extends Application {
 		if (this.levelNumber==0) {
 			levelDetail.setText("Tunnel");
 		} else if (this.levelNumber==1){
-			levelDetail.setText("Start "+(this.levelNumber-1)+ "- Touch Gem and start");
+			levelDetail.setText("Level "+(this.levelNumber-1)+ " - A Mysterious Treasure");
 		} else if (this.levelNumber==2){
-			levelDetail.setText("Level "+(this.levelNumber-1)+ "- Beginning");
+			levelDetail.setText("Level "+(this.levelNumber-1)+ " - Beginning");
 		} else if (this.levelNumber==3){
-			levelDetail.setText("Level "+(this.levelNumber-1)+ "- Wrapping World");
+			levelDetail.setText("Level "+(this.levelNumber-1)+ " - Wrapping World");
 		} else if (this.levelNumber==4){
-			levelDetail.setText("Level "+(this.levelNumber-1)+ "- Mirror World");
+			levelDetail.setText("Level "+(this.levelNumber-1)+ " - Mirror World");
 		} else if (this.levelNumber==5){
-			levelDetail.setText("Level "+(this.levelNumber-1)+ "- Die, die and die");
+			levelDetail.setText("Level "+(this.levelNumber-1)+ " - Die, Die, and Die Again");
 		}
 	}
 	private void initGUITimer() {
+		gameTimer.setLayoutX(700);
+		gameTimer.setLayoutY(650);
 		gameTimer.setTextFill(Color.GREY);
 		gameTimer.setText(this.stopwatch.toString());
 		gameTimer.setFont(Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 20));
@@ -352,7 +349,6 @@ public class Main extends Application {
 		
 	}
 
-	
 	/**
 	 * Method: Initialize all Content - Avatar, LevelData, Objects, etc.
 	 * 
@@ -428,7 +424,7 @@ public class Main extends Application {
 		for (Objects button : buttons) {
 			if (player.getBoundsInParent().intersects(button.getBoundsInParent())&&stop==false) {
 				if(levelNumber == 4) {
-				button.setFill(new ImagePattern(blocks[13]));
+				button.setFill(new ImagePattern(blocks[11]));
 				} else {
 				button.setFill(new ImagePattern(blocks[9]));
 				}
@@ -644,163 +640,153 @@ public class Main extends Application {
 		
 		primaryStage.setTitle("Re:Curse");
 		
-		//Credits section
-		StackPane crpane = new StackPane();
-		HBox crroot = new HBox();
-		crbg.setFill(new ImagePattern(blocks[18]));
-		Button btnback = new Button("Back");
-		btnback.setTranslateX(200);
-		btnback.setTranslateY(210);
-		Scene crscene = new Scene(crroot,LevelData.LEVEL1[0].length() * 32 - 15, 690);
-
-		
-		//Creating the Main Menu
-		
-		VBox menuroot = new VBox();
-		StackPane stackPane = new StackPane();
-		Button btnstart;
-		Button btnexit;
-		Button btncredit;
-		Label title;
-		
+		//Main Menu
+			VBox menuroot = new VBox();
+			StackPane stackPane = new StackPane();
+			Label title;
+			Button btnstart;
+			Button btnexit;
+			Button btncredit;
 		//Title
-		title = new Label(">Re:Curse");
-		title.setTranslateX(10);
-		title.setTranslateY(-150);
-		
-		//Main Menu Buttons
-		btnstart = new Button("Start Game");
-		btnexit = new Button("EXIT");
-		btncredit = new Button("Credits");
-		btnstart.setTranslateY(-30);
-		btnstart.setTranslateX(12);
-		btnexit.setTranslateY(130);
-		btnexit.setTranslateX(10);
-		btncredit.setTranslateX(11);
-		btncredit.setTranslateY(50);
-		
-		//GUI Button
-		BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource("/Images/menu_button.png").toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-	    Background background = new Background(backgroundImage);
-		btnmenu.setBackground(background);
-		btnmenu.setLayoutX(1100);
-		btnmenu.setLayoutY(650);
-		restart.setLayoutX(560);
-		restart.setLayoutY(280);
-		exit.setLayoutX(603);
-		exit.setLayoutY(330);
-		gameTimer.setLayoutX(700);
-		gameTimer.setLayoutY(650);
-		
-		
-		//Start Game
-		btnstart.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				primaryStage.setScene(scene);
-				primaryStage.show();
-				primaryStage.setResizable(false);
-				btnstart.setText("Resume");
-			}
-		});
-		
-		//Exit
-		btnexit.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				System.exit(0);
-			}
-		});
-		
-		//Credit
-		btncredit.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				primaryStage.setScene(crscene);
-				primaryStage.show();
-				primaryStage.setResizable(false);
-			}
-		});
-		
-		Font fontMenu = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 20);
-		Font fontStart = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 40);
-		Font fontExit = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 30);
-		Font fontTitle = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 70);
-		btnmenu.setFont(fontMenu);
-		btnstart.setFont(fontStart);
-		btnexit.setFont(fontExit);
-		exit.setFont(fontExit);
-		restart.setFont(fontStart);
-		title.setFont(fontTitle);
-		btnmenu.setTextFill(Color.WHITE);
-		btnstart.setTextFill(Color.WHITE);
-		btnexit.setTextFill(Color.WHITE);
-		title.setTextFill(Color.WHITE);
-		exit.setTextFill(Color.WHITE);
-		restart.setTextFill(Color.WHITE);
-		btnstart.setBackground(Background.EMPTY);
-		btnexit.setBackground(Background.EMPTY);
-		btncredit.setBackground(Background.EMPTY);
-		restart.setBackground(Background.EMPTY);
-		exit.setBackground(Background.EMPTY);
-		btncredit.setTextFill(Color.WHITE);
-		btncredit.setFont(fontExit);
-		btnback.setFont(fontExit);
-		btnback.setTextFill(Color.WHITE);
-		btnback.setBackground(Background.EMPTY);
-		
-		
-		this.btnResize(btnmenu);
-		this.btnResize(btnstart);
-		this.btnResize(btnexit);
-		this.btnResize(btncredit);
-		this.btnResize(btnback);
-		this.btnResize(restart);
-		this.btnResize(exit);
-		
+			title = new Label(">Re:Curse");
+			Font fontTitle = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 70);
+			title.setFont(fontTitle);
+			title.setTextFill(Color.WHITE);
+			title.setTranslateX(10);
+			title.setTranslateY(-150);
+		//Menu Button - Start
+			btnstart = new Button("Start Game");
+			Font fontStart = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 40);
+			btnstart.setFont(fontStart);
+			btnstart.setTextFill(Color.WHITE);
+			btnstart.setBackground(Background.EMPTY);
+			btnstart.setTranslateX(12);
+			btnstart.setTranslateY(-30);
+			btnResize(btnstart);
+			//Action - Start
+				btnstart.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						primaryStage.setScene(scene);
+						primaryStage.show();
+						primaryStage.setResizable(false);
+						btnstart.setText("Resume");
+					}
+				});
+		//Menu Button - Exit
+			btnexit = new Button("EXIT");
+			Font fontExit = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 30);
+			btnexit.setFont(fontExit);
+			btnexit.setTextFill(Color.WHITE);
+			btnexit.setBackground(Background.EMPTY);
+			btnexit.setTranslateX(10);
+			btnexit.setTranslateY(130);
+			btnResize(btnexit);
+			//Action - Exit
+				btnexit.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						System.exit(0);
+					}
+				});
+				
+		Scene gamemenu = new Scene(menuroot, LevelData.LEVEL1[0].length() * 32 - 15, 685);
+
+		//Credits
+			StackPane crpane = new StackPane();
+			HBox crroot = new HBox();
+			Button btnback;
+			crbg.setFill(new ImagePattern(bgs[3]));
+			Scene crscene = new Scene(crroot,LevelData.LEVEL1[0].length() * 32 - 15, 690);
+		//Menu Button - Credits
+			btncredit = new Button("Credits");
+			btncredit.setFont(fontExit);
+			btncredit.setTextFill(Color.WHITE);
+			btncredit.setBackground(Background.EMPTY);
+			btncredit.setTranslateX(11);
+			btncredit.setTranslateY(50);
+			btnResize(btncredit);
+			//Action - Credits
+				btncredit.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						primaryStage.setScene(crscene);
+						primaryStage.show();
+						primaryStage.setResizable(false);
+					}
+				});
+				
+		//Credits Button - Return
+			btnback = new Button("Back");
+			btnback.setFont(fontExit);
+			btnback.setTextFill(Color.WHITE);
+			btnback.setBackground(Background.EMPTY);
+			btnback.setTranslateX(200);
+			btnback.setTranslateY(210);
+			btnResize(btnback);
+			//Action - Return
+				btnback.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						primaryStage.setScene(gamemenu);
+						primaryStage.show();
+						primaryStage.setResizable(false);
+					}
+				});	
 		crpane.getChildren().addAll(crbg, btnback);
 		crroot.getChildren().add(crpane);
-			
-
+		
+		//Button - GUI Menu
+			Font fontMenu = Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 20);
+			btnmenu.setFont(fontMenu);
+			BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource("/Images/menu_button.png").toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+		    Background background = new Background(backgroundImage);
+			btnmenu.setBackground(background);
+			btnmenu.setTextFill(Color.WHITE);
+			btnmenu.setLayoutX(1100);
+			btnmenu.setLayoutY(650);
+			btnResize(btnmenu);
+			//Action - To Menu
+				btnmenu.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						primaryStage.setScene(gamemenu);
+						primaryStage.show();
+						primaryStage.setResizable(false);
+					}
+				});
+		
+		//End Button - Restart
+			restart.setFont(fontStart);
+			restart.setTextFill(Color.WHITE);
+			restart.setBackground(Background.EMPTY);
+			restart.setLayoutX(560);
+			restart.setLayoutY(280);
+			btnResize(restart);
+			//Action - Restart
+				restart.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						restartGame();
+					}
+				});
+		//End Button - Exit
+			exit.setFont(fontExit);
+			exit.setTextFill(Color.WHITE);
+			exit.setBackground(Background.EMPTY);
+			exit.setLayoutX(603);
+			exit.setLayoutY(330);
+			btnResize(exit);
+				//Action - Exit
+				exit.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						System.exit(0);
+						
+					}
+				});
 		stackPane.getChildren().addAll(menubg, btnstart, btnexit, title, btncredit);
 		menuroot.getChildren().add(stackPane);
-		
-		//Running Game
-		Scene gamemenu = new Scene(menuroot, LevelData.LEVEL1[0].length() * 32 - 15, 685);
-		btnmenu.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				primaryStage.setScene(gamemenu);
-				primaryStage.show();
-				primaryStage.setResizable(false);
-			}
-		});	
-		
-		restart.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				restartGame();
-				
-			}
-		});
-		
-		exit.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				System.exit(0);
-				
-			}
-		});
-	
-		
-		btnback.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				primaryStage.setScene(gamemenu);
-				primaryStage.show();
-				primaryStage.setResizable(false);
-			}
-		});	
 		
 		//Key Event handler
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
