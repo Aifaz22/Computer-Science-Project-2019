@@ -1,3 +1,14 @@
+/**
+ * Class: TimerText
+ * Class Use: Convert Timer to Text
+ * Methods:
+ * 		Constructor
+ * 		getStringSec
+ * 		getStringMin
+ * 		getStringHour
+ * 		toString
+ *
+ */
 public class TimerText extends Timer {
 	public TimerText() {
 		super();

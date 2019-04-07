@@ -30,18 +30,38 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 /**
- * TO DO LIST:
- * Animation has issues. Have movements make sense, and animations make sense.
- * Understand and create a Main Menu class. There is enough labels and buttons for it to be a class on its own. However, it interacts with Main too much, and must be taken with care.
-
-
-/**
  * Class: Main - Child of Class: Application
  * Class Use: Run and Manage Game
  * Methods:
+ * 		btnResize
  * 		initContent
+ * 			initBackground
+ * 			initLevelData
+ * 			initAvatar
+ * 			initGUI
+ * 				initGUIDeath
+ * 				initGUILevel
+ * 				initGUITimer
+ * 			initEnd
+ * 				initEndMsg
+ * 				initEndDeath
+ * 				initEndTimer
  * 		update
- * 		isPressed
+ * 			updateKey
+ * 				moveRight
+ * 				moveUp
+ * 				moveLeft
+ * 			updateGravity
+ * 			updateAnimation
+ * 				animate
+ * 			updateGUI
+ * 			updateDoor
+ * 				openDoor
+ * 			updateSpike
+ * 			updateGem
+ * 			updateAvatar
+ * 			updateLoop
+ * 		restart
  * 		start
  * 		main
  *
@@ -339,7 +359,7 @@ public class Main extends Application {
 		totalTime.setTranslateY(470);
 		appRoot.getChildren().add(totalTime);
 	}
-	public void initEnd() {
+	private void initEnd() {
 		initEndMsg();
 		initEndDeath();
 		initEndTimer();
@@ -363,20 +383,18 @@ public class Main extends Application {
 		}
 	}
 
-	
-	
 
-	public void moveRight() {
+	private void moveRight() {
 		if (player.getTranslateX() + 32 <= levelWidth - 5) {
 			player.movePlayerX(4);
 		}
 	}
-	public void moveUp(){
+	private void moveUp(){
 		if (player.getTranslateY() >= 5) {
             player.jumpPlayer();   
 		}
 	}
-	public void moveLeft(){
+	private void moveLeft(){
 		if( player.getTranslateX() >= 5) {
 			player.movePlayerX(-4);			
 		}
@@ -470,7 +488,7 @@ public class Main extends Application {
 		deathCountMsg.setText("Death Count: " + player.getDeathCount());  
 	}
 	
-	public void openDoor() {
+	private void openDoor() {
 		click.setOnEndOfMedia(new Runnable() {
 			public void run() {
 				click  = new MediaPlayer(click_name.playSound()); 
@@ -652,7 +670,7 @@ public class Main extends Application {
 	}
 	
 
-	public void restartGame(){
+	private void restartGame(){
 		levelNumber = 1;
 		stopwatch = new TimerText();
 		levels = new LevelData();

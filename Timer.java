@@ -12,6 +12,7 @@ import java.util.Date;
  * 		getSec
  * 		getMin
  * 		getHour
+ * 		toString
  *
  */
 public class Timer {

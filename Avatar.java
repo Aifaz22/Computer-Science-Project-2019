@@ -1,12 +1,10 @@
 import java.util.ArrayList;
 import javafx.geometry.Point2D;
-import javafx.scene.media.MediaPlayer;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.Image;
-import javafx.util.Duration;
-
 import javafx.scene.layout.Pane;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 
 /**
@@ -17,6 +15,8 @@ import javafx.scene.layout.Pane;
  * 		getVelocity
  * 		getDeathCount
  * 		checkMovement
+ * 		getObstacles
+ * 		checkFloor
  * 		setDeathCount
  * 		addVelocity
  * 		addDeathCount
@@ -36,7 +36,6 @@ public class Avatar extends Pane {
 	public boolean movingRight;
 	
 	//Image and Animation
-	Image img = new Image("Images/player.png");
 	ImageView imageView;
 	int count = 4;
 	int columns = 6;
@@ -48,7 +47,7 @@ public class Avatar extends Pane {
 	private SoundEffect jump_name = new SoundEffect("jump.wav");
 	private MediaPlayer jump = new MediaPlayer(jump_name.playSound());
 	
-	//Constructor: (Location X, Location Y, Width, Height, Floors, Walls, Doors, ImageView)
+	//Constructor: (Location X, Location Y, Width, Height, Floors, Walls, Doors, Death Count)
 	public Avatar(int x, int y, int w, int h, ArrayList<Objects> floors, ArrayList<Objects> walls, ArrayList<Objects> doors, int death) {
 		imageView = new ImageView("Images/playerSheet.png");
 		imageView.setViewport(new Rectangle2D(offsetX, offsetY, w, h));
@@ -90,6 +89,15 @@ public class Avatar extends Pane {
 		return temp;
 	}
 	
+	public boolean checkFloor() {
+		for (Objects obstacle : obstacles) {
+			if (this.getTranslateY() + 33 == obstacle.getTranslateY()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	
 	//Setter Methods
 	public void setDeathCount(int a) {
@@ -142,7 +150,7 @@ public class Avatar extends Pane {
 					obstacle.getBoundsInLocal()))) &&
 					obstacle.getVisibility() == true) {
 					if (movingRight) {
-						if (this.getTranslateX() + img.getWidth() == obstacle.getTranslateX()) {
+						if (this.getTranslateX() + 20 == obstacle.getTranslateX()) {
 							this.setTranslateX(this.getTranslateX() - 1);
 							return;
 							}
@@ -159,14 +167,6 @@ public class Avatar extends Pane {
 	}
 	
 	
-	public boolean checkFloor() {
-		for (Objects obstacle : obstacles) {
-			if (this.getTranslateY() + img.getHeight() + 1 == obstacle.getTranslateY()) {
-				return true;
-			}
-		}
-		return false;
-	}
 	/**
 	* Method: Movement of Avatar along the Y-Axis.
 	* Parameter: value (The higher this value, the faster the jump.)
@@ -187,7 +187,7 @@ public class Avatar extends Pane {
 					obstacle.getBoundsInLocal()))) &&
 					obstacle.getVisibility() == true) {
 					if (movingDown) {
-						if (this.getTranslateY() + img.getHeight() == obstacle.getTranslateY()) {
+						if (this.getTranslateY() + 32 == obstacle.getTranslateY()) {
 							this.setTranslateY(this.getTranslateY() - 1);
 							canJump = true;
 							return;
