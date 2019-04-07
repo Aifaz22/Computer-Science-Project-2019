@@ -88,7 +88,7 @@ public class Main extends Application {
     private MediaPlayer death = new MediaPlayer(death_name.playSound());
 	
 	//Graphics
-	private Image gem = new Image("Images/gem1.png");
+	private Image gem = new Image("Images/gem.png");
 	private Image[] blocks = {
 		new Image("Images/tile.png"),
 		new Image("Images/leftwall.png"),
@@ -117,7 +117,7 @@ public class Main extends Application {
 	private Button btnmenu= new Button("Main Menu");
 	private Button restart = new Button("RESTART");
 	private Button exit = new Button("EXIT");
-	private Rectangle bg = new Rectangle(672 * 2, 354*2);
+	private Rectangle bg = new Rectangle(672 * 2, 354 * 2);
 	private HashMap<KeyCode, Boolean> keys = new HashMap<KeyCode, Boolean>();
 	private ArrayList<Objects> floors = new ArrayList<Objects>();
 	private ArrayList<Objects> walls = new ArrayList<Objects>();
@@ -171,10 +171,7 @@ public class Main extends Application {
 			bg.setFill(new ImagePattern(bgs[0]));
 		}
 		menubg.setFill(new ImagePattern(bgs[1]));
-		appRoot.getChildren().addAll(bg);
-		appRoot.getChildren().add(hbox1);
-		appRoot.getChildren().add(btnmenu);
-		appRoot.getChildren().add(gameTimer);
+		appRoot.getChildren().addAll(bg, hbox1, gameTimer);
 	}
 	private void initLevelData() {
 		levelWidth = LevelData.LEVEL1[0].length() * 32;
@@ -219,7 +216,7 @@ public class Main extends Application {
 						appRoot.getChildren().add(black);
 						break;
 					case 'c':
-						Objects gems = new Objects(j*32, i*32, 126, 126, gem);
+						Objects gems = new Objects(j*32, i*32, 77, 57, gem);
 						gemlist.add(gems);
 						appRoot.getChildren().add(gems);
 						break;	
@@ -578,19 +575,19 @@ public class Main extends Application {
 		if (player.getTranslateX() > 1306  && player.getTranslateY() > 520) {
 			if (levelNumber != 0) {
 				tempLevel = levelNumber;
-				appRoot.getChildren().clear();
-				floors.clear();
-				walls.clear();
-				doors.clear();
-				buttons.clear();
-				gemlist.clear();
-				spikes.clear();
 			}
 			if (levelNumber == 0) {
 				levelNumber = tempLevel + 1;
 			} else {
 				levelNumber = 0; 
 			}
+		appRoot.getChildren().clear();
+		floors.clear();
+		walls.clear();
+		doors.clear();
+		buttons.clear();
+		gemlist.clear();
+		spikes.clear();
 		initContent();
 		}
 	}
