@@ -131,6 +131,8 @@ public class Main extends Application {
 	private Rectangle crbg = new Rectangle(672*2, 354*2);
 	private LevelData levels = new LevelData();
 	private int tempLevel = 0;
+	private int tempDeath = 0;
+	private int lv5Count = 0;
 	private boolean stop = false;
 	
 	
@@ -171,7 +173,7 @@ public class Main extends Application {
 			bg.setFill(new ImagePattern(bgs[0]));
 		}
 		menubg.setFill(new ImagePattern(bgs[1]));
-		appRoot.getChildren().addAll(bg, hbox1, gameTimer);
+		appRoot.getChildren().add(bg);
 	}
 	private void initLevelData() {
 		levelWidth = LevelData.LEVEL1[0].length() * 32;
@@ -282,7 +284,7 @@ public class Main extends Application {
 		 }
 	}
 	private void initAvatar() {
-		player = new Avatar(0, 572, 20, 32, floors, walls, doors, 0);
+		player = new Avatar(0, 572, 20, 32, floors, walls, doors, tempDeath);
 		appRoot.getChildren().add(player);
 	}
 	
@@ -315,6 +317,7 @@ public class Main extends Application {
 		gameTimer.setTextFill(Color.GREY);
 		gameTimer.setText(this.stopwatch.toString());
 		gameTimer.setFont(Font.loadFont(getClass().getResourceAsStream("PixelOperator.ttf"), 20));
+		appRoot.getChildren().add(gameTimer);
 	}
 	private void initGUI() {
 		hbox1.relocate(20,650);
@@ -326,6 +329,8 @@ public class Main extends Application {
 		
 		hbox1.getChildren().add(deathCountMsg);
 		hbox1.getChildren().add(levelDetail);
+		appRoot.getChildren().add(hbox1);
+		appRoot.getChildren().add(btnmenu);
 		stop = false;
 	}
 	
@@ -517,14 +522,14 @@ public class Main extends Application {
 			stop = true;
 		}
 		
-		if(levelNumber == 5 && checkSpikes() == spikes.size() && stop == false){
+		//Level 5
+		if(levelNumber == 5 && lv5Count == spikes.size() && stop == false){
 			openDoor();
 			stop = true; 
 		}
 	}
 
 	private void updateSpike() {
-		int count = 0;
 		for (Node spike : spikes) {
 			if (player.getBoundsInParent().intersects(spike.getBoundsInParent())) {
 				death.setOnEndOfMedia(new Runnable() {
@@ -533,26 +538,18 @@ public class Main extends Application {
 					}
 				});
 				if(levelNumber == 5){
-					temp.set(count, true);
+					lv5Count++;
 				}
 				death.play();
-				int deathCount = player.getDeathCount() + 1;
+				player.addDeathCount();
+				tempDeath = player.getDeathCount();
 				appRoot.getChildren().remove(player);
-				player = new Avatar(0, 572, 20, 32, floors, walls, doors, deathCount);
+				player = new Avatar(0, 572, 20, 32, floors, walls, doors, player.getDeathCount());
 				appRoot.getChildren().add(player);
 			}
-			count++;
 		}	
 	}
-	public int checkSpikes(){
-		int val= 0;
-		for(int i = 0; i< spikes.size(); i++){
-			if(temp.get(i) == true){
-				val++;
-			}
-		}
-		return val;
-	}
+
 	
 	private void updateGem() {
 		for (Objects gem : gemlist) {	
@@ -672,6 +669,8 @@ public class Main extends Application {
 		stopwatch = new TimerText();
 		levels = new LevelData();
 		temp = new ArrayList<Boolean>();
+		tempDeath = 0;
+		lv5Count = 0;
 		appRoot.getChildren().clear();
 		initContent();	
 	}

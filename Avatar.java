@@ -74,7 +74,7 @@ public class Avatar extends Pane {
 	}
 	
 	public int getDeathCount() {
-		return this.deathCount;
+		return (this.deathCount);
 	}
 	
 	public boolean checkMovement() {
