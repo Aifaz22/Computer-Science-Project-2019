@@ -14,7 +14,7 @@ public class TimerTest{
 	Timer t=new Timer();
 	Date random = new Date(2018,11,28);
 	t.setStartTime(random);
-	assertEquals("Testing current time",random.getTime(),t.getStartTime().getTime());
+	assertEquals(random.getTime(),t.getStartTime().getTime());
 	}
 	@Test
 	public void test_setter_currentTime(){
@@ -42,15 +42,15 @@ public class TimerTest{
 	    {
 	        System.out.println("Testing...");
 	    }
-		assertEquals("Setting current time",1,t.getSec());
+		assertEquals(1,t.getSec());
 		assertEquals(0,t.getMin());
 		assertEquals(0,t.getHour());
 	}
 	@Test
-	public void test_getSec_1min() {
+	public void test_getSec_61sec() {
 		Timer t=new Timer();
 		try {
-			System.out.println("wait for 60 sec...");
+			System.out.println("wait for 61 sec...");
 			Thread.sleep(61000);
 			t.setCurrentTime();
 	    } catch (Exception e)
